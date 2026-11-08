@@ -74,7 +74,7 @@ export default function App() {
     const basePath = import.meta.env.BASE_URL || '/';
     const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
 
-    fetch(`${cleanBase}data/places.json?v=960px_clean`)
+    fetch(`${cleanBase}data/places.json?v=commons_api`)
       .then((res) => {
         if (!res.ok) throw new Error('places.json yüklenemedi');
         return res.json();
@@ -488,7 +488,7 @@ export default function App() {
       localStorage.removeItem(USER_OVERRIDES_KEY);
       const basePath = import.meta.env.BASE_URL || '/';
       const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
-      fetch(`${cleanBase}data/places.json?v=960px_clean`)
+      fetch(`${cleanBase}data/places.json?v=commons_api`)
         .then((res) => res.json())
         .then((resetList) => {
           setPlaces(resetList);

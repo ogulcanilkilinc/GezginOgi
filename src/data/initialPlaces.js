@@ -24,7 +24,7 @@ import { BALKANLAR_DEEP_PACK } from './balkanlarDeepPack.js';
 import { EUROPE_DEEP_PACK } from './europeDeepPack.js';
 import { AMERICAS_DEEP_PACK } from './americasDeepPack.js';
 import { GEZGIN_OGI_PACK } from './gezginOgiPack.js';
-import { resolveCuratedPhoto } from './curatedPhotoResolver.js';
+// Photos are resolved separately by scripts/resolve-photos.mjs (Wikidata P18 + Commons API).
 
 export const CATEGORIES = [
   { id: 'all', label: 'Tümü', icon: '🌍', color: '#f59e0b', bg: 'bg-amber-500/20 text-amber-300 border-amber-500/40' },
@@ -304,7 +304,7 @@ rawPlaces.forEach((p) => {
 
 export const INITIAL_PLACES = dedupedList.map((p) => {
   const { country, city } = extractLocationInfo(p);
-  const curatedImage = resolveCuratedPhoto({ ...p, country, city });
+  const curatedImage = '';
 
   return {
     ...p,
