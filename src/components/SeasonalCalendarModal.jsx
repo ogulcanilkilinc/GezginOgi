@@ -360,6 +360,7 @@ export default function SeasonalCalendarModal({
                         {pl.coverImage ? (
                           <img
                             src={pl.coverImage}
+                            loading="lazy"
                             alt={pl.name}
                             className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                             onError={(e) => {

@@ -340,6 +340,40 @@ export default function PlaceDetailPanel({
         </div>
       </div>
 
+      {/* Photo attribution (Wikimedia Commons license requirement) */}
+      {place.coverImage && !imgError && place.photoCredit && (
+        <div className="px-4 py-1.5 bg-slate-100 border-b border-slate-200 text-[10px] text-slate-500 truncate">
+          📷{' '}
+          <a
+            href={place.photoCredit.page}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-slate-800 underline decoration-dotted"
+            title={`${place.photoCredit.artist} — ${place.photoCredit.license}`}
+          >
+            {place.photoCredit.artist}
+          </a>
+          {place.photoCredit.license && (
+            <>
+              {' · '}
+              {place.photoCredit.licenseUrl ? (
+                <a
+                  href={place.photoCredit.licenseUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-slate-800 underline decoration-dotted"
+                >
+                  {place.photoCredit.license}
+                </a>
+              ) : (
+                <span>{place.photoCredit.license}</span>
+              )}
+            </>
+          )}
+          {' · Wikimedia Commons'}
+        </div>
+      )}
+
       {/* Scrollable Content Body (LIGHT THEME) */}
       <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 bg-slate-50/60">
         {/* Quick Key Metrics Bar */}

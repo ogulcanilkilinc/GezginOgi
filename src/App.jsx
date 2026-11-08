@@ -74,7 +74,7 @@ export default function App() {
     const basePath = import.meta.env.BASE_URL || '/';
     const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
 
-    fetch(`${cleanBase}data/places.json?v=commons_api`)
+    fetch(`${cleanBase}data/places.json?v=p18_verified`)
       .then((res) => {
         if (!res.ok) throw new Error('places.json yüklenemedi');
         return res.json();
@@ -488,7 +488,7 @@ export default function App() {
       localStorage.removeItem(USER_OVERRIDES_KEY);
       const basePath = import.meta.env.BASE_URL || '/';
       const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
-      fetch(`${cleanBase}data/places.json?v=commons_api`)
+      fetch(`${cleanBase}data/places.json?v=p18_verified`)
         .then((res) => res.json())
         .then((resetList) => {
           setPlaces(resetList);
@@ -1292,7 +1292,7 @@ export default function App() {
                           <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-gradient-to-br from-slate-100 to-amber-50 border border-slate-200/90 flex items-center justify-center">
                             {place.coverImage ? (
                               <img
-                                src={getOptimizedImageUrl(place.coverImage, 500)}
+                                src={getOptimizedImageUrl(place.coverImage, 500)} loading="lazy" decoding="async"
                                 alt={place.name}
                                 className={`w-full h-full object-cover ${
                                   place.visited ? 'opacity-65 saturate-50' : ''
@@ -1603,7 +1603,7 @@ export default function App() {
                     <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950/60 flex items-center justify-center">
                       {place.coverImage ? (
                         <img
-                          src={getOptimizedImageUrl(place.coverImage, 960)}
+                          src={getOptimizedImageUrl(place.coverImage, 960)} loading="lazy" decoding="async"
                           alt={place.name}
                           className="w-full h-full object-cover"
                           onError={(e) => {
