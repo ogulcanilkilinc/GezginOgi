@@ -40,7 +40,9 @@ import {
   Award,
   Sparkles,
   SlidersHorizontal,
-  Cloud
+  Cloud,
+  Lock,
+  ShieldCheck
 } from 'lucide-react';
 
 const STORAGE_KEY = 'kesif_atlasim_places_v8';
@@ -119,13 +121,37 @@ export default function App() {
   const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(true);
   const [adminPin, setAdminPin] = useState(() => {
-    return localStorage.getItem('kesif_atlasim_admin_pin') || '1923';
+    return localStorage.getItem('kesif_atlasim_admin_pin') || '1965';
   });
 
   const handleSetAdminPin = (pin, adminStatus) => {
     setAdminPin(pin);
     setIsAdmin(adminStatus);
     localStorage.setItem('kesif_atlasim_admin_pin', pin);
+  };
+
+  // Full-Site Access Security Gate: Master PIN 1965 protects entire site
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('kesif_atlasim_auth_token') === '1965';
+  });
+  const [loginPinInput, setLoginPinInput] = useState('');
+  const [loginError, setLoginError] = useState(false);
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    if (loginPinInput.trim() === '1965' || loginPinInput.trim() === adminPin) {
+      localStorage.setItem('kesif_atlasim_auth_token', '1965');
+      setIsAuthenticated(true);
+      setLoginError(false);
+    } else {
+      setLoginError(true);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('kesif_atlasim_auth_token');
+    setIsAuthenticated(false);
+    setLoginPinInput('');
   };
   const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
   const [editingPlace, setEditingPlace] = useState(null);
@@ -429,33 +455,89 @@ export default function App() {
     }
   };
 
+  // FULL-SITE PIN SECURITY GATE: Protects site from unauthorized access
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-slate-50 to-orange-50 flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-white border border-stone-200/90 rounded-3xl p-6 sm:p-8 shadow-xl text-center space-y-6">
+          <div className="w-16 h-16 mx-auto rounded-3xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 flex items-center justify-center shadow-lg shadow-amber-500/20">
+            <Compass className="w-9 h-9 stroke-[2.2]" />
+          </div>
+
+          <div className="space-y-1.5">
+            <h1 className="text-2xl font-serif font-bold text-slate-900">Keşif Atlasım</h1>
+            <p className="text-xs text-slate-500 max-w-xs mx-auto">
+              Bu atlas kişisel gezi rotalarını ve notlarını içerir. Devam etmek için Master PIN kodunu girin.
+            </p>
+          </div>
+
+          <form onSubmit={handleLoginSubmit} className="space-y-4">
+            <div>
+              <input
+                type="password"
+                inputMode="numeric"
+                maxLength={8}
+                value={loginPinInput}
+                onChange={(e) => {
+                  setLoginPinInput(e.target.value);
+                  setLoginError(false);
+                }}
+                placeholder="4 Haneli PIN Kodunu Girin"
+                autoFocus
+                className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-2xl px-4 py-3.5 text-center text-xl font-bold tracking-widest text-slate-900 placeholder:text-sm placeholder:tracking-normal placeholder:font-normal focus:outline-none transition shadow-inner"
+              />
+              {loginError && (
+                <p className="text-xs text-rose-500 font-semibold mt-2 animate-shake">
+                  Hatalı PIN kodu girdiniz. Lütfen tekrar deneyin.
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md shadow-amber-500/20 transition transform active:scale-95 flex items-center justify-center gap-2"
+            >
+              <Lock className="w-4 h-4" />
+              <span>Haritayı & Atlası Aç</span>
+            </button>
+          </form>
+
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-center gap-1.5 text-[11px] text-slate-400">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+            <span>Kişisel & Şifreli Gezgin Alanı</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
-      {/* ================= TOP NAVIGATION HEADER ================= */}
-      <header className="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 px-4 lg:px-6 py-2.5">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-amber-100 selection:text-amber-900">
+      {/* ================= TOP NAVIGATION HEADER (LIGHT THEME) ================= */}
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/90 px-4 lg:px-6 py-2.5 shadow-xs">
         <div className="max-w-[1800px] mx-auto flex flex-wrap items-center justify-between gap-3">
           {/* Brand Logo & Title */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/20">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 shadow-md shadow-amber-500/15">
               <Compass className="w-6 h-6 stroke-[2.2]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg sm:text-xl font-bold font-serif tracking-tight text-white">
+                <h1 className="text-lg sm:text-xl font-bold font-serif tracking-tight text-slate-900">
                   Keşif Atlasım
                 </h1>
-                <span className="hidden md:inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-300 border border-amber-500/30 rounded-full">
+                <span className="hidden md:inline-block px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300 rounded-full">
                   {places.length} Özel Rehber Noktası
                 </span>
               </div>
-              <p className="text-xs text-slate-400 hidden sm:block">
+              <p className="text-xs text-slate-500 hidden sm:block">
                 Ankara • Türkiye • Dünya İnteraktif Gezi Haritası & Seyahat Blogu
               </p>
             </div>
           </div>
 
           {/* Region Scope Switcher (Ankara / Türkiye / Balkanlar / Dünya) */}
-          <div className="flex items-center bg-slate-900 border border-slate-800 rounded-2xl p-1 gap-1 overflow-x-auto">
+          <div className="flex items-center bg-slate-100 border border-slate-200/90 rounded-2xl p-1 gap-1 overflow-x-auto shadow-xs">
             {REGIONS.map((reg) => {
               const count = places.filter((p) => matchesRegionScope(p, reg.id)).length;
               const isActive = activeRegion === reg.id;
@@ -465,15 +547,15 @@ export default function App() {
                   onClick={() => handleRegionChange(reg.id)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition shrink-0 ${
                     isActive
-                      ? 'bg-amber-500 text-slate-950 shadow-md'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/70'
+                      ? 'bg-amber-500 text-slate-950 shadow-sm font-bold'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white'
                   }`}
                 >
                   <span>{reg.flag}</span>
                   <span>{reg.label}</span>
                   <span
                     className={`px-1.5 py-0.2 rounded-full text-[10px] ${
-                      isActive ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-400'
+                      isActive ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-200 text-slate-600'
                     }`}
                   >
                     {count}
@@ -486,13 +568,13 @@ export default function App() {
           {/* Right Actions: View Mode, Surprise Me, Backup & Add Place */}
           <div className="flex items-center gap-2">
             {/* View Mode Switcher */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-1 flex items-center gap-1">
+            <div className="bg-slate-100 border border-slate-200 rounded-xl p-1 flex items-center gap-1 shadow-xs">
               <button
                 onClick={() => setViewMode('split')}
                 className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition ${
                   viewMode === 'split'
-                    ? 'bg-slate-800 text-amber-300 border border-slate-700'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-white text-slate-900 font-bold border border-slate-200/90 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-800'
                 }`}
                 title="Bölünmüş Görünüm: Rehber + Harita"
               >
@@ -503,8 +585,8 @@ export default function App() {
                 onClick={() => setViewMode('blog')}
                 className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition ${
                   viewMode === 'blog'
-                    ? 'bg-slate-800 text-amber-300 border border-slate-700'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-white text-slate-900 font-bold border border-slate-200/90 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-800'
                 }`}
                 title="Gezi Blogu & Dergi Görünümü"
               >
@@ -515,8 +597,8 @@ export default function App() {
                 onClick={() => setViewMode('map')}
                 className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition ${
                   viewMode === 'map'
-                    ? 'bg-slate-800 text-amber-300 border border-slate-700'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-white text-slate-900 font-bold border border-slate-200/90 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-800'
                 }`}
                 title="Tam Ekran Harita"
               >
@@ -530,8 +612,8 @@ export default function App() {
               onClick={() => setIsItineraryOpen(true)}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-semibold transition ${
                 tripPlanIds.length > 0
-                  ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 hover:bg-rose-500/30 shadow-sm'
-                  : 'bg-slate-900 text-slate-300 border-slate-800 hover:text-white hover:bg-slate-800'
+                  ? 'bg-rose-50 text-rose-800 border-rose-300 font-bold shadow-xs'
+                  : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs'
               }`}
               title="Gün Gün Seyahat Planlayıcısı & Yazdırılabilir Gezi Rehberi"
             >
@@ -547,7 +629,7 @@ export default function App() {
             {/* Smart Packing Checklist Button */}
             <button
               onClick={() => setIsPackingOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-slate-700 text-xs font-semibold transition"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs text-xs font-semibold transition"
               title="Akıllı Bavul & Seyahat Öncesi Kontrol Listesi"
             >
               <span>🎒</span>
@@ -557,7 +639,7 @@ export default function App() {
             {/* Currency & Budget Tracker Button */}
             <button
               onClick={() => setIsBudgetOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-slate-700 text-xs font-semibold transition"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs text-xs font-semibold transition"
               title="Çoklu Para Birimi (BAM, RSD, ALL, MKD, EUR) ve Seyahat Bütçesi"
             >
               <span>💱</span>
@@ -570,8 +652,8 @@ export default function App() {
                 onClick={() => setIsToolsDropdownOpen(!isToolsDropdownOpen)}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-semibold transition ${
                   isToolsDropdownOpen
-                    ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow-lg'
-                    : 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-800 hover:border-slate-700'
+                    ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow-sm'
+                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 shadow-xs'
                 }`}
                 title="Gezgin Alet Çantası: Sınır Kapıları, Yol Şarkıları, GPS Radar, Rota Simülatörü ve Konsolosluk"
               >
@@ -583,98 +665,98 @@ export default function App() {
               {isToolsDropdownOpen && (
                 <>
                   <div
-                    className="fixed inset-0 z-[540] bg-slate-950/60 backdrop-blur-sm lg:hidden"
+                    className="fixed inset-0 z-[540] bg-slate-950/40 backdrop-blur-xs lg:hidden"
                     onClick={() => setIsToolsDropdownOpen(false)}
                   />
                   <div
-                    className="fixed lg:absolute bottom-16 lg:bottom-auto left-4 right-4 lg:left-auto lg:right-0 lg:mt-2 lg:w-72 bg-slate-900/95 border border-slate-700/80 rounded-2xl shadow-2xl p-2.5 z-[550] backdrop-blur-xl animate-fadeIn space-y-1"
+                    className="fixed lg:absolute bottom-16 lg:bottom-auto left-4 right-4 lg:left-auto lg:right-0 lg:mt-2 lg:w-72 bg-white/98 border border-slate-200 rounded-2xl shadow-xl p-2.5 z-[550] backdrop-blur-xl animate-fadeIn space-y-1 text-slate-800"
                     onClick={() => setIsToolsDropdownOpen(false)}
                   >
                   <button
                     onClick={() => setIsCloudSyncOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 transition"
+                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
                   >
                     <span className="text-base">☁️</span>
                     <div>
-                      <strong className="block text-slate-100">Bulut Senkronizasyon & PIN</strong>
-                      <span className="text-[10px] text-slate-400">Telefon ve bilgisayarı canlı eşitle</span>
+                      <strong className="block text-slate-900">Bulut Senkronizasyon & PIN</strong>
+                      <span className="text-[10px] text-slate-500">Telefon ve bilgisayarı canlı eşitle</span>
                     </div>
                   </button>
 
                   <button
                     onClick={() => setIsSeasonalCalendarOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 transition"
+                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
                   >
                     <span className="text-base">🗓️</span>
                     <div>
-                      <strong className="block text-slate-100">Bu Ay Nereye Gitsem? (12 Ay)</strong>
-                      <span className="text-[10px] text-slate-400">Mevsimsel hava durumu ve ideal kaçış rotaları</span>
+                      <strong className="block text-slate-900">Bu Ay Nereye Gitsem? (12 Ay)</strong>
+                      <span className="text-[10px] text-slate-500">Mevsimsel hava durumu ve ideal kaçış rotaları</span>
                     </div>
                   </button>
 
                   <button
                     onClick={() => setIsBorderOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 transition"
+                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
                   >
                     <span className="text-base">🚗</span>
                     <div>
-                      <strong className="block text-slate-100">Balkan Sınır Kapıları & Vinyet</strong>
-                      <span className="text-[10px] text-slate-400">Canlı süreler, taktikler, otoyol pulları</span>
+                      <strong className="block text-slate-900">Balkan Sınır Kapıları & Vinyet</strong>
+                      <span className="text-[10px] text-slate-500">Canlı süreler, taktikler, otoyol pulları</span>
                     </div>
                   </button>
 
                   <button
                     onClick={() => setIsSoundtrackOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 transition"
+                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
                   >
                     <span className="text-base">🎵</span>
                     <div>
-                      <strong className="block text-slate-100">Yolun Şarkıları & Ambiyans</strong>
-                      <span className="text-[10px] text-slate-400">Sevdalinka, Akdeniz ezgileri, canlı yağmur</span>
+                      <strong className="block text-slate-900">Yolun Şarkıları & Ambiyans</strong>
+                      <span className="text-[10px] text-slate-500">Sevdalinka, Akdeniz ezgileri, canlı yağmur</span>
                     </div>
                   </button>
 
                   <button
                     onClick={() => setIsSimulatorOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 transition"
+                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
                   >
                     <span className="text-base">🗺️</span>
                     <div>
-                      <strong className="block text-slate-100">İnteraktif Rota Simülatörü</strong>
-                      <span className="text-[10px] text-slate-400">Duraklar arası canlı yol animasyonu & km</span>
+                      <strong className="block text-slate-900">İnteraktif Rota Simülatörü</strong>
+                      <span className="text-[10px] text-slate-500">Duraklar arası canlı yol animasyonu & km</span>
                     </div>
                   </button>
 
                   <button
                     onClick={() => setIsNearbyRadarOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 transition"
+                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
                   >
                     <span className="text-base">📍</span>
                     <div>
-                      <strong className="block text-slate-100">Bana En Yakın Noktalar (GPS)</strong>
-                      <span className="text-[10px] text-slate-400">Bulunduğun yere göre canlı mesafe & pusula</span>
+                      <strong className="block text-slate-900">Bana En Yakın Noktalar (GPS)</strong>
+                      <span className="text-[10px] text-slate-500">Bulunduğun yere göre canlı mesafe & pusula</span>
                     </div>
                   </button>
 
                   <button
                     onClick={() => setIsScratchMapOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 transition"
+                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
                   >
                     <span className="text-base">🎨</span>
                     <div>
-                      <strong className="block text-slate-100">Kazı-Kazan Dünya & Fetih Atlası</strong>
-                      <span className="text-[10px] text-slate-400">Ülke fetih oranları ve seyahat karnen</span>
+                      <strong className="block text-slate-900">Kazı-Kazan Dünya & Fetih Atlası</strong>
+                      <span className="text-[10px] text-slate-500">Ülke fetih oranları ve seyahat karnen</span>
                     </div>
                   </button>
 
                   <button
                     onClick={() => setIsEmergencyOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-rose-950/40 text-rose-300 flex items-center gap-2.5 transition border-t border-slate-800/80 pt-2"
+                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-rose-50 text-rose-700 flex items-center gap-2.5 transition border-t border-slate-100 pt-2"
                   >
                     <span className="text-base">🚨</span>
                     <div>
-                      <strong className="block text-rose-200">Acil Durum & T.C. Konsolosluk</strong>
-                      <span className="text-[10px] text-slate-400">7/24 nöbetçi hatlar, polis, pasaport kaybı</span>
+                      <strong className="block text-rose-800">Acil Durum & T.C. Konsolosluk</strong>
+                      <span className="text-[10px] text-slate-500">7/24 nöbetçi hatlar, polis, pasaport kaybı</span>
                     </div>
                   </button>
                 </div>
@@ -685,55 +767,55 @@ export default function App() {
             {/* Passport Modal Button */}
             <button
               onClick={() => setIsPassportOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-xs font-semibold transition"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100/80 text-amber-900 border border-amber-200 shadow-xs text-xs font-semibold transition"
               title="Keşif Pasaportum, İstatistiklerim ve Rozetlerim"
             >
-              <Award className="w-3.5 h-3.5" />
+              <Award className="w-3.5 h-3.5 text-amber-600" />
               <span className="hidden lg:inline">Pasaportum ({ places.filter(p => p.visited).length })</span>
             </button>
 
             {/* Surprise Me Button */}
             <button
               onClick={handleRandomSurprise}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-violet-500/15 hover:bg-violet-500/25 text-violet-300 border border-violet-500/30 text-xs font-semibold transition"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-purple-50 hover:bg-purple-100/80 text-purple-900 border border-purple-200 shadow-xs text-xs font-semibold transition"
               title="Bana henüz gitmediğim rastgele bir keşif noktası öner"
             >
-              <Shuffle className="w-3.5 h-3.5" />
+              <Shuffle className="w-3.5 h-3.5 text-purple-600" />
               <span className="hidden lg:inline">Nereye Gitsem?</span>
             </button>
 
             {/* Bu Ay Nereye Gitsem Modal Button */}
             <button
               onClick={() => setIsSeasonalCalendarOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-semibold transition"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-cyan-50 hover:bg-cyan-100/80 text-cyan-900 border border-cyan-200 shadow-xs text-xs font-semibold transition"
               title="12 Ay Mevsim Rehberi: Bu ay nereye gitmeli?"
             >
-              <Calendar className="w-3.5 h-3.5" />
+              <Calendar className="w-3.5 h-3.5 text-cyan-600" />
               <span className="hidden xl:inline">Bu Ay Nereye Gitsem?</span>
             </button>
 
             {/* Cloud Sync Button */}
             <button
               onClick={() => setIsCloudSyncOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 text-xs font-semibold transition"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-sky-50 hover:bg-sky-100/80 text-sky-900 border border-sky-200 shadow-xs text-xs font-semibold transition"
               title="Cihazlar Arası Bulut Eşleme & Güvenlik PIN'i"
             >
-              <Cloud className="w-3.5 h-3.5" />
+              <Cloud className="w-3.5 h-3.5 text-sky-600" />
               <span className="hidden lg:inline">Bulut Eşleme</span>
             </button>
 
             {/* Export / Import Backup */}
-            <div className="hidden md:flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-xl p-1">
+            <div className="hidden md:flex items-center gap-1 bg-slate-100 border border-slate-200 rounded-xl p-1 shadow-xs">
               <button
                 onClick={handleExportJSON}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-500 hover:text-amber-700 hover:bg-white transition"
                 title="Haritamı ve notlarımı yedekle (JSON İndir)"
               >
                 <Download className="w-4 h-4" />
               </button>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-300 hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-700 hover:bg-white transition"
                 title="Yedek dosyasından geri yükle"
               >
                 <Upload className="w-4 h-4" />
@@ -747,12 +829,21 @@ export default function App() {
               />
               <button
                 onClick={handleResetDemo}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-300 hover:bg-slate-800 transition"
+                className="p-1.5 rounded-lg text-slate-500 hover:text-rose-700 hover:bg-white transition"
                 title="Varsayılan mekanları sıfırla"
               >
                 <RotateCcw className="w-4 h-4" />
               </button>
             </div>
+
+            {/* Lock / Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition shadow-xs"
+              title="Güvenli Çıkış (Atlası Kilitle)"
+            >
+              <Lock className="w-4 h-4" />
+            </button>
 
             {/* Add New Place Button */}
             <button
@@ -760,7 +851,7 @@ export default function App() {
                 setEditingPlace(null);
                 setIsFormOpen(true);
               }}
-              className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-lg shadow-amber-500/20 transition transform active:scale-95"
+              className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-md shadow-amber-500/20 transition transform active:scale-95"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>Yeni Yer Ekle</span>
@@ -770,16 +861,16 @@ export default function App() {
       </header>
 
       {/* ================= FILTER & PROGRESS BAR ================= */}
-      <section className="bg-slate-900/60 border-b border-slate-800/80 px-4 lg:px-6 py-2 space-y-2">
+      <section className="bg-white/80 backdrop-blur-md border-b border-slate-200/90 px-4 lg:px-6 py-2 space-y-2">
         {activeRegion === 'balkanlar' && (
-          <div className="max-w-[1800px] mx-auto bg-gradient-to-r from-emerald-950/80 via-slate-900 to-amber-950/60 border border-emerald-500/30 rounded-2xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2">
+          <div className="max-w-[1800px] mx-auto bg-gradient-to-r from-emerald-50 via-teal-50 to-amber-50 border border-emerald-200/80 rounded-2xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 shadow-xs">
             <div className="flex items-center gap-2.5 text-xs">
               <span className="text-lg">🌸</span>
               <div>
-                <strong className="text-emerald-300 font-bold">
+                <strong className="text-emerald-800 font-bold">
                   Nisan Ayı Balkanlar Özel Planlayıcısı:
                 </strong>{' '}
-                <span className="text-slate-200">
+                <span className="text-slate-700">
                   Kar erimesiyle şelalelerin (Kravice, Osumi, Krka, Una, Ak Drin) en gür aktığı, Kotor Körfezi mor salkımlarının açtığı ve Šargan 8 nostaljik treninin (1 Nisan) başladığı en ideal dönem!
                 </span>
               </div>
@@ -790,7 +881,7 @@ export default function App() {
                 className={`px-2.5 py-1 rounded-xl font-bold border transition ${
                   activeSubRegion === 'Balkanlar (Nisan Özel)'
                     ? 'bg-emerald-500 text-slate-950 border-emerald-400'
-                    : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/25'
+                    : 'bg-emerald-100/70 text-emerald-800 border-emerald-300 hover:bg-emerald-200/70'
                 }`}
               >
                 {activeSubRegion === 'Balkanlar (Nisan Özel)' ? '✓ Sadece Nisan Özel Rotaları Gösteriliyor' : '✨ Sadece Nisan Özel Eklemelerini Filtrele'}
@@ -810,8 +901,8 @@ export default function App() {
                   onClick={() => setActiveCategory(cat.id)}
                   className={`px-2.5 py-1 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition shrink-0 ${
                     isActive
-                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow'
-                      : 'bg-slate-900/90 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
+                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow-xs'
+                      : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                   }`}
                 >
                   <span>{cat.icon}</span>
@@ -831,14 +922,14 @@ export default function App() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Mekan, şehir ara..."
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-8 pr-3 py-1 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-1 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:bg-white transition"
               />
             </div>
 
             {/* Location Selector Button */}
             <button
               onClick={() => setIsLocationModalOpen(true)}
-              className="bg-slate-950 border border-amber-500/50 hover:border-amber-400 rounded-xl px-2.5 py-1 text-xs text-amber-300 font-bold flex items-center gap-1.5 transition shadow-sm hover:bg-slate-900 shrink-0"
+              className="bg-amber-50 border border-amber-300 hover:bg-amber-100/70 rounded-xl px-2.5 py-1 text-xs text-amber-900 font-bold flex items-center gap-1.5 transition shadow-xs shrink-0"
               title="Ülke ve Şehir Arama / Seçim Paneli"
             >
               <span>🌍</span>
@@ -849,29 +940,29 @@ export default function App() {
                   ? `${activeCountry} › ${activeCity}`
                   : activeCountry}
               </span>
-              <span className="text-[10px] text-amber-400/80">▾</span>
+              <span className="text-[10px] text-amber-700">▾</span>
             </button>
 
             {/* Quick clear city button if a city is active */}
             {activeCity !== 'all' && (
               <button
                 onClick={() => setActiveCity('all')}
-                className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-xl px-2 py-1 text-[11px] font-semibold flex items-center gap-1 transition"
+                className="bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 rounded-xl px-2 py-1 text-[11px] font-semibold flex items-center gap-1 transition"
                 title="Şehir filtresini kaldır, tüm ülkeyi göster"
               >
                 <span>{activeCity}</span>
-                <X className="w-3 h-3 text-amber-300" />
+                <X className="w-3 h-3 text-amber-800" />
               </button>
             )}
 
             {/* Visited Status Filter: Keşfedilecekler vs Gittiklerim */}
-            <div className="bg-slate-950 border border-slate-800 rounded-xl p-0.5 flex items-center text-[11px] font-semibold shrink-0">
+            <div className="bg-slate-100 border border-slate-200/90 rounded-xl p-0.5 flex items-center text-[11px] font-semibold shrink-0">
               <button
                 onClick={() => setStatusFilter('todo')}
                 className={`px-2.5 py-1 rounded-lg transition flex items-center gap-1.5 ${
                   statusFilter === 'todo'
-                    ? 'bg-amber-500 text-slate-950 font-bold shadow'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-amber-500 text-slate-950 font-bold shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
                 title="Ana Harita: Henüz gidilmemiş keşif noktaları (Gittikçe listeden düşer)"
               >
@@ -882,8 +973,8 @@ export default function App() {
                 onClick={() => setStatusFilter('visited')}
                 className={`px-2.5 py-1 rounded-lg transition flex items-center gap-1.5 ${
                   statusFilter === 'visited'
-                    ? 'bg-emerald-500 text-slate-950 font-bold shadow'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-emerald-500 text-slate-950 font-bold shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
                 title="Gittiklerim Listesi: İşaretlediğin yerler"
               >
@@ -897,15 +988,15 @@ export default function App() {
               onClick={() => setIsExtraFiltersOpen(!isExtraFiltersOpen)}
               className={`px-2.5 py-1 rounded-xl text-xs font-semibold flex items-center gap-1 border transition shrink-0 ${
                 isExtraFiltersOpen || activeSubRegion !== 'all' || seasonFilter !== 'all' || durationFilter !== 'all' || statusFilter === 'favorite'
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                  : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-slate-200'
+                  ? 'bg-amber-100/80 text-amber-900 border-amber-300'
+                  : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
               }`}
               title="Kıta/Bölge, Mevsim, Süre ve Favori Filtrelerini Aç/Kapat"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Filtreler</span>
               {(activeSubRegion !== 'all' || seasonFilter !== 'all' || durationFilter !== 'all' || statusFilter === 'favorite') && (
-                <span className="w-2 h-2 rounded-full bg-amber-400" />
+                <span className="w-2 h-2 rounded-full bg-amber-500" />
               )}
             </button>
           </div>
@@ -913,15 +1004,15 @@ export default function App() {
 
         {/* Compact Expandable Secondary Filter Row (Only when opened or filter active) */}
         {(isExtraFiltersOpen || activeSubRegion !== 'all' || seasonFilter !== 'all' || durationFilter !== 'all' || statusFilter === 'favorite' || tripPlanIds.length > 0) && (
-          <div className="max-w-[1800px] mx-auto flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/60 animate-fadeIn text-xs">
+          <div className="max-w-[1800px] mx-auto flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200 text-xs">
             <div className="flex flex-wrap items-center gap-2">
               {/* SubRegion Dropdown (Replaces 15 cluttered buttons) */}
               <div className="flex items-center gap-1.5">
-                <span className="text-slate-400 text-[11px] font-medium hidden sm:inline">Bölge:</span>
+                <span className="text-slate-500 text-[11px] font-medium hidden sm:inline">Bölge:</span>
                 <select
                   value={activeSubRegion}
                   onChange={(e) => setActiveSubRegion(e.target.value)}
-                  className="bg-slate-950 border border-slate-800 hover:border-amber-500/50 rounded-xl px-2.5 py-1 text-xs text-slate-200 font-medium focus:outline-none focus:border-amber-400 cursor-pointer max-w-[170px] truncate"
+                  className="bg-white border border-slate-200 hover:border-amber-400 rounded-xl px-2.5 py-1 text-xs text-slate-800 font-medium focus:outline-none focus:border-amber-400 cursor-pointer max-w-[170px] truncate shadow-xs"
                 >
                   <option value="all">🌍 Tüm Kıtalar & Bölgeler</option>
                   {availableSubRegions.map((sub) => (
@@ -936,7 +1027,7 @@ export default function App() {
               <select
                 value={seasonFilter}
                 onChange={(e) => setSeasonFilter(e.target.value)}
-                className="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-amber-400"
+                className="bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-xs text-slate-800 focus:outline-none focus:border-amber-400 shadow-xs"
               >
                 <option value="all">🌤️ Tüm Mevsimler</option>
                 {SEASONS.map((s) => (
@@ -950,7 +1041,7 @@ export default function App() {
               <select
                 value={durationFilter}
                 onChange={(e) => setDurationFilter(e.target.value)}
-                className="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-amber-400"
+                className="bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-xs text-slate-800 focus:outline-none focus:border-amber-400 shadow-xs"
               >
                 {DURATIONS.map((d) => (
                   <option key={d.id} value={d.id}>
@@ -965,7 +1056,7 @@ export default function App() {
                 className={`px-2.5 py-1 rounded-xl text-xs font-semibold flex items-center gap-1 border transition ${
                   statusFilter === 'favorite'
                     ? 'bg-rose-500 text-white border-rose-400'
-                    : 'bg-slate-950 text-slate-300 border-slate-800 hover:text-white'
+                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                 }`}
               >
                 <span>★</span>
@@ -985,7 +1076,7 @@ export default function App() {
                     setDurationFilter('all');
                     setSearchQuery('');
                   }}
-                  className="text-[11px] text-amber-400 hover:underline px-1 py-0.5"
+                  className="text-[11px] text-amber-600 hover:text-amber-800 font-medium hover:underline px-1 py-0.5"
                 >
                   Filtreleri Sıfırla
                 </button>
@@ -994,9 +1085,9 @@ export default function App() {
 
             {/* Active Trip Route Quick Bar */}
             {tripPlanIds.length > 0 && (
-              <div className="flex items-center gap-2 bg-rose-500/15 border border-rose-500/30 rounded-xl px-3 py-1 text-xs">
-                <Route className="w-3.5 h-3.5 text-rose-400" />
-                <span className="text-rose-200 font-semibold">
+              <div className="flex items-center gap-2 bg-rose-50 border border-rose-200 rounded-xl px-3 py-1 text-xs">
+                <Route className="w-3.5 h-3.5 text-rose-600" />
+                <span className="text-rose-800 font-semibold">
                   Gezi Rotam ({tripPlanIds.length} Durak):
                 </span>
                 <div className="flex items-center gap-1 overflow-x-auto max-w-xs sm:max-w-md">
@@ -1007,7 +1098,7 @@ export default function App() {
                       <span
                         key={id}
                         onClick={() => handleSelectPlace(pl)}
-                        className="cursor-pointer bg-slate-900/90 text-slate-200 px-2 py-0.5 rounded text-[11px] font-medium whitespace-nowrap hover:text-amber-300"
+                        className="cursor-pointer bg-white text-slate-800 border border-slate-200 px-2 py-0.5 rounded text-[11px] font-medium whitespace-nowrap hover:text-amber-600 shadow-xs"
                       >
                         {i + 1}. {pl.name.split(':')[0].split('&')[0]}
                       </span>
@@ -1016,7 +1107,7 @@ export default function App() {
                 </div>
                 <button
                   onClick={() => setTripPlanIds([])}
-                  className="text-rose-300 hover:text-white ml-1"
+                  className="text-rose-600 hover:text-rose-900 ml-1"
                   title="Rotayı temizle"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -1030,13 +1121,13 @@ export default function App() {
       {/* ================= MAIN WORKSPACE AREA ================= */}
       <main className="flex-1 max-w-[1800px] w-full mx-auto p-2 sm:p-4 lg:p-5 overflow-hidden pb-16 lg:pb-4">
         {/* Mobile View Switcher (Harita vs Liste Tab Bar on < lg) */}
-        <div className="lg:hidden flex items-center justify-center p-1 bg-slate-900 border border-slate-800 rounded-2xl mb-2.5 shadow-sm">
+        <div className="lg:hidden flex items-center justify-center p-1 bg-white border border-slate-200 rounded-2xl mb-2.5 shadow-xs">
           <button
             onClick={() => setMobileTab('map')}
             className={`flex-1 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition ${
               mobileTab === 'map'
-                ? 'bg-amber-500 text-slate-950 shadow'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-amber-500 text-slate-950 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             <MapIcon className="w-3.5 h-3.5" />
@@ -1046,8 +1137,8 @@ export default function App() {
             onClick={() => setMobileTab('list')}
             className={`flex-1 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition ${
               mobileTab === 'list'
-                ? 'bg-amber-500 text-slate-950 shadow'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-amber-500 text-slate-950 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             <LayoutGrid className="w-3.5 h-3.5" />
@@ -1062,10 +1153,10 @@ export default function App() {
             <div
               className={`${
                 mobileTab === 'list' ? 'flex' : 'hidden lg:flex'
-              } lg:col-span-4 xl:col-span-3 bg-slate-900/75 border border-slate-800/90 rounded-2xl flex-col overflow-hidden h-[calc(100vh-210px)] lg:h-full`}
+              } lg:col-span-4 xl:col-span-3 bg-white border border-slate-200/90 rounded-2xl flex-col overflow-hidden h-[calc(100vh-210px)] lg:h-full shadow-xs`}
             >
-              <div className="px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
+              <div className="px-4 py-2.5 border-b border-slate-200/90 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
                   {statusFilter === 'todo'
                     ? '🧭 Keşfedilecekler'
                     : statusFilter === 'visited'
@@ -1075,19 +1166,19 @@ export default function App() {
                     : 'Keşif Noktaları'}{' '}
                   ({filteredPlaces.length})
                 </span>
-                <span className="text-[11px] text-slate-400">
+                <span className="text-[11px] text-slate-500">
                   {statusFilter === 'todo' ? 'Gittikçe listeden düşer' : '✓ Gittim • + Rota'}
                 </span>
               </div>
 
               <div className="flex-1 overflow-y-auto p-2.5 space-y-2">
                 {filteredPlaces.length === 0 ? (
-                  <div className="text-center py-12 px-4 text-slate-400 space-y-3">
-                    <Filter className="w-8 h-8 mx-auto text-slate-600" />
+                  <div className="text-center py-12 px-4 text-slate-500 space-y-3">
+                    <Filter className="w-8 h-8 mx-auto text-slate-400" />
                     {statusFilter === 'visited' ? (
                       <div>
-                        <p className="text-sm font-semibold text-slate-200">Henüz 'Gittim' dediğin bir yer yok.</p>
-                        <p className="text-xs text-slate-400 mt-1">
+                        <p className="text-sm font-semibold text-slate-800">Henüz 'Gittim' dediğin bir yer yok.</p>
+                        <p className="text-xs text-slate-500 mt-1">
                           Haritada veya listede gezdiğin yerlerin yanındaki <strong>'✓ Gittim'</strong> butonuna tıklayarak işaretleyebilirsin. İşaretlediğin yerler ana haritayı ferahlatıp buraya toplanır.
                         </p>
                       </div>
@@ -1106,7 +1197,7 @@ export default function App() {
                         setDurationFilter('all');
                         setSearchQuery('');
                       }}
-                      className="text-xs text-amber-400 underline"
+                      className="text-xs text-amber-600 underline font-semibold"
                     >
                       Tüm filtreleri sıfırla
                     </button>
@@ -1125,12 +1216,12 @@ export default function App() {
                           onClick={() => handleSelectPlace(place)}
                           className={`group rounded-xl p-3 border transition cursor-pointer flex gap-3 items-start ${
                             isSelected
-                              ? 'bg-slate-800/95 border-amber-500/70 shadow-lg'
-                              : 'bg-slate-900/60 border-slate-800/80 hover:bg-slate-800/50 hover:border-slate-700'
+                              ? 'bg-amber-50/80 border-amber-400 shadow-sm'
+                              : 'bg-white border-slate-200/85 hover:bg-slate-50 hover:border-slate-300 shadow-2xs'
                           }`}
                         >
                           {/* Thumbnail */}
-                          <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-slate-800">
+                          <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-slate-100">
                             <img
                               src={place.coverImage}
                               alt={place.name}
@@ -1142,7 +1233,7 @@ export default function App() {
                                   'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=400&q=80';
                               }}
                             />
-                            <span className="absolute bottom-1 right-1 text-xs bg-slate-950/80 rounded px-1">
+                            <span className="absolute bottom-1 right-1 text-xs bg-white/90 text-slate-800 border border-slate-200 rounded px-1 shadow-2xs">
                               {catObj.icon}
                             </span>
                             {tripIdx !== -1 && (
@@ -1159,7 +1250,7 @@ export default function App() {
                                 className={`text-xs sm:text-sm font-bold leading-snug truncate ${
                                   place.visited
                                     ? 'strikethrough-animated text-slate-400'
-                                    : 'text-slate-100 group-hover:text-amber-300'
+                                    : 'text-slate-800 group-hover:text-amber-600'
                                 }`}
                               >
                                 {place.name}
@@ -1172,8 +1263,8 @@ export default function App() {
                                   onClick={(e) => handleToggleTripPlan(place.id, e)}
                                   className={`p-1 rounded-lg transition ${
                                     tripIdx !== -1
-                                      ? 'text-rose-400 bg-rose-500/15'
-                                      : 'text-slate-500 hover:text-rose-300 hover:bg-slate-700/50'
+                                      ? 'text-rose-600 bg-rose-50'
+                                      : 'text-slate-400 hover:text-rose-600 hover:bg-slate-100'
                                   }`}
                                   title="Gezi rotasına ekle/çıkar"
                                 >
@@ -1186,8 +1277,8 @@ export default function App() {
                                   onClick={(e) => handleToggleVisited(place.id, e)}
                                   className={`p-1 rounded-lg transition ${
                                     place.visited
-                                      ? 'text-emerald-400 bg-emerald-500/15 hover:bg-emerald-500/25'
-                                      : 'text-slate-500 hover:text-amber-300 hover:bg-slate-700/50'
+                                      ? 'text-emerald-600 bg-emerald-50 hover:bg-emerald-100'
+                                      : 'text-slate-400 hover:text-emerald-600 hover:bg-slate-100'
                                   }`}
                                   title={
                                     place.visited
@@ -1204,17 +1295,17 @@ export default function App() {
                               </div>
                             </div>
 
-                            <div className="text-[11px] text-slate-400 truncate mt-0.5">
+                            <div className="text-[11px] text-slate-500 truncate mt-0.5">
                               {place.city}
                             </div>
 
-                            <div className="flex items-center gap-1.5 mt-2 text-[10px] text-slate-300 flex-wrap">
-                              <span className="inline-flex items-center gap-1 bg-slate-950/70 px-2 py-0.5 rounded text-amber-300">
-                                <Clock className="w-3 h-3" />
+                            <div className="flex items-center gap-1.5 mt-2 text-[10px] text-slate-600 flex-wrap">
+                              <span className="inline-flex items-center gap-1 bg-slate-100 border border-slate-200/80 px-2 py-0.5 rounded text-slate-700">
+                                <Clock className="w-3 h-3 text-amber-600" />
                                 {place.duration}
                               </span>
                               {place.visited && (
-                                <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold">
+                                <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold border border-emerald-200">
                                   ✓ Gidildi
                                 </span>
                               )}
@@ -1227,13 +1318,13 @@ export default function App() {
                       <div className="pt-2 pb-4 flex flex-col gap-2">
                         <button
                           onClick={() => setVisibleLimit((prev) => prev + 120)}
-                          className="w-full py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 text-xs font-bold transition"
+                          className="w-full py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition shadow-xs"
                         >
                           Daha Fazla Göster (+120) • Kalan: {filteredPlaces.length - visibleLimit}
                         </button>
                         <button
                           onClick={() => setVisibleLimit(filteredPlaces.length)}
-                          className="w-full py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-slate-300 text-[11px] font-medium transition"
+                          className="w-full py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-[11px] font-medium transition"
                         >
                           Tümünü Listele ({filteredPlaces.length} Nokta)
                         </button>
@@ -1291,9 +1382,9 @@ export default function App() {
                 {/* Mobile Floating Button to View List */}
                 <button
                   onClick={() => setMobileTab('list')}
-                  className="lg:hidden absolute bottom-4 left-1/2 -translate-y-0 -translate-x-1/2 z-[400] bg-slate-900/95 text-amber-300 border border-amber-500/40 shadow-2xl px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 backdrop-blur-md active:scale-95 transition"
+                  className="lg:hidden absolute bottom-4 left-1/2 -translate-y-0 -translate-x-1/2 z-[400] bg-white/95 text-slate-800 border border-slate-200 shadow-xl px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 backdrop-blur-md active:scale-95 transition"
                 >
-                  <LayoutGrid className="w-3.5 h-3.5 text-amber-400" />
+                  <LayoutGrid className="w-3.5 h-3.5 text-amber-500" />
                   <span>Listeyi Gör ({filteredPlaces.length} Yer)</span>
                 </button>
               </div>
@@ -1323,8 +1414,8 @@ export default function App() {
 
         {/* Mobile/Tablet Slide-Up Detail Modal (xl:hidden) */}
         {selectedPlace && isMobileDetailOpen && (
-          <div className="xl:hidden fixed inset-0 z-[650] bg-slate-950/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
-            <div className="w-full max-w-2xl h-[92vh] sm:h-[86vh] bg-slate-900 rounded-t-3xl sm:rounded-3xl border border-slate-800 overflow-hidden shadow-2xl flex flex-col animate-slideUp">
+          <div className="xl:hidden fixed inset-0 z-[650] bg-slate-900/40 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn">
+            <div className="w-full max-w-2xl h-[92vh] sm:h-[86vh] bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 overflow-hidden shadow-2xl flex flex-col animate-slideUp">
               <PlaceDetailPanel
                 place={selectedPlace}
                 onClose={() => {
@@ -1347,11 +1438,11 @@ export default function App() {
         )}
 
         {/* Mobile Bottom Quick Navigation Bar (Fixed bottom for phone screens) */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[450] bg-slate-950/95 border-t border-slate-800/90 backdrop-blur-xl px-4 py-2 flex items-center justify-around shadow-2xl">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[450] bg-white/95 border-t border-slate-200 backdrop-blur-xl px-4 py-2 flex items-center justify-around shadow-2xl">
           <button
             onClick={() => setMobileTab('map')}
             className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${
-              mobileTab === 'map' ? 'text-amber-400' : 'text-slate-400 hover:text-slate-200'
+              mobileTab === 'map' ? 'text-amber-600' : 'text-slate-500 hover:text-slate-800'
             }`}
           >
             <MapIcon className="w-4 h-4" />
@@ -1360,7 +1451,7 @@ export default function App() {
           <button
             onClick={() => setMobileTab('list')}
             className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${
-              mobileTab === 'list' ? 'text-amber-400' : 'text-slate-400 hover:text-slate-200'
+              mobileTab === 'list' ? 'text-amber-600' : 'text-slate-500 hover:text-slate-800'
             }`}
           >
             <LayoutGrid className="w-4 h-4" />
@@ -1368,14 +1459,14 @@ export default function App() {
           </button>
           <button
             onClick={() => setIsToolsDropdownOpen(true)}
-            className="flex flex-col items-center gap-1 text-[10px] font-bold text-slate-400 hover:text-amber-300 transition"
+            className="flex flex-col items-center gap-1 text-[10px] font-bold text-slate-500 hover:text-amber-600 transition"
           >
             <Sparkles className="w-4 h-4" />
             <span>Araçlar</span>
           </button>
           <button
             onClick={() => setIsPassportOpen(true)}
-            className="flex flex-col items-center gap-1 text-[10px] font-bold text-slate-400 hover:text-amber-300 transition"
+            className="flex flex-col items-center gap-1 text-[10px] font-bold text-slate-500 hover:text-amber-600 transition"
           >
             <Award className="w-4 h-4" />
             <span>Pasaport</span>
@@ -1385,7 +1476,7 @@ export default function App() {
               setEditingPlace(null);
               setIsFormOpen(true);
             }}
-            className="flex flex-col items-center gap-1 text-[10px] font-bold text-amber-400 active:scale-90 transition"
+            className="flex flex-col items-center gap-1 text-[10px] font-bold text-amber-600 active:scale-90 transition"
           >
             <Plus className="w-4 h-4" />
             <span>Ekle</span>
@@ -1396,25 +1487,25 @@ export default function App() {
         {viewMode === 'blog' && (
           <div className="space-y-6 pb-12">
             {/* Blog Hero Banner */}
-            <div className="bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/40 border border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-100/60 border border-amber-200/90 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs">
               <div className="space-y-2 max-w-2xl">
-                <div className="inline-flex items-center gap-2 text-xs font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">
-                  <BookOpen className="w-3.5 h-3.5" />
+                <div className="inline-flex items-center gap-2 text-xs font-semibold text-amber-900 bg-amber-100 border border-amber-300 px-3 py-1 rounded-full shadow-2xs">
+                  <BookOpen className="w-3.5 h-3.5 text-amber-700" />
                   <span>Kişisel Gezi Rehberi & Seyahat Blogu ({filteredPlaces.length} Makale)</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
+                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900">
                   Ankara’dan Dünyaya Keşif Notlarım
                 </h2>
-                <p className="text-sm text-slate-300 leading-relaxed">
+                <p className="text-sm text-slate-600 leading-relaxed">
                   Her durağın ne kadar sürede gezileceği, içeride seni nelerin beklediği, hangi mevsimde gidileceği, yöresel lezzetleri ve kendi anıların tek bir sayfada.
                 </p>
               </div>
 
               <button
                 onClick={() => setViewMode('split')}
-                className="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition shrink-0"
+                className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition shrink-0 shadow-xs"
               >
-                <MapIcon className="w-4 h-4" />
+                <MapIcon className="w-4 h-4 text-amber-600" />
                 <span>Harita Görünümüne Dön</span>
               </button>
             </div>
@@ -1430,10 +1521,10 @@ export default function App() {
                 return (
                   <article
                     key={place.id}
-                    className="bg-slate-900/90 border border-slate-800/90 rounded-2xl overflow-hidden shadow-xl flex flex-col hover:border-slate-700 transition"
+                    className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs hover:shadow-md flex flex-col hover:border-slate-300 transition"
                   >
                     {/* Card Image */}
-                    <div className="relative h-56 overflow-hidden bg-slate-800">
+                    <div className="relative h-56 overflow-hidden bg-slate-100">
                       <img
                         src={place.coverImage}
                         alt={place.name}
@@ -1443,7 +1534,7 @@ export default function App() {
                             'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=80';
                         }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
 
                       <div className="absolute top-3 left-3 flex items-center gap-2">
                         <span
@@ -1451,17 +1542,17 @@ export default function App() {
                         >
                           {catObj.icon} {catObj.label}
                         </span>
-                        <span className="px-2.5 py-1 rounded-full text-xs bg-slate-950/80 text-slate-200 border border-slate-700">
+                        <span className="px-2.5 py-1 rounded-full text-xs bg-white/90 text-slate-800 border border-slate-200 font-medium shadow-2xs backdrop-blur-xs">
                           {regObj.flag} {place.city}
                         </span>
                       </div>
 
                       <button
                         onClick={() => handleToggleVisited(place.id)}
-                        className={`absolute top-3 right-3 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg transition ${
+                        className={`absolute top-3 right-3 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md transition ${
                           place.visited
                             ? 'bg-emerald-500 text-slate-950'
-                            : 'bg-slate-900/85 text-slate-200 hover:bg-amber-500 hover:text-slate-950'
+                            : 'bg-white/90 text-slate-800 hover:bg-amber-500 hover:text-slate-950'
                         }`}
                       >
                         {place.visited ? (
@@ -1479,7 +1570,7 @@ export default function App() {
 
                       <div className="absolute bottom-3 left-4 right-4">
                         <h3
-                          className={`text-xl font-serif font-bold text-white ${
+                          className={`text-xl font-serif font-bold text-white drop-shadow-md ${
                             place.visited ? 'strikethrough-animated' : ''
                           }`}
                         >
@@ -1493,12 +1584,12 @@ export default function App() {
                       <div className="space-y-4">
                         {/* Quick Meta */}
                         <div className="flex flex-wrap items-center gap-2 text-xs">
-                          <span className="inline-flex items-center gap-1.5 bg-amber-500/15 text-amber-300 border border-amber-500/30 px-2.5 py-1 rounded-lg font-semibold">
-                            <Clock className="w-3.5 h-3.5" />
+                          <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-1 rounded-lg font-semibold">
+                            <Clock className="w-3.5 h-3.5 text-amber-600" />
                             Süre: {place.duration}
                           </span>
-                          <span className="inline-flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-lg font-medium">
-                            <Calendar className="w-3.5 h-3.5" />
+                          <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-900 border border-emerald-200 px-2.5 py-1 rounded-lg font-medium">
+                            <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                             {(place.seasons || [])
                               .map((s) => SEASONS.find((x) => x.id === s)?.label)
                               .filter(Boolean)
@@ -1508,29 +1599,29 @@ export default function App() {
 
                         {/* What Awaits */}
                         <div>
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1">
                             ✨ İçeride Seni Neler Bekliyor?
                           </h4>
-                          <p className="text-sm text-slate-300 leading-relaxed">
+                          <p className="text-sm text-slate-600 leading-relaxed">
                             {place.whatAwaits}
                           </p>
                         </div>
 
                         {/* Local Specialties */}
-                        <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-3">
-                          <h4 className="text-xs font-bold text-orange-300 flex items-center gap-1.5 mb-1">
-                            <Utensils className="w-3.5 h-3.5" />
+                        <div className="bg-orange-50/70 border border-orange-200/80 rounded-xl p-3">
+                          <h4 className="text-xs font-bold text-orange-900 flex items-center gap-1.5 mb-1">
+                            <Utensils className="w-3.5 h-3.5 text-orange-600" />
                             <span>Yöresel Lezzet & Yakın Duraklar</span>
                           </h4>
-                          <p className="text-xs text-slate-300 leading-relaxed">
+                          <p className="text-xs text-slate-700 leading-relaxed">
                             {place.localSpecialties}
                           </p>
                         </div>
 
                         {/* Blog Story */}
                         {place.blogArticle && (
-                          <div className="border-l-2 border-amber-500/50 pl-3.5 py-1">
-                            <p className="text-xs sm:text-sm text-slate-300 italic leading-relaxed line-clamp-4">
+                          <div className="border-l-2 border-amber-400 pl-3.5 py-1 bg-amber-50/40 rounded-r-lg">
+                            <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed line-clamp-4">
                               "{place.blogArticle}"
                             </p>
                           </div>
@@ -1538,8 +1629,8 @@ export default function App() {
 
                         {/* Personal Journal Note */}
                         {place.userNotes && (
-                          <div className="bg-slate-800/70 rounded-xl p-3 text-xs text-amber-200">
-                            <strong className="block text-amber-400 mb-0.5">
+                          <div className="bg-amber-50/80 border border-amber-200/80 rounded-xl p-3 text-xs text-amber-950">
+                            <strong className="block text-amber-900 mb-0.5">
                               📝 Benim Gezi Notum:
                             </strong>
                             {place.userNotes}
@@ -1547,13 +1638,13 @@ export default function App() {
                         )}
                       </div>
 
-                      <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                         <button
                           onClick={() => {
                             handleSelectPlace(place);
                             setViewMode('split');
                           }}
-                          className="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1"
+                          className="text-xs font-bold text-amber-700 hover:text-amber-800 flex items-center gap-1"
                         >
                           <span>Haritada Göster & Tam Rehberi Oku</span>
                           <ChevronRight className="w-4 h-4" />
@@ -1564,7 +1655,7 @@ export default function App() {
                             setEditingPlace(place);
                             setIsFormOpen(true);
                           }}
-                          className="text-xs text-slate-400 hover:text-white"
+                          className="text-xs text-slate-400 hover:text-slate-700"
                         >
                           Düzenle
                         </button>
@@ -1578,13 +1669,13 @@ export default function App() {
               <div className="flex justify-center gap-3 pt-4">
                 <button
                   onClick={() => setVisibleLimit((prev) => prev + 120)}
-                  className="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold shadow-lg transition"
+                  className="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold shadow-md transition"
                 >
                   Daha Fazla Makale Göster (+120) • Kalan: {filteredPlaces.length - visibleLimit}
                 </button>
                 <button
                   onClick={() => setVisibleLimit(filteredPlaces.length)}
-                  className="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition"
+                  className="px-5 py-3 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold border border-slate-200 shadow-xs transition"
                 >
                   Tümünü Aç ({filteredPlaces.length})
                 </button>
