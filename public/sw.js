@@ -2,7 +2,7 @@
 // Service Worker for Keşif Atlasım - Robust Offline PWA Support
 // Automatically precaches all compiled JS chunks, CSS, fonts, and data for seamless offline usage.
 
-const CACHE_NAME = 'kesif-atlasim-build-mw7o5jjy';
+const CACHE_NAME = 'kesif-atlasim-build-mw7olel9';
 
 // Precache list - dynamically populated with all build chunks by inject-sw-assets.mjs
 const PRECACHE_URLS = [
@@ -12,25 +12,25 @@ const PRECACHE_URLS = [
   "./manifest.json",
   "./data/places.json",
   "./data/photos.json",
-  "./assets/BorderCrossingsModal-D1NVJcXr.js",
-  "./assets/CloudSyncModal-CglMXPyT.js",
-  "./assets/CountryIntelModal-Cabz46hg.js",
-  "./assets/CurrencyBudgetModal-NlfjDVH_.js",
-  "./assets/EmergencyConsulateModal-BhQ_tacL.js",
+  "./assets/BorderCrossingsModal-Bs9EG6BY.js",
+  "./assets/CloudSyncModal-B6cEgHDR.js",
+  "./assets/CountryIntelModal-CN-M5jeK.js",
+  "./assets/CurrencyBudgetModal-CZVXCc0X.js",
+  "./assets/EmergencyConsulateModal-Do8Yh9ZJ.js",
   "./assets/icons-vendor-dXrqPX5M.js",
   "./assets/index-C90xQoP3.css",
-  "./assets/index-D-5avNwu.js",
-  "./assets/ItineraryModal-CaBbKsLr.js",
+  "./assets/index-DA1Mz5fq.js",
+  "./assets/ItineraryModal-BnMWhsv1.js",
   "./assets/leaflet-vendor-jaox9G8N.js",
-  "./assets/NearbyRadarModal-1nkC0Nei.js",
-  "./assets/PackingChecklistModal-bpKYFjJm.js",
-  "./assets/PassportModal-D-PnmxXX.js",
-  "./assets/PlaceFormModal-Dtk2TrFE.js",
-  "./assets/RouteSimulatorModal-D5UfPt--.js",
-  "./assets/ScratchMapModal-DMteUCmA.js",
-  "./assets/SearchableLocationModal-ZxpoJXDt.js",
-  "./assets/SeasonalCalendarModal-COaEAbsd.js",
-  "./assets/TravelSoundtrackModal-EmY9PbfN.js"
+  "./assets/NearbyRadarModal-Bt-wu78w.js",
+  "./assets/PackingChecklistModal-BlMgj3tm.js",
+  "./assets/PassportModal-BHPOrs3v.js",
+  "./assets/PlaceFormModal-CO4-7Q1p.js",
+  "./assets/RouteSimulatorModal-CyG78WzV.js",
+  "./assets/ScratchMapModal-hAYUj6Ap.js",
+  "./assets/SearchableLocationModal-D_2U0M0a.js",
+  "./assets/SeasonalCalendarModal-CtMw3Z1l.js",
+  "./assets/TravelSoundtrackModal-CyOH_Cu2.js"
 ];
 
 self.addEventListener('install', (event) => {
@@ -77,6 +77,11 @@ self.addEventListener('fetch', (event) => {
 
   // Only handle GET requests with HTTP/HTTPS schemes
   if (req.method !== 'GET' || !url.protocol.startsWith('http')) {
+    return;
+  }
+
+  // 0. Freshness checks (?_t=...) always go to the network, never to the cache
+  if (url.searchParams.has('_t')) {
     return;
   }
 

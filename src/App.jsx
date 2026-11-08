@@ -53,6 +53,16 @@ import {
 } from 'lucide-react';
 
 const USER_OVERRIDES_KEY = 'kesif_atlasim_user_overrides_v1';
+// User photos are kept under their own key so a full photo store never blocks saving visits and notes
+const USER_PHOTOS_KEY = 'kesif_atlasim_user_photos_v1';
+
+function readStoredPhotos() {
+  try {
+    return JSON.parse(localStorage.getItem(USER_PHOTOS_KEY) || '{}');
+  } catch (e) {
+    return {};
+  }
+}
 
 export default function App() {
   const [places, setPlaces] = useState([]);
@@ -65,6 +75,7 @@ export default function App() {
       const rawOverrides = localStorage.getItem(USER_OVERRIDES_KEY);
       if (rawOverrides) {
         const overrides = JSON.parse(rawOverrides);
+        const storedPhotos = readStoredPhotos();
         merged = freshRaw.map((p) => {
           const ov = overrides[p.id];
           if (!ov) return p;
@@ -75,7 +86,7 @@ export default function App() {
             favorite: ov.favorite !== undefined ? ov.favorite : p.favorite,
             userRating: ov.userRating !== undefined ? ov.userRating : (p.userRating || 0),
             userNotes: ov.userNotes !== undefined ? ov.userNotes : (p.userNotes || ''),
-            userPhotos: ov.userPhotos !== undefined ? ov.userPhotos : (p.userPhotos || []),
+            userPhotos: storedPhotos[p.id] || ov.userPhotos || p.userPhotos || [],
             checklist: ov.checklist !== undefined ? ov.checklist : (p.checklist || [])
           };
         });
@@ -119,6 +130,7 @@ export default function App() {
           const rawOverrides = localStorage.getItem(USER_OVERRIDES_KEY);
           if (rawOverrides) {
             const overrides = JSON.parse(rawOverrides);
+            const storedPhotos = readStoredPhotos();
             merged = rawPlaces.map((p) => {
               const ov = overrides[p.id];
               if (!ov) return p;
@@ -129,7 +141,7 @@ export default function App() {
                 favorite: ov.favorite !== undefined ? ov.favorite : p.favorite,
                 userRating: ov.userRating !== undefined ? ov.userRating : (p.userRating || 0),
                 userNotes: ov.userNotes !== undefined ? ov.userNotes : (p.userNotes || ''),
-                userPhotos: ov.userPhotos !== undefined ? ov.userPhotos : (p.userPhotos || []),
+                userPhotos: storedPhotos[p.id] || ov.userPhotos || p.userPhotos || [],
                 checklist: ov.checklist !== undefined ? ov.checklist : (p.checklist || [])
               };
             });
@@ -148,11 +160,11 @@ export default function App() {
         setPlaces(merged);
         setIsLoadingPlaces(false);
 
-        // Background Freshness Check: Detect if fresh network data has new/updated count
+        // Background Freshness Check: Detect if fresh network data differs (added, removed or edited places)
         fetch(`${cleanBase}data/places.json?_t=${Date.now()}`, { cache: 'no-store' })
           .then((r) => (r.ok ? r.json() : null))
           .then((freshRaw) => {
-            if (freshRaw && Array.isArray(freshRaw) && freshRaw.length !== rawPlaces.length) {
+            if (freshRaw && Array.isArray(freshRaw) && JSON.stringify(freshRaw) !== JSON.stringify(rawPlaces)) {
               setUpdateNotification({
                 oldLen: rawPlaces.length,
                 newLen: freshRaw.length,
@@ -251,6 +263,7 @@ export default function App() {
   const [pickedCoords, setPickedCoords] = useState(null);
 
   const fileInputRef = useRef(null);
+  const storageWarnedRef = useRef(false);
 
   // Save user overrides to LocalStorage with quota overflow detection
   useEffect(() => {
@@ -268,17 +281,26 @@ export default function App() {
             favorite: p.favorite,
             userNotes: p.userNotes,
             userRating: p.userRating,
-            userPhotos: p.userPhotos,
             checklist: p.checklist,
             isCustom: p.isCustom ? p : undefined
           };
         }
       });
+      const photos = {};
+      places.forEach((p) => {
+        if (p.userPhotos && p.userPhotos.length > 0) photos[p.id] = p.userPhotos;
+      });
+      // Visits and notes are small: save them first, before the photos, so they are never lost when photos fill the storage
       localStorage.setItem(USER_OVERRIDES_KEY, JSON.stringify(overrides));
+      localStorage.setItem(USER_PHOTOS_KEY, JSON.stringify(photos));
+      storageWarnedRef.current = false;
     } catch (e) {
       if (e.name === 'QuotaExceededError' || e.code === 22) {
         console.error('Tarayıcı depolama alanı doldu:', e);
-        alert('⚠️ Tarayıcı yerel hafızası (~5 MB) doldu! Yeni eklediğiniz fotoğraflar veya notlar kaydedilemedi. Lütfen bazı fotoğrafları kaldırın veya Bulut Eşleme (Supabase) kullanın.');
+        if (!storageWarnedRef.current) {
+          storageWarnedRef.current = true;
+          alert('⚠️ Tarayıcı hafızası (~5 MB) doldu! Gittiğin yerler ve notların kaydedildi, ama son eklediğin fotoğraf kaydedilmedi; sayfa yenilenince kaybolur. Bazı fotoğrafları sil ya da Bulut Eşleme (Supabase) kullan.');
+        }
       } else {
         console.error('Overrides save error:', e);
       }
@@ -2278,7 +2300,7 @@ export default function App() {
         <div className="fixed bottom-16 lg:bottom-6 left-1/2 -translate-x-1/2 z-[1100] bg-slate-900/95 text-white border border-amber-400 px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-md animate-bounce">
           <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
           <span className="text-xs font-semibold">
-            Yeni yerler güncellendi ({updateNotification.newLen} yer)
+            Yer verileri güncellendi ({updateNotification.newLen} yer)
           </span>
           <button
             onClick={() => handleApplyUpdate(updateNotification.freshRaw)}

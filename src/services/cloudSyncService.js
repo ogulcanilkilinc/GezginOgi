@@ -285,7 +285,8 @@ export async function uploadPhotoToSupabase(dataUrl, placeId, config) {
     const blobRes = await fetch(dataUrl);
     const blob = await blobRes.blob();
 
-    const fileName = `${placeId}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}.jpg`;
+    // Random UUID: the bucket is public, so file names must be impossible to guess
+    const fileName = `${placeId}_${crypto.randomUUID()}.jpg`;
     const res = await fetch(`${baseUrl}/storage/v1/object/user_photos/${fileName}`, {
       method: 'POST',
       headers: {
