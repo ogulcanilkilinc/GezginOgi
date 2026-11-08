@@ -2,7 +2,7 @@
 // Service Worker for GezginOgi - Robust Offline PWA Support
 // Automatically precaches all compiled JS chunks, CSS, fonts, and data for seamless offline usage.
 
-const CACHE_NAME = 'gezginogi-build-mw7w0ag1';
+const CACHE_NAME = 'gezginogi-build-mw7y6tr4';
 
 // Precache list - dynamically populated with all build chunks by inject-sw-assets.mjs
 const PRECACHE_URLS = [
@@ -12,25 +12,25 @@ const PRECACHE_URLS = [
   "./manifest.json",
   "./data/places.json",
   "./data/photos.json",
-  "./assets/BorderCrossingsModal-BrZ31kK4.js",
-  "./assets/CloudSyncModal-Bb3qslZy.js",
-  "./assets/CountryIntelModal-CP0a7VX8.js",
-  "./assets/CurrencyBudgetModal-BMmErji2.js",
-  "./assets/EmergencyConsulateModal-CGg4ITvU.js",
+  "./assets/BorderCrossingsModal-CG-EulXs.js",
+  "./assets/CloudSyncModal-BgJHdrSt.js",
+  "./assets/CountryIntelModal-C4f1_aER.js",
+  "./assets/CurrencyBudgetModal-aeKPgA46.js",
+  "./assets/EmergencyConsulateModal-DcN6SmQo.js",
   "./assets/icons-vendor-DrESObBc.js",
-  "./assets/index-BB5oYbjv.js",
   "./assets/index-BvE17Q8o.css",
-  "./assets/ItineraryModal-tzWuxro7.js",
+  "./assets/index-Cjyv6RbD.js",
+  "./assets/ItineraryModal-DBy0n1WV.js",
   "./assets/leaflet-vendor-Dy36dnF4.js",
-  "./assets/NearbyRadarModal-CvFHysrV.js",
-  "./assets/PackingChecklistModal-DaWsbhoO.js",
-  "./assets/PassportModal-z1BGLwgr.js",
-  "./assets/PlaceFormModal-C0dk_YII.js",
-  "./assets/RouteSimulatorModal-CEmYhuDZ.js",
-  "./assets/ScratchMapModal-C08OiGqa.js",
-  "./assets/SearchableLocationModal-DYx-qQNw.js",
-  "./assets/SeasonalCalendarModal-BVG1x5SM.js",
-  "./assets/TravelSoundtrackModal-Bkb1e4fM.js"
+  "./assets/NearbyRadarModal-CEN1JA9d.js",
+  "./assets/PackingChecklistModal-CFwdSHIP.js",
+  "./assets/PassportModal-Uyty82dq.js",
+  "./assets/PlaceFormModal-LQI0kjwM.js",
+  "./assets/RouteSimulatorModal-DukkTOL8.js",
+  "./assets/ScratchMapModal-PqKxKxgi.js",
+  "./assets/SearchableLocationModal-BtCY41Gr.js",
+  "./assets/SeasonalCalendarModal-u1EZs2SO.js",
+  "./assets/TravelSoundtrackModal-oQvosMGH.js"
 ];
 
 self.addEventListener('install', (event) => {

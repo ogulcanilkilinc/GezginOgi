@@ -11927,11 +11927,11 @@
   },
   {
     "id": "tr-den-2",
-    "name": "Denizli — Salda Gölü (Mars Jeolojisi) ve Kaklık Mağarası (\"Yeraltı Pamukkalesi\")",
+    "name": "Burdur & Denizli — Salda Gölü (Mars Jeolojisi) ve Kaklık Mağarası (\"Yeraltı Pamukkalesi\")",
     "region": "turkiye",
     "subRegion": "Anadolu",
     "country": "Türkiye",
-    "city": "Denizli",
+    "city": "Yeşilova (Burdur) & Kaklık (Denizli)",
     "category": "doga",
     "coords": [
       37.55,
@@ -16353,8 +16353,8 @@
     "city": "Gümüşhane",
     "category": "gizli",
     "coords": [
-      40.6667,
-      39.8833
+      40.672,
+      39.7992
     ],
     "duration": "5 Saat",
     "durationCategory": "tam",
@@ -23344,14 +23344,14 @@
       "summaryText": "Ankara’dan ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "FrDr",
@@ -23834,8 +23834,8 @@
     "region": "dunya",
     "category": "doga",
     "coords": [
-      45.9763,
-      7.6586
+      46.0212,
+      7.7493
     ],
     "description": "Dünyanın en ikonik piramidal dağ zirvesi (Toblerone çikolatasının ilhamı); arabasız ekolojik dağ kasabası Zermatt ve 3089 metredeki Gornergrat dişli tren hattı.",
     "whatAwaits": "J.R.R. Tolkien’in Yüzüklerin Efendisi’ndeki \"Ayrıkvadi (Rivendell)\" tasarımına ilham veren, 300 metrelik dik kayalıklardan **72 şelalenin** döküldüğü buzul vadisi **Lauterbrunnen**! Tepedeki araçsız dağ köyleri **Wengen ve Mürren**, Avrupa’nın zirvesi **Jungfraujoch** ve Toblerone çikolatasının üzerindeki piramit dağ **Matterhorn (Zermatt)**!",
@@ -24849,14 +24849,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Asitjain",
@@ -25494,14 +25494,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -25824,14 +25824,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize / Kapıda Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Etiyopya için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "90 gün",
+      "notes": "Online e-vize veya kapıda vize. e-Vize ile gelenler Addis Ababa Bole Havalimanı’ndan girmeli.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -25953,14 +25953,14 @@
       "summaryText": "Ankara’dan ~12 - 17 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Kapıda / KAZA Univisa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
-      "isVisaFree": false,
-      "duration": "30 gün",
-      "notes": "Victoria Şelaleleri için ortak KAZA Univisa.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vizesiz",
+      "label": "Vizesiz (90 Gün)",
+      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
+      "icon": "✈️",
+      "isVisaFree": true,
+      "duration": "90 gün",
+      "notes": "Zambiya turistik ziyaretlerde vize istemiyor. Victoria Şelaleleri’nde Zimbabve tarafına geçeceksen Zimbabve vizesi veya KAZA Univisa gerekir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -26019,14 +26019,14 @@
       "summaryText": "Ankara’dan ~12 - 17 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize / Kapıda Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Namibya için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "90 gün",
+      "notes": "Online e-vize veya havalimanında kapıda vize alınabilir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -26605,14 +26605,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize + Günlük SDF",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Bhutan için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "90 gün",
+      "notes": "Online e-vize ile girilir; ayrıca kişi başı günlük Sürdürülebilir Kalkınma Ücreti (SDF) ödenir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -26667,14 +26667,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize (28 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Myanmar için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "28 gün",
+      "notes": "Online e-vize; Yangon, Nay Pyi Taw veya Mandalay havalimanlarından girilir. Güvenlik durumunu Dışişleri’nden kontrol et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -26869,14 +26869,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -27261,14 +27261,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "لا روسا",
@@ -27388,14 +27388,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Küba Turist Kartı",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize / Turist Kartı",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "90 gün",
-      "notes": "Turist kartı alınarak girilir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Online e-vize (turist kartı) ile girilir; ücretli olarak 90 güne uzatılabilir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "RenaatPeeters",
@@ -28143,14 +28143,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -28658,13 +28658,13 @@
     },
     "visaStatus": {
       "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
+      "label": "Kapıda Ücretsiz Vize (1 Ay)",
       "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
       "icon": "✈️",
       "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Havalimanında 90 gün vize muafiyeti.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "1 ay",
+      "notes": "Beyrut Havalimanı’nda ücretsiz giriş vizesi verilir, 1 ay daha uzatılabilir. Pasaportta İsrail damgası olmamalı.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Orient at de.wikipedia",
@@ -30687,14 +30687,14 @@
       "summaryText": "Ankara’dan ~26 - 32 sa (2-3 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
-      "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Vanuatu için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vizesiz",
+      "label": "Vizesiz (120 Gün)",
+      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
+      "icon": "✈️",
+      "isVisaFree": true,
+      "duration": "120 gün",
+      "notes": "Bordo pasaportla turistik ziyaretlerde 120 güne kadar vize gerekmez.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44102,14 +44102,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44167,14 +44167,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44232,14 +44232,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44291,14 +44291,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44356,14 +44356,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44415,14 +44415,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Florstein (Telegram:WikiPhoto.Space)",
@@ -44486,14 +44486,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44551,14 +44551,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44616,14 +44616,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44675,14 +44675,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Bahnfrend",
@@ -44740,14 +44740,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44805,14 +44805,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44864,14 +44864,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Florstein (Telegram:WikiPhoto.Space)",
@@ -44929,14 +44929,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -44994,14 +44994,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -45053,14 +45053,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -45118,14 +45118,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -45183,14 +45183,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -45248,14 +45248,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -45307,14 +45307,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -45366,14 +45366,14 @@
       "summaryText": "Ankara’dan 10 sa 39 dk araçla · ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Sergei Kazantsev",
@@ -45437,14 +45437,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -45502,14 +45502,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -46370,14 +46370,14 @@
       "summaryText": "Ankara’dan ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -46429,14 +46429,14 @@
       "summaryText": "Ankara’dan ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -46488,14 +46488,14 @@
       "summaryText": "Ankara’dan 16 sa 57 dk araçla · ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -46553,14 +46553,14 @@
       "summaryText": "Ankara’dan 16 sa 59 dk araçla · ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -46615,14 +46615,14 @@
       "summaryText": "Ankara’dan 16 sa 54 dk araçla · ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -46674,14 +46674,14 @@
       "summaryText": "Ankara’dan ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "A81t",
@@ -51986,14 +51986,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -52051,14 +52051,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -52116,14 +52116,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -52181,14 +52181,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -52246,14 +52246,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -52305,14 +52305,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -52370,14 +52370,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -52435,14 +52435,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -52500,14 +52500,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -52559,14 +52559,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Vyacheslav Argenberg",
@@ -54786,14 +54786,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -54851,14 +54851,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -54916,14 +54916,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -54975,14 +54975,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Yosef Ben Melamed",
@@ -55043,14 +55043,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Thelmadatter",
@@ -55108,14 +55108,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Microstar",
@@ -62469,14 +62469,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "Kapıda Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Bangladeş için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "30 gün",
+      "notes": "Havalimanında kapıda vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Touhid biplob",
@@ -62989,14 +62989,14 @@
       "summaryText": "Ankara’dan ~2.5 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Vizesiz (14G) / e-Vize",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
-      "isVisaFree": false,
-      "duration": "14 gün",
-      "notes": "14 gün vizesiz / e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vizesiz",
+      "label": "Vizesiz (30 Gün)",
+      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
+      "icon": "✈️",
+      "isVisaFree": true,
+      "duration": "30 gün",
+      "notes": "Türkiye–Umman karşılıklı vize muafiyeti kapsamında turistik ziyaretlerde 30 güne kadar vize gerekmez.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -63119,14 +63119,14 @@
       "summaryText": "Ankara’dan ~2.5 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize / Kapıda Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Kuveyt için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "3 ay",
+      "notes": "Online e-vize veya havalimanında kapıda vize alınabilir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -63184,14 +63184,14 @@
       "summaryText": "Ankara’dan ~2.5 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize / Kapıda Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Bahreyn için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "14 gün",
+      "notes": "Online e-vize veya kapıda vize alınabilir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -63698,14 +63698,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "Kapıda Vize · ⚠️ Güvenlik Uyarısı",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Sudan için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "1 ay",
+      "notes": "Türkiye’den doğrudan gelişte kapıda vize verilir. ⚠️ İç çatışma nedeniyle Dışişleri seyahat uyarısı mevcut; zorunlu olmadıkça gidilmemeli.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "LassiHU",
@@ -63958,14 +63958,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "Kapıda Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Senegal için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "1 ay",
+      "notes": "Havalimanında kapıda vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -64082,14 +64082,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Nijerya için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "30 gün",
+      "notes": "Online e-vize ile girilir. Güvenlik durumunu Dışişleri’nden kontrol et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Fawaz.tairou",
@@ -64206,14 +64206,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "Değişken",
-      "notes": "Kamerun için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Online e-vize ile girilir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -64265,14 +64265,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
-      "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Angola için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vizesiz",
+      "label": "Vizesiz (30 Gün)",
+      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
+      "icon": "✈️",
+      "isVisaFree": true,
+      "duration": "30 gün",
+      "notes": "Angola turistik ziyaretlerde Türk vatandaşlarına 30 güne kadar vize muafiyeti tanıyor.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "jlrsousa",
@@ -64336,14 +64336,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize / Kapıda Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Mozambik için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "30 gün",
+      "notes": "Online e-vize veya kapıda vize alınabilir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -64401,14 +64401,14 @@
       "summaryText": "Ankara’dan ~12 - 17 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize / Kapıda Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Namibya için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "90 gün",
+      "notes": "Online e-vize veya havalimanında kapıda vize alınabilir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -64655,14 +64655,14 @@
       "summaryText": "Ankara’dan ~12 - 17 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Benin için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "30 gün",
+      "notes": "Resmi portaldan online e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -64720,14 +64720,14 @@
       "summaryText": "Ankara’dan ~12 - 17 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize (90 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Cibuti için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "90 gün",
+      "notes": "Online e-vize ile girilir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -64779,14 +64779,14 @@
       "summaryText": "Ankara’dan ~12 - 17 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize · ⚠️ Güvenlik Uyarısı",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Kongo için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "7 gün",
+      "notes": "Demokratik Kongo için online e-vize. ⚠️ Doğu bölgelerde (Virunga dahil) silahlı çatışma riski; Dışişleri uyarılarını kontrol et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Tresormak",
@@ -64974,14 +64974,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
-      "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Belize için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vizesiz",
+      "label": "Vizesiz (90 Gün)",
+      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
+      "icon": "✈️",
+      "isVisaFree": true,
+      "duration": "90 gün",
+      "notes": "Bordo pasaportla turistik ziyaretlerde 90 güne kadar vize gerekmez.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -65293,14 +65293,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
-      "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Jamaika için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vizesiz",
+      "label": "Vizesiz (90 Gün)",
+      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
+      "icon": "✈️",
+      "isVisaFree": true,
+      "duration": "90 gün",
+      "notes": "Bordo pasaportla turistik ziyaretlerde 90 güne kadar vize gerekmez.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -65553,14 +65553,14 @@
       "summaryText": "Ankara’dan ~18 - 24 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "Değişken",
-      "notes": "Guyana için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Online e-vize ile girilir.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -65742,14 +65742,14 @@
       "summaryText": "Ankara’dan ~26 - 32 sa (2-3 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
-      "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Vanuatu için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vizesiz",
+      "label": "Vizesiz (120 Gün)",
+      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
+      "icon": "✈️",
+      "isVisaFree": true,
+      "duration": "120 gün",
+      "notes": "Bordo pasaportla turistik ziyaretlerde 120 güne kadar vize gerekmez.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Simon_sees from Australia",
@@ -65807,14 +65807,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "Kapıda Giriş İzni",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Samoa & Tonga için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "31-90 gün",
+      "notes": "Samoa’da kapıda giriş izni (90 gün), Tonga’da kapıda vize (31 gün).",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Stephen Glauser",
@@ -65872,14 +65872,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize (60 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Papua Yeni Gine & Solomon Adaları için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "60 gün",
+      "notes": "Papua Yeni Gine için online e-vize. Solomon Adaları’nın giriş şartlarını ayrıca kontrol et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "SOUTHPASIFIC",
@@ -66593,14 +66593,14 @@
       "summaryText": "Ankara’dan ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "PrcanjaninPrcanjanin (talk)",
@@ -66658,14 +66658,14 @@
       "summaryText": "Ankara’dan ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -66723,14 +66723,14 @@
       "summaryText": "Ankara’dan ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -66788,14 +66788,14 @@
       "summaryText": "Ankara’dan ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -66853,14 +66853,14 @@
       "summaryText": "Ankara’dan 16 sa 57 dk araçla · ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -66912,14 +66912,14 @@
       "summaryText": "Ankara’dan 16 sa 39 dk araçla · ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Diego Delso",
@@ -66977,14 +66977,14 @@
       "summaryText": "Ankara’dan 16 sa 33 dk araçla · ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Andrey from Russia",
@@ -68343,14 +68343,14 @@
       "summaryText": "Ankara’dan ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -68397,14 +68397,14 @@
       "summaryText": "Ankara’dan 16 sa 49 dk araçla · ~1.5 - 2.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vize_gerekli",
+      "label": "Vize Şart (1 Kasım 2026’dan beri)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
+      "isVisaFree": false,
+      "duration": "Değişken",
+      "notes": "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Diego Delso",
@@ -69361,14 +69361,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "City Foodsters",
@@ -71360,14 +71360,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Malupasic",
@@ -71424,14 +71424,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz / Karşılıklı Muafiyet",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "30-90 gün",
-      "notes": "Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "kapi_evize",
+      "label": "e-Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
+      "isVisaFree": false,
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -71735,14 +71735,14 @@
       "summaryText": "Ankara’dan ~2.5 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Vizesiz (14G) / e-Vize",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
-      "isVisaFree": false,
-      "duration": "14 gün",
-      "notes": "14 gün vizesiz / e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "category": "vizesiz",
+      "label": "Vizesiz (30 Gün)",
+      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
+      "icon": "✈️",
+      "isVisaFree": true,
+      "duration": "30 gün",
+      "notes": "Türkiye–Umman karşılıklı vize muafiyeti kapsamında turistik ziyaretlerde 30 güne kadar vize gerekmez.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -71975,14 +71975,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize / Kapıda Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Etiyopya için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "90 gün",
+      "notes": "Online e-vize veya kapıda vize. e-Vize ile gelenler Addis Ababa Bole Havalimanı’ndan girmeli.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Hulivili",
@@ -72169,14 +72169,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "Kapıda Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Senegal için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "1 ay",
+      "notes": "Havalimanında kapıda vize alınır.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -72480,14 +72480,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -72538,14 +72538,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -74930,14 +74930,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -75771,14 +75771,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -75828,14 +75828,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "World8115",
@@ -75898,14 +75898,14 @@
       "summaryText": "Ankara’dan ~12 - 17 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize / Kapıda / KAZA Univisa",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Zimbabve için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "1 ay",
+      "notes": "Online e-vize veya kapıda vize; Zambiya ile birlikte gezilecekse KAZA Univisa pratik.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -75962,14 +75962,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -76279,14 +76279,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Sharvarism",
@@ -76868,14 +76868,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "El Gran Dee",
@@ -77320,14 +77320,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "SAE e-Onay / Vize",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "SAE Elektronik İzin (Hava Yolu)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "180 gün",
-      "notes": "Online SAE belgesi (ABD vizesi varsa vizesiz).",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Melissa Doroquez",
@@ -77387,14 +77387,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     }
   },
   {
@@ -77448,14 +77448,14 @@
       "summaryText": "Ankara’dan ~8 - 12 sa (1 aktarma)"
     },
     "visaStatus": {
-      "category": "kapi_evize",
-      "label": "Online e-Tourist Visa",
-      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
-      "icon": "🎫",
+      "category": "vize_gerekli",
+      "label": "Vize Şart (Konsolosluk)",
+      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
+      "icon": "🔒",
       "isVisaFree": false,
-      "duration": "30 gün - 1 yıl",
-      "notes": "Online e-vize.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "Değişken",
+      "notes": "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et.",
+      "source": "Kaynak: Timatic/Wikipedia vize tablosu & güncel haberler · Kontrol: 8 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Subhrajyoti07",

@@ -159,10 +159,10 @@ export const COUNTRY_VISA_INFO = {
 
   // VİZESİZ BALKANLAR, AVRUPA & KAFKASLAR
   'Karadağ': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 180 gün içinde 90 gün vizesiz seyahat imkanı.'
+    category: 'vize_gerekli',
+    label: "Vize Şart (1 Kasım 2026’dan beri)",
+    duration: "Değişken",
+    notes: "Karadağ 1 Kasım 2026’dan itibaren bordo pasaportlu Türk vatandaşlarından vize istiyor. Geçerli Schengen, ABD, Birleşik Krallık veya İrlanda vizesi ya da oturum izni olanlar muaf olabiliyor; yola çıkmadan Karadağ Büyükelçiliği veya THY duyurusundan teyit et."
   },
   'Arnavutluk': {
     category: 'vizesiz',
@@ -189,10 +189,10 @@ export const COUNTRY_VISA_INFO = {
     notes: 'Türkiye ve Belarus hükümetleri arasındaki vize muafiyeti anlaşması gereği bordo pasaportla 30 güne kadar vizesizdir.'
   },
   'Rusya': {
-    category: 'vizesiz',
-    label: 'Vizesiz / Karşılıklı Muafiyet',
-    duration: '30-90 gün',
-    notes: 'Karşılıklı turizm muafiyeti rejimleri ve e-vize uygulamaları yürürlüktedir. Turistik seyahatlerde vize muafiyeti uygulanmaktadır.'
+    category: 'kapi_evize',
+    label: "e-Vize (30 Gün)",
+    duration: "30 gün",
+    notes: "Bordo pasaportla vizesiz giriş 2016’dan beri askıda. Rusya Dışişleri Bakanlığı’nın resmi e-vize sitesinden 30 güne kadar turistik e-vize alınır."
   },
 
   // VİZESİZ ORTA DOĞU & ASYA
@@ -282,9 +282,9 @@ export const COUNTRY_VISA_INFO = {
   },
   'Lübnan': {
     category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Havalimanında 90 güne kadar ücretsiz vize muafiyeti.'
+    label: "Kapıda Ücretsiz Vize (1 Ay)",
+    duration: "1 ay",
+    notes: "Beyrut Havalimanı’nda ücretsiz giriş vizesi verilir, 1 ay daha uzatılabilir. Pasaportta İsrail damgası olmamalı."
   },
 
   // VİZESİZ AMERİKALAR
@@ -348,10 +348,10 @@ export const COUNTRY_VISA_INFO = {
     notes: 'Türk vatandaşlarına online e-Vize veya havalimanında hızlı self-servis vize imkanı.'
   },
   'Umman': {
-    category: 'kapi_evize',
-    label: 'Vizesiz (14G) / e-Vize',
-    duration: '14 gün',
-    notes: '14 güne kadar vizesiz; daha uzun süreli kalışlar için pratik online e-Vize.'
+    category: 'vizesiz',
+    label: "Vizesiz (30 Gün)",
+    duration: "30 gün",
+    notes: "Türkiye–Umman karşılıklı vize muafiyeti kapsamında turistik ziyaretlerde 30 güne kadar vize gerekmez."
   },
   'Kamboçya': {
     category: 'kapi_evize',
@@ -402,10 +402,10 @@ export const COUNTRY_VISA_INFO = {
     notes: 'Uçuştan önce resmi Uganda e-vize sistemi üzerinden başvuru yapılır.'
   },
   'Zambiya': {
-    category: 'kapi_evize',
-    label: 'Kapıda / KAZA Univisa',
-    duration: '30 gün',
-    notes: 'Victoria Şelaleleri için Zimbabve ile ortak KAZA Univisa veya kapıda vize.'
+    category: 'vizesiz',
+    label: "Vizesiz (90 Gün)",
+    duration: "90 gün",
+    notes: "Zambiya turistik ziyaretlerde vize istemiyor. Victoria Şelaleleri’nde Zimbabve tarafına geçeceksen Zimbabve vizesi veya KAZA Univisa gerekir."
   },
   'Ermenistan': {
     category: 'kapi_evize',
@@ -426,10 +426,10 @@ export const COUNTRY_VISA_INFO = {
     notes: 'Resmi Vietnam Göçmenlik Bürosu portalından 3-5 iş gününde çok girişli 90 günlük e-vize.'
   },
   'Hindistan': {
-    category: 'kapi_evize',
-    label: 'Online e-Tourist Visa',
-    duration: '30 gün - 1 yıl',
-    notes: 'Resmi Indian e-Visa portalından online başvuru; 72 saatte onay maili gelir.'
+    category: 'vize_gerekli',
+    label: "Vize Şart (Konsolosluk)",
+    duration: "Değişken",
+    notes: "Türk vatandaşları şu an Hindistan e-vize listesinde değil; vize Hindistan Büyükelçiliği veya Konsolosluğu üzerinden alınır. Yola çıkmadan güncel durumu teyit et."
   },
   'Tacikistan': {
     category: 'kapi_evize',
@@ -548,16 +548,16 @@ export const COUNTRY_VISA_INFO = {
     notes: 'Vize Başvuru Merkezi üzerinden evrak teslimi ve biyometri şarttır (Transit vize muafiyetleri hariç).'
   },
   'Meksika': {
-    category: 'vize_gerekli',
-    label: 'SAE e-Onay / Vize',
-    duration: '180 gün',
-    notes: 'Havayoluyla seyahatlerde online ücretsiz SAE elektronik onay belgesi alınabilir. Geçerli ABD/Schengen/UK vizesi olanlar vizesiz girer.'
+    category: 'kapi_evize',
+    label: "SAE Elektronik İzin (Hava Yolu)",
+    duration: "180 gün",
+    notes: "Uçakla gelişte online SAE elektronik izni alınır. Geçerli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi olanlar vizesiz girer."
   },
   'Küba': {
-    category: 'vize_gerekli',
-    label: 'Küba Turist Kartı (Tarjeta)',
-    duration: '90 gün',
-    notes: 'Konsolosluk veya yetkili seyahat acentelerinden yaklaşık €30-35 karşılığı turist kartı temin edilir.'
+    category: 'kapi_evize',
+    label: "e-Vize / Turist Kartı",
+    duration: "90 gün",
+    notes: "Online e-vize (turist kartı) ile girilir; ücretli olarak 90 güne uzatılabilir."
   },
   'Cezayir': {
     category: 'vize_gerekli',
@@ -608,6 +608,145 @@ export const COUNTRY_VISA_INFO = {
     label: 'Vize Yok (Özel İzin)',
     duration: 'Sezonluk',
     notes: 'Antarktika hiçbir ülkenin toprağı değildir; ancak çıkış yapılan Arjantin (Ushuaia) veya Şili (Punta Arenas) Türk vatandaşlarına 90 gün vizesizdir.'
+  },
+  // Added in the November 2026 visa check
+  'Jamaika': {
+    category: 'vizesiz',
+    label: "Vizesiz (90 Gün)",
+    duration: "90 gün",
+    notes: "Bordo pasaportla turistik ziyaretlerde 90 güne kadar vize gerekmez."
+  },
+  'Angola': {
+    category: 'vizesiz',
+    label: "Vizesiz (30 Gün)",
+    duration: "30 gün",
+    notes: "Angola turistik ziyaretlerde Türk vatandaşlarına 30 güne kadar vize muafiyeti tanıyor."
+  },
+  'Belize': {
+    category: 'vizesiz',
+    label: "Vizesiz (90 Gün)",
+    duration: "90 gün",
+    notes: "Bordo pasaportla turistik ziyaretlerde 90 güne kadar vize gerekmez."
+  },
+  'Vanuatu': {
+    category: 'vizesiz',
+    label: "Vizesiz (120 Gün)",
+    duration: "120 gün",
+    notes: "Bordo pasaportla turistik ziyaretlerde 120 güne kadar vize gerekmez."
+  },
+  'Etiyopya': {
+    category: 'kapi_evize',
+    label: "e-Vize / Kapıda Vize",
+    duration: "90 gün",
+    notes: "Online e-vize veya kapıda vize. e-Vize ile gelenler Addis Ababa Bole Havalimanı’ndan girmeli."
+  },
+  'Namibya': {
+    category: 'kapi_evize',
+    label: "e-Vize / Kapıda Vize",
+    duration: "90 gün",
+    notes: "Online e-vize veya havalimanında kapıda vize alınabilir."
+  },
+  'Bhutan': {
+    category: 'kapi_evize',
+    label: "e-Vize + Günlük SDF",
+    duration: "90 gün",
+    notes: "Online e-vize ile girilir; ayrıca kişi başı günlük Sürdürülebilir Kalkınma Ücreti (SDF) ödenir."
+  },
+  'Myanmar': {
+    category: 'kapi_evize',
+    label: "e-Vize (28 Gün)",
+    duration: "28 gün",
+    notes: "Online e-vize; Yangon, Nay Pyi Taw veya Mandalay havalimanlarından girilir. Güvenlik durumunu Dışişleri’nden kontrol et."
+  },
+  'Kuveyt': {
+    category: 'kapi_evize',
+    label: "e-Vize / Kapıda Vize",
+    duration: "3 ay",
+    notes: "Online e-vize veya havalimanında kapıda vize alınabilir."
+  },
+  'Sudan': {
+    category: 'kapi_evize',
+    label: "Kapıda Vize · ⚠️ Güvenlik Uyarısı",
+    duration: "1 ay",
+    notes: "Türkiye’den doğrudan gelişte kapıda vize verilir. ⚠️ İç çatışma nedeniyle Dışişleri seyahat uyarısı mevcut; zorunlu olmadıkça gidilmemeli."
+  },
+  'Senegal': {
+    category: 'kapi_evize',
+    label: "Kapıda Vize",
+    duration: "1 ay",
+    notes: "Havalimanında kapıda vize alınır."
+  },
+  'Mozambik': {
+    category: 'kapi_evize',
+    label: "e-Vize / Kapıda Vize",
+    duration: "30 gün",
+    notes: "Online e-vize veya kapıda vize alınabilir."
+  },
+  'Benin': {
+    category: 'kapi_evize',
+    label: "e-Vize (30 Gün)",
+    duration: "30 gün",
+    notes: "Resmi portaldan online e-vize alınır."
+  },
+  'Guyana': {
+    category: 'kapi_evize',
+    label: "e-Vize",
+    duration: "Değişken",
+    notes: "Online e-vize ile girilir."
+  },
+  'Papua Yeni Gine & Solomon Adaları': {
+    category: 'kapi_evize',
+    label: "e-Vize (60 Gün)",
+    duration: "60 gün",
+    notes: "Papua Yeni Gine için online e-vize. Solomon Adaları’nın giriş şartlarını ayrıca kontrol et."
+  },
+  'Zimbabve': {
+    category: 'kapi_evize',
+    label: "e-Vize / Kapıda / KAZA Univisa",
+    duration: "1 ay",
+    notes: "Online e-vize veya kapıda vize; Zambiya ile birlikte gezilecekse KAZA Univisa pratik."
+  },
+  'Bangladeş': {
+    category: 'kapi_evize',
+    label: "Kapıda Vize (30 Gün)",
+    duration: "30 gün",
+    notes: "Havalimanında kapıda vize alınır."
+  },
+  'Bahreyn': {
+    category: 'kapi_evize',
+    label: "e-Vize / Kapıda Vize",
+    duration: "14 gün",
+    notes: "Online e-vize veya kapıda vize alınabilir."
+  },
+  'Nijerya': {
+    category: 'kapi_evize',
+    label: "e-Vize (30 Gün)",
+    duration: "30 gün",
+    notes: "Online e-vize ile girilir. Güvenlik durumunu Dışişleri’nden kontrol et."
+  },
+  'Kamerun': {
+    category: 'kapi_evize',
+    label: "e-Vize",
+    duration: "Değişken",
+    notes: "Online e-vize ile girilir."
+  },
+  'Cibuti': {
+    category: 'kapi_evize',
+    label: "e-Vize (90 Gün)",
+    duration: "90 gün",
+    notes: "Online e-vize ile girilir."
+  },
+  'Kongo': {
+    category: 'kapi_evize',
+    label: "e-Vize · ⚠️ Güvenlik Uyarısı",
+    duration: "7 gün",
+    notes: "Demokratik Kongo için online e-vize. ⚠️ Doğu bölgelerde (Virunga dahil) silahlı çatışma riski; Dışişleri uyarılarını kontrol et."
+  },
+  'Samoa & Tonga': {
+    category: 'kapi_evize',
+    label: "Kapıda Giriş İzni",
+    duration: "31-90 gün",
+    notes: "Samoa’da kapıda giriş izni (90 gün), Tonga’da kapıda vize (31 gün)."
   }
 };
 

@@ -648,7 +648,7 @@ export const MEGA_COLLECTION = [
       'Surların hemen dışındaki kayalıklara gizlenmiş uçurum barı Buža Bar’dan denize atlamak',
       'Plitvice Gölleri Milli Parkı’nda şelalelerin tam üzerinden geçen ahşap köprülerde 4-5 saatlik yürüyüş'
     ],
-    howToVisit: 'Dubrovnik, vizesiz Karadağ (Kotor) ile sadece 2 saat mesafede olduğu için Kotor-Dubrovnik rotası olarak da birleştirilebilir! Surlarda yürümek için mutlaka sabah 08:00 açılışını veya akşamüstü 16:30 sonrasını tercih et.',
+    howToVisit: 'Dubrovnik, Karadağ (Kotor) ile sadece 2 saat mesafede olduğu için Kotor-Dubrovnik rotası olarak da birleştirilebilir! Surlarda yürümek için mutlaka sabah 08:00 açılışını veya akşamüstü 16:30 sonrasını tercih et.',
     localSpecialties: 'Siyah mürekkepli **Crni Rižoto**, **Ston İstiridyeleri**, **Pašticada** (erişteli dana rosto) ve **Rožata** (Dubrovnik usulü karamelli muhallebi).',
     blogArticle: `Dubrovnik Surları'nın üzerine çıkıp bir yanınızda masmavi Adriyatik Denizi, diğer yanınızda bin yıllık pişmiş toprak kiremit çatılarla 2 kilometre boyunca yürümek, dünyada bir ortaçağ şehrini deneyimlemenin en görkemli yoludur.`,
     coverImage: 'https://images.unsplash.com/photo-1555990538-1e6c0c12db88?auto=format&fit=crop&w=1000&q=80',
