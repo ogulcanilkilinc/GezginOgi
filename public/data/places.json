@@ -8021,7 +8021,7 @@
   },
   {
     "id": "tr-exp-bitlis-nemrut-krater-ahlat",
-    "name": "Bitlis: Nemrut Kalderası (Sıcak ve Soğuk Krater Gölleri) & Ahlat Selçuklu Meydan Mezarlığı (UNESCO)",
+    "name": "Bitlis: Nemrut Kalderası (Sıcak ve Soğuk Krater Gölleri) & Ahlat Selçuklu Meydan Mezarlığı (UNESCO Geçici Listesi)",
     "region": "turkiye",
     "subRegion": "Doğu Anadolu",
     "city": "Bitlis (Van Gölü Batı Kıyısı)",
@@ -8368,7 +8368,7 @@
       "sonbahar"
     ],
     "bestTimeText": "Tortum Şelalesi’nin tüm balkonlarından suyun en gür aktığı ve gökkuşağı oluşturduğu dönem **Mayıs ve Haziran** aylarıdır!",
-    "whatAwaits": "Anadolu’nun yüksek platosu Erzurum’un hem Selçuklu taş mimarisi hem de şaşırtıcı jeolojik harikaları! **Çifte Minareli Medrese**, **Yakutiye Medresesi** ve **Üç Kümbetler**; kuzeyde Cittaslow ilçesi Uzundere’de 48 metre yükseklikten yarım daire şeklinde dökülen Türkiye’nin en görkemli şelalelerinden **Tortum Şelalesi & Tortum Gölü Cam Terası** ve demir oksit nedeniyle kıpkırmızı parlayan 2.5 milyon yıllık **Narman Peri Bacaları (UNESCO Geçici Listesi)**!",
+    "whatAwaits": "Anadolu’nun yüksek platosu Erzurum’un hem Selçuklu taş mimarisi hem de şaşırtıcı jeolojik harikaları! **Çifte Minareli Medrese**, **Yakutiye Medresesi** ve **Üç Kümbetler**; kuzeyde Cittaslow ilçesi Uzundere’de 48 metre yükseklikten yarım daire şeklinde dökülen Türkiye’nin en görkemli şelalelerinden **Tortum Şelalesi & Tortum Gölü Cam Terası** ve demir oksit nedeniyle kıpkırmızı parlayan 2.5 milyon yıllık **Narman Peri Bacaları**!",
     "highlights": [
       "48 metreden büyük bir gürlemeyle dökülen Tortum Şelalesi’nin tam karşısındaki seyir merdivenlerinde gökkuşağı yakalamak",
       "63 milyon yıllık kırmızı kumtaşı kanyonu: \"Kırmızı Periler Diyarı\" Narman Peri Bacaları (Colorado Büyük Kanyonu’nu andırır!)",
@@ -16556,7 +16556,8 @@
     "seasons": [
       "ilkbahar",
       "yaz",
-      "sonbahar"
+      "sonbahar",
+      "kis"
     ],
     "bestTimeText": "Çıldır / Posof, Ardahan içinde bu noktayı keşfetmek için sabah erken saatler (08:30-10:30) veya gün batımı öncesi altın saatler en ideal ışık ve sakinliği sunar.",
     "whatAwaits": "Kura Nehri’nin sarp kanyonundaki kartal yuvası Şeytan Kalesi, kışın buz üstünde sarı balık avı ve dışı kırmızı içi kırmızı elmasıyla ünlü sakin şehir Posof.",
@@ -16881,7 +16882,8 @@
     "seasons": [
       "ilkbahar",
       "yaz",
-      "sonbahar"
+      "sonbahar",
+      "kis"
     ],
     "bestTimeText": "Merkez / Şemdinli, Hakkari içinde bu noktayı keşfetmek için sabah erken saatler (08:30-10:30) veya gün batımı öncesi altın saatler en ideal ışık ve sakinliği sunar.",
     "whatAwaits": "Sarp dağlar arasından köpürerek akan Zap Suyu asma köprüleri ve Şemdinli’de tek kemerli tarihi Nehri Taş Köprüsü.",
@@ -25007,8 +25009,8 @@
     "durationCategory": "tam",
     "seasons": [
       "ilkbahar",
-      "yaz",
-      "sonbahar"
+      "sonbahar",
+      "kis"
     ],
     "bestTimeText": "Ekim ile Nisan arası Güney Yarımküre bahar ve yaz dönemidir; Şubat başındaki **Tapati Rapa Nui Festivali** Polinezya kültürünü görmek için eşsizdir (Şili Türk vatandaşlarına vizesizdir!).",
     "whatAwaits": "En yakın anakaraya 3.500 kilometre uzaklıkta, Güney Pasifik Okyanusu’nun ortasında yapayalnız bir volkanik üçgen ada! Polinezyalı Rapa Nui halkının 13. ve 16. yüzyıllar arasında volkanik tüf kayalarından yontup adanın etrafındaki taş platformlara (Ahu) sırtları okyanusa dönük şekilde diktiği **900’e yakın devasa Moai Heykeli**!",
@@ -42826,7 +42828,7 @@
   },
   {
     "id": "cn-05",
-    "name": "Çin — Chengdu: Dev Panda Üretim ve Araştırma Üssü, Leshan Dev Buda (71 m) & Jinli Sokağı (UNESCO)",
+    "name": "Çin — Chengdu: Dev Panda Üretim ve Araştırma Üssü, Leshan Dev Buda (71 m, UNESCO) & Jinli Sokağı",
     "region": "dunya",
     "subRegion": "Asya",
     "country": "Çin",
@@ -42846,13 +42848,13 @@
     "bestTimeText": "Sichuan, Çin içinde bu noktayı keşfetmek için sabah erken saatler (08:30-10:30) veya gün batımı öncesi altın saatler en ideal ışık ve sakinliği sunar.",
     "whatAwaits": "Sabah bambu yiyen onlarca sevimli Dev Panda ve Kırmızı Pandayı doğal parklarında izlemek, 3 nehrin birleştiği kızıl uçuruma 8. yüzyılda oyulmuş 71 metrelik **Dünyanın En Büyük Taş Buda Heykeli (Leshan)** ve kutsal Emei Dağı!",
     "highlights": [
-      "Chengdu: Dev Panda Üretim ve Araştırma Üssü, Leshan Dev Buda (71 m) & Jinli Sokağı (UNESCO) ana gezi, mimari ve panoramik seyir noktası",
+      "Chengdu: Dev Panda Üretim ve Araştırma Üssü, Leshan Dev Buda (71 m, UNESCO) & Jinli Sokağı ana gezi, mimari ve panoramik seyir noktası",
       "Sichuan çevresindeki tarihi sokaklar, kültür durakları ve yürüyüş rotası",
       "Gezginler için en fotojenik kadrajlar ve yerel atmosfer"
     ],
     "howToVisit": "Çin’in 45.000 km’lik yüksek hızlı mermi tren ağı (CRH / Fuxing) ile tüm şehirler birbirine ultra konforlu bağlıdır (Alipay / WeChat Pay uygulaması kurulması önerilir).",
     "localSpecialties": "Pekin Ördeği, Şanghay **Xiao Long Bao (Çorbalı Mantı)**, Sichuan **Hot Pot** & **Mapo Tofu**, Xi’an **Biangbiang Noodles**, Kanton **Dim Sum**.",
-    "blogArticle": "Sichuan, Çin seyahatinin en özel duraklarından biri olan Chengdu: Dev Panda Üretim ve Araştırma Üssü, Leshan Dev Buda (71 m) & Jinli Sokağı (UNESCO), bölgenin ruhunu, tarihini ve coğrafi çeşitliliğini yerinde hissetmek isteyen gezginler için unutulmaz bir deneyim sunuyor. Sabah bambu yiyen onlarca sevimli Dev Panda ve Kırmızı Pandayı doğal parklarında izlemek, 3 nehrin birleştiği kızıl uçuruma 8. yüzyılda oyulmuş 71 metrelik **Dünyanın En Büyük Taş Buda Heykeli (Leshan)** ve kutsal Emei Dağı!",
+    "blogArticle": "Sichuan, Çin seyahatinin en özel duraklarından biri olan Chengdu: Dev Panda Üretim ve Araştırma Üssü, Leshan Dev Buda (71 m, UNESCO) & Jinli Sokağı, bölgenin ruhunu, tarihini ve coğrafi çeşitliliğini yerinde hissetmek isteyen gezginler için unutulmaz bir deneyim sunuyor. Sabah bambu yiyen onlarca sevimli Dev Panda ve Kırmızı Pandayı doğal parklarında izlemek, 3 nehrin birleştiği kızıl uçuruma 8. yüzyılda oyulmuş 71 metrelik **Dünyanın En Büyük Taş Buda Heykeli (Leshan)** ve kutsal Emei Dağı!",
     "coverImage": "",
     "visited": false,
     "visitedDate": "",
@@ -43082,7 +43084,7 @@
   },
   {
     "id": "cn-09",
-    "name": "Çin — Zhangye Danxia Gökkuşağı Dağları (UNESCO)",
+    "name": "Çin — Zhangye Danxia Gökkuşağı Dağları (UNESCO Küresel Jeoparkı)",
     "region": "dunya",
     "subRegion": "Asya",
     "country": "Çin",
@@ -43102,13 +43104,13 @@
     "bestTimeText": "Gansu, Çin içinde bu noktayı keşfetmek için sabah erken saatler (08:30-10:30) veya gün batımı öncesi altın saatler en ideal ışık ve sakinliği sunar.",
     "whatAwaits": "24 milyon yıllık kumtaşı ve minerallerin tektonik hareketlerle kıvrılması sonucu üzerine yağlıboya dökülmüş gibi kırmızı, turuncu, sarı ve mavi çizgiler taşıyan gerçeküstü Gökkuşağı Tepeleri!",
     "highlights": [
-      "Zhangye Danxia Gökkuşağı Dağları (UNESCO) ana gezi, mimari ve panoramik seyir noktası",
+      "Zhangye Danxia Gökkuşağı Dağları (UNESCO Küresel Jeoparkı) ana gezi, mimari ve panoramik seyir noktası",
       "Gansu çevresindeki tarihi sokaklar, kültür durakları ve yürüyüş rotası",
       "Gezginler için en fotojenik kadrajlar ve yerel atmosfer"
     ],
     "howToVisit": "Çin’in 45.000 km’lik yüksek hızlı mermi tren ağı (CRH / Fuxing) ile tüm şehirler birbirine ultra konforlu bağlıdır (Alipay / WeChat Pay uygulaması kurulması önerilir).",
     "localSpecialties": "Pekin Ördeği, Şanghay **Xiao Long Bao (Çorbalı Mantı)**, Sichuan **Hot Pot** & **Mapo Tofu**, Xi’an **Biangbiang Noodles**, Kanton **Dim Sum**.",
-    "blogArticle": "Gansu, Çin seyahatinin en özel duraklarından biri olan Zhangye Danxia Gökkuşağı Dağları (UNESCO), bölgenin ruhunu, tarihini ve coğrafi çeşitliliğini yerinde hissetmek isteyen gezginler için unutulmaz bir deneyim sunuyor. 24 milyon yıllık kumtaşı ve minerallerin tektonik hareketlerle kıvrılması sonucu üzerine yağlıboya dökülmüş gibi kırmızı, turuncu, sarı ve mavi çizgiler taşıyan gerçeküstü Gökkuşağı Tepeleri!",
+    "blogArticle": "Gansu, Çin seyahatinin en özel duraklarından biri olan Zhangye Danxia Gökkuşağı Dağları (UNESCO Küresel Jeoparkı), bölgenin ruhunu, tarihini ve coğrafi çeşitliliğini yerinde hissetmek isteyen gezginler için unutulmaz bir deneyim sunuyor. 24 milyon yıllık kumtaşı ve minerallerin tektonik hareketlerle kıvrılması sonucu üzerine yağlıboya dökülmüş gibi kırmızı, turuncu, sarı ve mavi çizgiler taşıyan gerçeküstü Gökkuşağı Tepeleri!",
     "coverImage": "",
     "visited": false,
     "visitedDate": "",
@@ -69076,7 +69078,9 @@
     "blogArticle": "Devasa bir buz kulesinin çatırdamasıyla başlayan ses, saniyeler sonra gök gürültüsü gibi vadide patlar ve turkuaz suya gömülür. Perito Moreno, doğanın yaşayan canlı bir organizmasıdır.",
     "bestSeason": "Kasım - Mart (Patagonya yazı)",
     "seasons": [
-      "yaz"
+      "ilkbahar",
+      "sonbahar",
+      "kis"
     ],
     "duration": "Tam Gün",
     "durationCategory": "tam",
@@ -69134,7 +69138,9 @@
     "blogArticle": "Dünyanın bittiği yerde başlayan masal... Torres del Paine’nin sarp granit duvarları, doğanın vahşet ve ihtişamının en saf, en dokunulmamış anıtıdır.",
     "bestSeason": "Kasım - Mart",
     "seasons": [
-      "yaz"
+      "ilkbahar",
+      "sonbahar",
+      "kis"
     ],
     "duration": "Tam Gün",
     "durationCategory": "tam",
@@ -69522,6 +69528,7 @@
     "durationCategory": "tam",
     "seasons": [
       "ilkbahar",
+      "yaz",
       "sonbahar"
     ],
     "bestTimeText": "Mayıs–Kasım (kuru dönem).",
@@ -72563,8 +72570,8 @@
     "durationCategory": "tam",
     "seasons": [
       "ilkbahar",
-      "yaz",
-      "sonbahar"
+      "sonbahar",
+      "kis"
     ],
     "bestTimeText": "Ekim–Kasım, Mart–Nisan (Güney yarımkürede bahar/sonbahar).",
     "whatAwaits": "Granit kuleler, buzul gölleri ve guanakolar; dünyanın en ünlü trekking rotalarından W.",
@@ -72629,8 +72636,8 @@
     "durationCategory": "tam",
     "seasons": [
       "ilkbahar",
-      "yaz",
-      "sonbahar"
+      "sonbahar",
+      "kis"
     ],
     "bestTimeText": "Kasım–Mart.",
     "whatAwaits": "Arjantin'in trekking başkentinden sivri granit zirve Fitz Roy'a Laguna de los Tres yürüyüşü.",
@@ -73199,8 +73206,8 @@
     "duration": "2–6 gün",
     "durationCategory": "tam",
     "seasons": [
-      "yaz",
-      "sonbahar"
+      "ilkbahar",
+      "kis"
     ],
     "bestTimeText": "Aralık–Nisan.",
     "whatAwaits": "Dove Gölü'ne yansıyan dağ, wombatlar ve 6 günlük efsane Overland Track.",
@@ -73393,8 +73400,8 @@
     "duration": "1 gün (19 km)",
     "durationCategory": "tam",
     "seasons": [
-      "yaz",
-      "sonbahar"
+      "ilkbahar",
+      "kis"
     ],
     "bestTimeText": "Aralık–Mart.",
     "whatAwaits": "Volkanlar arasında zümrüt krater gölleri ve 'Kader Dağı' Ngauruhoe'yla dünyanın en iyi günübirlik yürüyüşlerinden.",
@@ -73457,9 +73464,9 @@
     "duration": "2 gün",
     "durationCategory": "tam",
     "seasons": [
-      "yaz",
+      "ilkbahar",
       "sonbahar",
-      "ilkbahar"
+      "kis"
     ],
     "bestTimeText": "Kasım–Nisan.",
     "whatAwaits": "Yeni Zelanda'nın en yüksek dağı, buz kütleleri yüzen Hooker Gölü ve dünyanın en iyi karanlık gökyüzü rezervlerinden.",
@@ -75858,8 +75865,9 @@
     "duration": "Yarım gün",
     "durationCategory": "yarim",
     "seasons": [
-      "kis",
-      "ilkbahar"
+      "ilkbahar",
+      "yaz",
+      "sonbahar"
     ],
     "bestTimeText": "Mayıs–Ekim.",
     "whatAwaits": "Sahra altı Afrika'nın en büyük ortaçağ taş yapıları; ülkeye adını veren şehir.",
@@ -76177,8 +76185,9 @@
     "duration": "2 gün",
     "durationCategory": "tam",
     "seasons": [
-      "kis",
-      "ilkbahar"
+      "ilkbahar",
+      "yaz",
+      "sonbahar"
     ],
     "bestTimeText": "Mayıs–Eylül.",
     "whatAwaits": "Altına hücum döneminden kalma barok kiliseli dağ kasabası; Aleijadinho'nun heykelleri.",

@@ -183,7 +183,7 @@ export const TURKIYE_ANKARA_EXPANSION = [
   },
   {
     id: 'tr-exp-bitlis-nemrut-krater-ahlat',
-    name: 'Bitlis: Nemrut Kalderası (Sıcak ve Soğuk Krater Gölleri) & Ahlat Selçuklu Meydan Mezarlığı (UNESCO)',
+    name: 'Bitlis: Nemrut Kalderası (Sıcak ve Soğuk Krater Gölleri) & Ahlat Selçuklu Meydan Mezarlığı (UNESCO Geçici Listesi)',
     region: 'turkiye',
     subRegion: 'Doğu Anadolu',
     city: 'Tatvan & Ahlat, Bitlis (Van Gölü Batı Kıyısı)',
@@ -343,7 +343,7 @@ export const TURKIYE_ANKARA_EXPANSION = [
     durationCategory: 'tam',
     seasons: ['ilkbahar', 'yaz', 'sonbahar'],
     bestTimeText: 'Tortum Şelalesi’nin tüm balkonlarından suyun en gür aktığı ve gökkuşağı oluşturduğu dönem **Mayıs ve Haziran** aylarıdır!',
-    whatAwaits: 'Anadolu’nun yüksek platosu Erzurum’un hem Selçuklu taş mimarisi hem de şaşırtıcı jeolojik harikaları! **Çifte Minareli Medrese**, **Yakutiye Medresesi** ve **Üç Kümbetler**; kuzeyde Cittaslow ilçesi Uzundere’de 48 metre yükseklikten yarım daire şeklinde dökülen Türkiye’nin en görkemli şelalelerinden **Tortum Şelalesi & Tortum Gölü Cam Terası** ve demir oksit nedeniyle kıpkırmızı parlayan 2.5 milyon yıllık **Narman Peri Bacaları (UNESCO Geçici Listesi)**!',
+    whatAwaits: 'Anadolu’nun yüksek platosu Erzurum’un hem Selçuklu taş mimarisi hem de şaşırtıcı jeolojik harikaları! **Çifte Minareli Medrese**, **Yakutiye Medresesi** ve **Üç Kümbetler**; kuzeyde Cittaslow ilçesi Uzundere’de 48 metre yükseklikten yarım daire şeklinde dökülen Türkiye’nin en görkemli şelalelerinden **Tortum Şelalesi & Tortum Gölü Cam Terası** ve demir oksit nedeniyle kıpkırmızı parlayan 2.5 milyon yıllık **Narman Peri Bacaları**!',
     highlights: [
       '48 metreden büyük bir gürlemeyle dökülen Tortum Şelalesi’nin tam karşısındaki seyir merdivenlerinde gökkuşağı yakalamak',
       '63 milyon yıllık kırmızı kumtaşı kanyonu: "Kırmızı Periler Diyarı" Narman Peri Bacaları (Colorado Büyük Kanyonu’nu andırır!)',
