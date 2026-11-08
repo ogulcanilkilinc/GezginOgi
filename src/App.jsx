@@ -323,6 +323,8 @@ export default function App() {
   };
 
   const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
+  // Where the header button sits, so the desktop menu opens right under it (null: phone bottom sheet)
+  const [toolsAnchor, setToolsAnchor] = useState(null);
   const [editingPlace, setEditingPlace] = useState(null);
   const [isPickingLocation, setIsPickingLocation] = useState(false);
   const [pickedCoords, setPickedCoords] = useState(null);
@@ -831,7 +833,11 @@ export default function App() {
             {/* Traveler Toolbox Dropdown */}
             <div className="relative">
               <button
-                onClick={() => setIsToolsDropdownOpen(!isToolsDropdownOpen)}
+                onClick={(e) => {
+                  const r = e.currentTarget.getBoundingClientRect();
+                  setToolsAnchor({ top: r.bottom + 8, left: Math.max(16, Math.min(r.left, window.innerWidth - 304)) });
+                  setIsToolsDropdownOpen(!isToolsDropdownOpen);
+                }}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-semibold transition ${
                   isToolsDropdownOpen
                     ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow-sm'
@@ -844,117 +850,6 @@ export default function App() {
                 <span className="text-[10px] opacity-75">▾</span>
               </button>
 
-              {isToolsDropdownOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-[540] bg-slate-950/60 lg:hidden"
-                    onClick={() => setIsToolsDropdownOpen(false)}
-                  />
-                  <div
-                    className="fixed lg:absolute bottom-16 lg:bottom-auto left-4 right-4 lg:left-auto lg:right-0 lg:mt-2 lg:w-72 bg-white border border-slate-300 rounded-2xl shadow-2xl p-2.5 z-[550] animate-fadeIn space-y-1 text-slate-800"
-                    onClick={() => setIsToolsDropdownOpen(false)}
-                  >
-                  <button
-                    onClick={handleShareMap}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
-                  >
-                    <span className="text-base">🔗</span>
-                    <div>
-                      <strong className="block text-slate-900">Haritamı Paylaş (Salt Okunur)</strong>
-                      <span className="text-[10px] text-slate-500">Gittiğin yerleri link ile göster; notlar paylaşılmaz</span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setIsCloudSyncOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
-                  >
-                    <span className="text-base">☁️</span>
-                    <div>
-                      <strong className="block text-slate-900">Bulut Senkronizasyon & PIN</strong>
-                      <span className="text-[10px] text-slate-500">Telefon ve bilgisayarı canlı eşitle</span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setIsSeasonalCalendarOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
-                  >
-                    <span className="text-base">🗓️</span>
-                    <div>
-                      <strong className="block text-slate-900">Bu Ay Nereye Gitsem? (12 Ay)</strong>
-                      <span className="text-[10px] text-slate-500">Mevsimsel hava durumu ve ideal kaçış rotaları</span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setIsBorderOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
-                  >
-                    <span className="text-base">🚗</span>
-                    <div>
-                      <strong className="block text-slate-900">Balkan Sınır Kapıları & Vinyet</strong>
-                      <span className="text-[10px] text-slate-500">Canlı süreler, taktikler, otoyol pulları</span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setIsSoundtrackOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
-                  >
-                    <span className="text-base">🎵</span>
-                    <div>
-                      <strong className="block text-slate-900">Yolun Şarkıları & Ambiyans</strong>
-                      <span className="text-[10px] text-slate-500">Sevdalinka, Akdeniz ezgileri, canlı yağmur</span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setIsSimulatorOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
-                  >
-                    <span className="text-base">🗺️</span>
-                    <div>
-                      <strong className="block text-slate-900">İnteraktif Rota Simülatörü</strong>
-                      <span className="text-[10px] text-slate-500">Duraklar arası canlı yol animasyonu & km</span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setIsNearbyRadarOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
-                  >
-                    <span className="text-base">📍</span>
-                    <div>
-                      <strong className="block text-slate-900">Bana En Yakın Noktalar (GPS)</strong>
-                      <span className="text-[10px] text-slate-500">Bulunduğun yere göre canlı mesafe & pusula</span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setIsScratchMapOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
-                  >
-                    <span className="text-base">🎨</span>
-                    <div>
-                      <strong className="block text-slate-900">Kazı-Kazan Dünya & Fetih Atlası</strong>
-                      <span className="text-[10px] text-slate-500">Ülke fetih oranları ve seyahat karnen</span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setIsEmergencyOpen(true)}
-                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-rose-50 text-rose-700 flex items-center gap-2.5 transition border-t border-slate-100 pt-2"
-                  >
-                    <span className="text-base">🚨</span>
-                    <div>
-                      <strong className="block text-rose-800">Acil Durum & T.C. Konsolosluk</strong>
-                      <span className="text-[10px] text-slate-500">7/24 nöbetçi hatlar, polis, pasaport kaybı</span>
-                    </div>
-                  </button>
-                </div>
-              </>
-              )}
             </div>
 
             {/* Passport Modal Button */}
@@ -1139,7 +1034,7 @@ export default function App() {
           {/* Location Button */}
           <button
             onClick={() => setIsLocationModalOpen(true)}
-            className="bg-amber-50 border border-amber-300 rounded-xl px-2.5 py-1 text-xs text-amber-900 font-bold flex items-center gap-1 shrink-0"
+            className="bg-amber-50 border border-amber-300 rounded-xl px-2.5 py-1.5 text-xs text-amber-900 font-bold flex items-center gap-1 shrink-0"
             title="Ülke ve Şehir Arama"
           >
             <span>🌍</span>
@@ -1151,7 +1046,7 @@ export default function App() {
           {/* Mobile Master Filter Button */}
           <button
             onClick={() => setIsMobileFilterDrawerOpen(true)}
-            className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 border transition shrink-0 ${
+            className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 border transition shrink-0 ${
               activeCategory !== 'all' || activeSubRegion !== 'all' || seasonFilter !== 'all' || durationFilter !== 'all' || statusFilter !== 'todo'
                 ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-xs'
                 : 'bg-white text-slate-700 border-slate-200'
@@ -1834,7 +1729,10 @@ export default function App() {
             <span>Liste ({filteredPlaces.length})</span>
           </button>
           <button
-            onClick={() => setIsToolsDropdownOpen(true)}
+            onClick={() => {
+              setToolsAnchor(null);
+              setIsToolsDropdownOpen(true);
+            }}
             className="flex flex-col items-center gap-1 text-[10px] font-bold text-slate-500 hover:text-amber-600 transition"
           >
             <Sparkles className="w-4 h-4" />
@@ -2199,6 +2097,120 @@ export default function App() {
         onOpenBudget={() => setIsBudgetOpen(true)}
         onOpenPacking={() => setIsPackingOpen(true)}
       />
+
+      {/* Traveler tools menu: rendered at the root so the phone bottom bar can open it too */}
+        {isToolsDropdownOpen && (
+          <>
+            <div
+              className="fixed inset-0 z-[540] bg-slate-950/60 lg:bg-transparent"
+              onClick={() => setIsToolsDropdownOpen(false)}
+            />
+            <div
+              style={toolsAnchor ? { top: toolsAnchor.top, left: toolsAnchor.left } : undefined}
+              className={`fixed max-h-[75vh] overflow-y-auto ${toolsAnchor ? "w-72" : "bottom-16 left-4 right-4"} bg-white border border-slate-300 rounded-2xl shadow-2xl p-2.5 z-[550] animate-fadeIn space-y-1 text-slate-800`}
+              onClick={() => setIsToolsDropdownOpen(false)}
+            >
+            <button
+              onClick={handleShareMap}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+            >
+              <span className="text-base">🔗</span>
+              <div>
+                <strong className="block text-slate-900">Haritamı Paylaş (Salt Okunur)</strong>
+                <span className="text-[10px] text-slate-500">Gittiğin yerleri link ile göster; notlar paylaşılmaz</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setIsCloudSyncOpen(true)}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+            >
+              <span className="text-base">☁️</span>
+              <div>
+                <strong className="block text-slate-900">Bulut Senkronizasyon & PIN</strong>
+                <span className="text-[10px] text-slate-500">Telefon ve bilgisayarı canlı eşitle</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setIsSeasonalCalendarOpen(true)}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+            >
+              <span className="text-base">🗓️</span>
+              <div>
+                <strong className="block text-slate-900">Bu Ay Nereye Gitsem? (12 Ay)</strong>
+                <span className="text-[10px] text-slate-500">Mevsimsel hava durumu ve ideal kaçış rotaları</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setIsBorderOpen(true)}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+            >
+              <span className="text-base">🚗</span>
+              <div>
+                <strong className="block text-slate-900">Balkan Sınır Kapıları & Vinyet</strong>
+                <span className="text-[10px] text-slate-500">Canlı süreler, taktikler, otoyol pulları</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setIsSoundtrackOpen(true)}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+            >
+              <span className="text-base">🎵</span>
+              <div>
+                <strong className="block text-slate-900">Yolun Şarkıları & Ambiyans</strong>
+                <span className="text-[10px] text-slate-500">Sevdalinka, Akdeniz ezgileri, canlı yağmur</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setIsSimulatorOpen(true)}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+            >
+              <span className="text-base">🗺️</span>
+              <div>
+                <strong className="block text-slate-900">İnteraktif Rota Simülatörü</strong>
+                <span className="text-[10px] text-slate-500">Duraklar arası canlı yol animasyonu & km</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setIsNearbyRadarOpen(true)}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+            >
+              <span className="text-base">📍</span>
+              <div>
+                <strong className="block text-slate-900">Bana En Yakın Noktalar (GPS)</strong>
+                <span className="text-[10px] text-slate-500">Bulunduğun yere göre canlı mesafe & pusula</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setIsScratchMapOpen(true)}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+            >
+              <span className="text-base">🎨</span>
+              <div>
+                <strong className="block text-slate-900">Kazı-Kazan Dünya & Fetih Atlası</strong>
+                <span className="text-[10px] text-slate-500">Ülke fetih oranları ve seyahat karnen</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setIsEmergencyOpen(true)}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-rose-50 text-rose-700 flex items-center gap-2.5 transition border-t border-slate-100 pt-2"
+            >
+              <span className="text-base">🚨</span>
+              <div>
+                <strong className="block text-rose-800">Acil Durum & T.C. Konsolosluk</strong>
+                <span className="text-[10px] text-slate-500">7/24 nöbetçi hatlar, polis, pasaport kaybı</span>
+              </div>
+            </button>
+          </div>
+        </>
+        )}
 
       {/* ================= PACKING CHECKLIST MODAL ================= */}
       <PackingChecklistModal

@@ -347,7 +347,7 @@ export default function PlaceDetailPanel({
             {onToggleTripPlan && (
               <button
                 onClick={() => onToggleTripPlan(place.id)}
-                className={`px-2.5 py-1.5 rounded-full text-[11px] font-bold backdrop-blur-md border flex items-center gap-1 transition ${
+                className={`px-2.5 py-1.5 rounded-full text-[11px] font-bold backdrop-blur-md border flex items-center gap-1 whitespace-nowrap shrink-0 transition ${
                   inTripPlan
                     ? 'bg-rose-500 text-white border-rose-400'
                     : 'bg-slate-900/80 text-slate-200 border-slate-700 hover:border-amber-400'

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import L from 'leaflet';
+import L from '../services/leafletSetup';
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { CATEGORIES } from '../data/metadata';
 import {
   Crosshair,
@@ -10,6 +12,9 @@ import {
   Maximize2,
   LocateFixed
 } from 'lucide-react';
+
+const escapeHtml = (s) =>
+  String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 const MAP_STYLES = [
   {
@@ -82,7 +87,24 @@ export default function TravelMap({
       }
     });
 
-    const markersLayer = L.layerGroup().addTo(map);
+    // Nearby pins merge into a numbered bubble when zoomed out, so the map never has to
+    // draw all 1200+ pins at once; from city zoom on, every pin is shown
+    const markersLayer = L.markerClusterGroup({
+      chunkedLoading: true,
+      showCoverageOnHover: false,
+      spiderfyOnMaxZoom: true,
+      disableClusteringAtZoom: 12,
+      maxClusterRadius: 50,
+      iconCreateFunction: (cluster) => {
+        const n = cluster.getChildCount();
+        const size = n < 10 ? 34 : n < 100 ? 40 : 46;
+        return L.divIcon({
+          className: 'place-cluster-wrapper',
+          html: `<div class="place-cluster" style="width:${size}px;height:${size}px">${n}</div>`,
+          iconSize: [size, size]
+        });
+      }
+    }).addTo(map);
     const routeLayer = L.layerGroup().addTo(map);
 
     mapInstanceRef.current = map;
@@ -106,6 +128,7 @@ export default function TravelMap({
       resizeObserver.disconnect();
       map.remove();
       mapInstanceRef.current = null;
+      markerCacheRef.current.clear();
     };
   }, []);
 
@@ -198,70 +221,98 @@ export default function TravelMap({
     map.fitBounds(bounds, { padding: [45, 45], maxZoom: 14 });
   };
 
-  // Render Place Markers & Route Line
+  // Render Place Markers. Markers are kept between renders and only rebuilt when what
+  // they show changes, so selecting a place or ticking "visited" touches one or two pins
+  // instead of redrawing all of them.
+  const markerCacheRef = useRef(new Map()); // id -> { marker, sig }
+  const placesByIdRef = useRef(new Map());
+  const onSelectRef = useRef(onSelectPlace);
+  onSelectRef.current = onSelectPlace;
+
   useEffect(() => {
-    const map = mapInstanceRef.current;
     const markersLayer = markersLayerRef.current;
-    const routeLayer = routeLayerRef.current;
-    if (!map || !markersLayer || !routeLayer) return;
+    if (!mapInstanceRef.current || !markersLayer) return;
 
-    markersLayer.clearLayers();
-    routeLayer.clearLayers();
-
-    const coordsList = [];
+    const cache = markerCacheRef.current;
+    const byId = new Map();
+    const toAdd = [];
+    const toRemove = [];
 
     places.forEach((place) => {
-      if (!place.coords || place.coords.length !== 2) return;
-      coordsList.push(place.coords);
+      if (!Array.isArray(place.coords) || place.coords.length !== 2) return;
+      if (!Number.isFinite(place.coords[0]) || !Number.isFinite(place.coords[1])) return;
+      byId.set(place.id, place);
 
       const catObj = CATEGORIES.find((c) => c.id === place.category) || CATEGORIES[0];
       const isSelected = selectedPlace?.id === place.id;
-      const pinBg = place.visited ? '#059669' : catObj.color;
       const tripIndex = tripPlanIds.indexOf(place.id);
+      const sig = [
+        place.coords.join(','), place.category, place.visited, place.favorite, tripIndex, isSelected,
+        place.name, place.city, place.duration
+      ].join('|');
 
+      const cached = cache.get(place.id);
+      if (cached && cached.sig === sig) return;
+
+      const pinBg = place.visited ? '#059669' : catObj.color;
       const badgeHtml = place.visited
         ? `<div class="pin-visited-badge" title="Gidildi / Keşfedildi">✓</div>`
         : place.favorite
         ? `<div class="pin-Bucket-badge" title="Öncelikli Gidilecek">★</div>`
         : '';
-
       const tripNumberHtml =
-        tripIndex !== -1
-          ? `<div class="pin-trip-number" title="Gezi Rotası Sırası">${tripIndex + 1}</div>`
-          : '';
-
+        tripIndex !== -1 ? `<div class="pin-trip-number" title="Gezi Rotası Sırası">${tripIndex + 1}</div>` : '';
       const icon = L.divIcon({
         className: 'custom-pin-wrapper',
-        html: `
-          <div class="pin-marker ${isSelected ? 'active-pin' : ''}" style="background: ${pinBg};">
-            <div class="pin-marker-inner">${catObj.icon}</div>
-            ${badgeHtml}
-            ${tripNumberHtml}
-          </div>
-        `,
+        html: `<div class="pin-marker ${isSelected ? 'active-pin' : ''}" style="background: ${pinBg};">
+            <div class="pin-marker-inner">${catObj.icon}</div>${badgeHtml}${tripNumberHtml}</div>`,
         iconSize: [38, 38],
         iconAnchor: [19, 38],
         popupAnchor: [0, -36]
       });
+      // Names can come from places the user typed in: escape them before they become HTML
+      const tooltipHtml = `<div style="font-weight:700;font-size:12px;">${place.visited ? '✓ ' : ''}${escapeHtml(place.name)}</div>
+         <div style="font-size:10px;opacity:0.85;">📍 ${escapeHtml(place.city)} • ⏱️ ${escapeHtml(place.duration)}</div>`;
 
-      const marker = L.marker(place.coords, { icon });
+      if (cached) {
+        cached.marker.setLatLng(place.coords);
+        cached.marker.setIcon(icon);
+        cached.marker.setTooltipContent(tooltipHtml);
+        cached.marker.setZIndexOffset(isSelected ? 1000 : 0);
+        cached.sig = sig;
+        return;
+      }
 
+      const marker = L.marker(place.coords, { icon, zIndexOffset: isSelected ? 1000 : 0 });
       marker.on('click', () => {
-        onSelectPlace(place);
+        const latest = placesByIdRef.current.get(place.id);
+        if (latest) onSelectRef.current(latest);
       });
-
-      marker.bindTooltip(
-        `<div style="font-weight:700;font-size:12px;">${place.visited ? '✓ ' : ''}${place.name}</div>
-         <div style="font-size:10px;opacity:0.85;">📍 ${place.city} • ⏱️ ${place.duration}</div>`,
-        {
-          direction: 'top',
-          offset: [0, -36],
-          opacity: 0.96
-        }
-      );
-
-      marker.addTo(markersLayer);
+      marker.bindTooltip(tooltipHtml, { direction: 'top', offset: [0, -36], opacity: 0.96 });
+      cache.set(place.id, { marker, sig });
+      toAdd.push(marker);
     });
+
+    cache.forEach((entry, id) => {
+      if (!byId.has(id)) {
+        toRemove.push(entry.marker);
+        cache.delete(id);
+      }
+    });
+
+    placesByIdRef.current = byId;
+    if (toRemove.length) markersLayer.removeLayers(toRemove);
+    if (toAdd.length) markersLayer.addLayers(toAdd);
+    // A marker whose icon changed inside a cluster needs its cluster refreshed
+    markersLayer.refreshClusters();
+  }, [places, selectedPlace, tripPlanIds]);
+
+  // Route line: the trip plan, or all filtered places when "Rota Çiz" is on
+  useEffect(() => {
+    const routeLayer = routeLayerRef.current;
+    if (!mapInstanceRef.current || !routeLayer) return;
+    routeLayer.clearLayers();
+    const coordsList = places.filter((p) => Array.isArray(p.coords) && p.coords.length === 2).map((p) => p.coords);
 
     // Draw Trip Plan Route OR Filtered Places Route
     if (tripPlanIds.length > 1) {
@@ -284,7 +335,7 @@ export default function TravelMap({
         opacity: 0.85
       }).addTo(routeLayer);
     }
-  }, [places, selectedPlace, showRoute, tripPlanIds, onSelectPlace]);
+  }, [places, showRoute, tripPlanIds]);
 
   // Search Anywhere on Earth using OpenStreetMap Nominatim
   const handleGeoSearch = async (e) => {
@@ -358,7 +409,7 @@ export default function TravelMap({
           )}
           <button
             type="submit"
-            className="ml-1 bg-amber-500 hover:bg-amber-400 text-slate-950 text-[11px] font-bold px-2.5 py-1 rounded-lg transition shrink-0 shadow-2xs"
+            className="ml-1 bg-amber-500 hover:bg-amber-400 text-slate-950 text-[11px] font-bold px-2.5 py-1.5 rounded-lg transition shrink-0 shadow-2xs"
           >
             {isSearchingGeo ? '...' : 'Bul'}
           </button>
@@ -414,7 +465,7 @@ export default function TravelMap({
             <button
               key={style.id}
               onClick={() => setMapStyle(style.id)}
-              className={`px-2 py-1 rounded-lg text-[11px] font-medium transition ${
+              className={`px-2 py-1.5 rounded-lg text-[11px] font-medium transition ${
                 mapStyle === style.id
                   ? 'bg-amber-500 text-slate-950 font-bold shadow-2xs'
                   : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
