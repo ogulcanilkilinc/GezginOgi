@@ -1,5 +1,14 @@
 [
   {
+    "id": "us-c-5",
+    "name": "ABD — Boston Özgürlük Yolu (Freedom Trail), Harvard Üniversitesi ve MIT (Cambridge)",
+    "city": "Massachusetts",
+    "country": "ABD",
+    "why": "Başka yapı: Harvard Sanders Tiyatrosu (Özgürlük Yolu değil)",
+    "searched": "ABD — Boston Özgürlük Yolu (Freedom Trail), Harvard Üniversitesi ve MIT (Cambridge)",
+    "candidate": ""
+  },
+  {
     "id": "us-18",
     "name": "ABD — Hawaii Adaları: Kauai (Na Pali Kıyısı), Maui (Road to Hana & Haleakala) ve Volkanlar Milli Parkı (UNESCO)",
     "city": "Hawaii (Pasifik)",
@@ -25,6 +34,15 @@
     "why": "Koordinat uzak (14.4 km)",
     "searched": "White Sands Milli Parkı | Santa Fe | Carlsbad Mağaraları | Bembeyaz Alçıtaşı Kumulları",
     "candidate": "Q1200164 White Sands Millî Parkı (14.42 km)"
+  },
+  {
+    "id": "us-c-4",
+    "name": "ABD — New York: 11 Eylül Anıtı & Müzesi, One World Gözlemevi ve Wall Street (Charging Bull)",
+    "city": "New York",
+    "country": "ABD",
+    "why": "Başka yapı: Wall Street metro durağı",
+    "searched": "ABD — New York: 11 Eylül Anıtı & Müzesi, One World Gözlemevi ve Wall Street (Charging Bull)",
+    "candidate": ""
   },
   {
     "id": "us-c-2",
@@ -648,12 +666,30 @@
     "candidate": ""
   },
   {
+    "id": "uk-06",
+    "name": "Birleşik Krallık — Notting Hill (Portobello Road Pazarı), Hyde Park & Kensington Sarayı",
+    "city": "Londra",
+    "country": "Birleşik Krallık",
+    "why": "Zayıf ilgi: Ladbroke Grove metro istasyonu",
+    "searched": "Birleşik Krallık — Notting Hill (Portobello Road Pazarı), Hyde Park & Kensington Sarayı",
+    "candidate": ""
+  },
+  {
     "id": "uk-16",
     "name": "Birleşik Krallık — Seven Sisters Beyaz Tebeşir Uçurumları & Beachy Head Deniz Feneri",
     "city": "East Sussex",
     "country": "Birleşik Krallık",
     "why": "Wikidata'da adla eşleşen kayıt bulunamadı",
     "searched": "Seven Sisters Beyaz Tebeşir Uçurumları | Beachy Head Deniz Feneri",
+    "candidate": ""
+  },
+  {
+    "id": "wld-av-ingiltere-londra-stonehenge",
+    "name": "İngiltere: Londra (British Museum, Big Ben, Tower Bridge), Stonehenge & Cotswolds Köyleri (UNESCO)",
+    "city": "Londra",
+    "country": "Birleşik Krallık",
+    "why": "Başka yapı: Londra Üniversitesi binası (Senate House)",
+    "searched": "İngiltere: Londra (British Museum, Big Ben, Tower Bridge), Stonehenge & Cotswolds Köyleri (UNESCO)",
     "candidate": ""
   },
   {
@@ -1701,6 +1737,15 @@
     "candidate": "Q2985347 Vada pav"
   },
   {
+    "id": "wld-amsterdam-jordaan",
+    "name": "Amsterdam: Kanal Kuşağı, Rijksmuseum, Van Gogh Müzesi & Jordaan Mahallesi",
+    "city": "Amsterdam",
+    "country": "Hollanda",
+    "why": "Zayıf ilgi: Amsterdam tramvay durağı",
+    "searched": "Amsterdam: Kanal Kuşağı, Rijksmuseum, Van Gogh Müzesi & Jordaan Mahallesi",
+    "candidate": ""
+  },
+  {
     "id": "nl-c-2",
     "name": "Hollanda — Amsterdam Vondelpark, Albert Cuyp Pazarı (De Pijp) ve A’DAM Lookout Salıncağı",
     "city": "Amsterdam",
@@ -2058,6 +2103,15 @@
     "country": "İsviçre",
     "why": "Wikidata'da adla eşleşen kayıt bulunamadı",
     "searched": "Rigi Dağı | Vierwaldstättersee Göl Vapuru | Dağların Kraliçesi",
+    "candidate": ""
+  },
+  {
+    "id": "it-21",
+    "name": "Alberobello (Konik Çatılı Trulli Evleri), Polignano a Mare & Ostuni (Puglia - UNESCO)",
+    "city": "Bari",
+    "country": "İtalya",
+    "why": "Zayıf ilgi: Alberobello tren istasyonu (Trulli değil)",
+    "searched": "Alberobello (Konik Çatılı Trulli Evleri), Polignano a Mare & Ostuni (Puglia - UNESCO)",
     "candidate": ""
   },
   {
@@ -2455,6 +2509,15 @@
     "why": "Kayıtta koordinat yok, konum doğrulanamadı",
     "searched": "Ashi Gölü Kırmızı Deniz Torii Kapısı | Korsan Gemisi | Owakudani Volkanik Vadisi",
     "candidate": "Q201559 korsan gemisi"
+  },
+  {
+    "id": "blk-me-8",
+    "name": "Karadağ — Bar: Stari Bar (Hayalet Taş Şehir & Su Kemeri) ve 2.240 Yaşındaki Eski Zeytin Ağacı",
+    "city": "Bar",
+    "country": "Karadağ",
+    "why": "Zayıf ilgi: Bar limanı (Stari Bar değil)",
+    "searched": "Karadağ — Bar: Stari Bar (Hayalet Taş Şehir & Su Kemeri) ve 2.240 Yaşındaki Eski Zeytin Ağacı",
+    "candidate": ""
   },
   {
     "id": "me-dp-3",
@@ -2862,6 +2925,15 @@
     "candidate": "Q753891 San Miguel de Allende (0.17 km)"
   },
   {
+    "id": "mx-dp-1",
+    "name": "Meksika — Mexico City: Zócalo Meydanı, Ulusal Antropoloji Müzesi ve Chapultepec Kalesi",
+    "city": "Mexico City",
+    "country": "Meksika",
+    "why": "Başka yapı: Antropoloji Müzesi girişi (Zócalo değil)",
+    "searched": "Meksika — Mexico City: Zócalo Meydanı, Ulusal Antropoloji Müzesi ve Chapultepec Kalesi",
+    "candidate": ""
+  },
+  {
     "id": "mx-dp-6",
     "name": "Meksika — Oaxaca Tarihi Merkezi, Hierve el Agua Taşlaşmış Şelaleleri ve Monte Albán",
     "city": "Oaxaca",
@@ -2970,6 +3042,15 @@
     "candidate": "Q1430119 Sultan Hasan Medresesi (1.85 km)"
   },
   {
+    "id": "eg-c-2",
+    "name": "Mısır — Kahire Kalesi (Selahaddin Eyyubi), Kavalalı Mehmet Ali Paşa Camii ve Sultan Hasan Medresesi",
+    "city": "Kahire",
+    "country": "Mısır",
+    "why": "Şüpheli dosya adı: thumbnail.jpg",
+    "searched": "Mısır — Kahire Kalesi (Selahaddin Eyyubi), Kavalalı Mehmet Ali Paşa Camii ve Sultan Hasan Medresesi",
+    "candidate": ""
+  },
+  {
     "id": "eg-c-3",
     "name": "Mısır — Kıpti Kahire (Asılı Kilise, Aziz Sergius ve Ben Ezra) & Mısır Medeniyeti Ulusal Müzesi (NMEC)",
     "city": "Kahire",
@@ -3031,6 +3112,15 @@
     "why": "Koordinat uzak (14.4 km)",
     "searched": "Ras Muhammed Milli Parkı | Farsha Mountain Lounge | Aziz Katerina Manastırı",
     "candidate": "Q1028367 Ras Muhammed Millî Parkı (14.38 km)"
+  },
+  {
+    "id": "wld-af-luksor-ebu-simbel",
+    "name": "Yukarı Mısır & Nil: Luksor (Krallar Vadisi & Karnak Tapınağı), Asvan & Ebu Simbel (UNESCO)",
+    "city": "Luksor & Asvan",
+    "country": "Mısır",
+    "why": "Zayıf ilgi: Luksor otel caddesi",
+    "searched": "Yukarı Mısır & Nil: Luksor (Krallar Vadisi & Karnak Tapınağı), Asvan & Ebu Simbel (UNESCO)",
+    "candidate": ""
   },
   {
     "id": "go-gobi",
@@ -3228,6 +3318,15 @@
     "country": "Özbekistan",
     "why": "Wikidata'da adla eşleşen kayıt bulunamadı",
     "searched": "Hive İçan Kale | Açık Hava Müzesi Sur İçi Kenti",
+    "candidate": ""
+  },
+  {
+    "id": "uz-dp-2",
+    "name": "Özbekistan — Şah-ı Zinde Nekropolü, Gür-i Emir (Timur Türbesi) ve Bibi Hanım",
+    "city": "Semerkant",
+    "country": "Özbekistan",
+    "why": "Başka yapı: Bibi Hanım türbesi (Şah-ı Zinde değil)",
+    "searched": "Özbekistan — Şah-ı Zinde Nekropolü, Gür-i Emir (Timur Türbesi) ve Bibi Hanım",
     "candidate": ""
   },
   {
@@ -4905,6 +5004,15 @@
     "candidate": "Q135582851 İmam Çağdaş (0.39 km)"
   },
   {
+    "id": "tr-ist-11",
+    "name": "İstanbul — Galataport, İstanbul Modern (Renzo Piano) ve Tophane Saat Kulesi",
+    "city": "İstanbul",
+    "country": "Türkiye",
+    "why": "Şüpheli dosya adı: thumbnail.jpg",
+    "searched": "İstanbul — Galataport, İstanbul Modern (Renzo Piano) ve Tophane Saat Kulesi",
+    "candidate": ""
+  },
+  {
     "id": "ank-isbankasi-roma-hamami",
     "name": "İş Bankası İktisadi Bağımsızlık Müzesi, Roma Hamamı & Augustus Tapınağı",
     "city": "Ulus",
@@ -5661,6 +5769,15 @@
     "candidate": "Q93209 Hakkari (6 km)"
   },
   {
+    "id": "ank-ulucanlar",
+    "name": "Ulucanlar Cezaevi Müzesi",
+    "city": "Altındağ",
+    "country": "Türkiye",
+    "why": "Zayıf ilgi: Genel Ankara panoraması (Ulucanlar Müzesi değil)",
+    "searched": "Ulucanlar Cezaevi Müzesi",
+    "candidate": ""
+  },
+  {
     "id": "go-uludag-kebapcisi",
     "name": "Uludağ Kebapçısı",
     "city": "Ulus",
@@ -6055,6 +6172,15 @@
     "why": "Şehir/yerleşim kaydı, yerin ana adı değil",
     "searched": "Korfu Venedik Eski Şehri | Achilleion Sarayı | Paleokastritsa | Kerkyra",
     "candidate": "Q205832 Korfu (0.05 km)"
+  },
+  {
+    "id": "gr-c-4",
+    "name": "Yunanistan — Korint Kanalı, Miken (Aslanlı Kapı) ve Epidauros Antik Tiyatrosu",
+    "city": "Mora Yarımadası",
+    "country": "Yunanistan",
+    "why": "Başka yapı: Epidavros tiyatrosu (Korint Kanalı değil)",
+    "searched": "Yunanistan — Korint Kanalı, Miken (Aslanlı Kapı) ve Epidauros Antik Tiyatrosu",
+    "candidate": ""
   },
   {
     "id": "gr-c-12",

@@ -18,7 +18,7 @@
     "source": "elle doğrulanmış (önceki tur)"
   },
   "ank-kugulu-tunali": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Ankara_Ku%C4%9Fulu_Park.JPG",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Ankara_Ku%C4%9Fulu_Park.JPG/960px-Ankara_Ku%C4%9Fulu_Park.JPG",
     "file": "Ankara Kuğulu Park.JPG",
     "page": "https://commons.wikimedia.org/wiki/File:Ankara_Ku%C4%9Fulu_Park.JPG",
     "artist": "Elelicht",
@@ -63,7 +63,7 @@
     "source": "elle doğrulanmış (önceki tur)"
   },
   "go-tuz-golu": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/3/38/Lake_Tuz.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Lake_Tuz.jpg/960px-Lake_Tuz.jpg",
     "file": "Lake Tuz.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Lake_Tuz.jpg",
     "artist": "NASA",
@@ -171,19 +171,6 @@
     "wikidataLabel": "Ankara Etnografya Müzesi",
     "matchedOn": "Etnografya Müzesi",
     "distanceKm": 0.05,
-    "source": "Wikidata P18"
-  },
-  "ank-ulucanlar": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Ankara%2C_Turkey_-_panoramio_%28223%29.jpg/960px-Ankara%2C_Turkey_-_panoramio_%28223%29.jpg",
-    "file": "Ankara, Turkey - panoramio (223).jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Ankara,_Turkey_-_panoramio_(223).jpg",
-    "artist": "ilhan turun",
-    "license": "CC BY 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-    "wikidata": "Q190497",
-    "wikidataLabel": "Ulucanlar Cezaevi Müzesi",
-    "matchedOn": "Ulucanlar Cezaevi Müzesi",
-    "distanceKm": 0.1,
     "source": "Wikidata P18"
   },
   "go-bogazici-lokantasi": {
@@ -330,7 +317,7 @@
     "source": "Wikidata P18"
   },
   "ank-dp-9": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/5/57/TCDD_Museum.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/TCDD_Museum.jpg/960px-TCDD_Museum.jpg",
     "file": "TCDD Museum.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:TCDD_Museum.jpg",
     "artist": "Mutt",
@@ -343,7 +330,7 @@
     "source": "Wikidata P18"
   },
   "ank-dp-10": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/9/90/Ankara_Pink_Villa.JPG",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Ankara_Pink_Villa.JPG/960px-Ankara_Pink_Villa.JPG",
     "file": "Ankara Pink Villa.JPG",
     "page": "https://commons.wikimedia.org/wiki/File:Ankara_Pink_Villa.JPG",
     "artist": "Mutt",
@@ -434,7 +421,7 @@
     "source": "Wikidata P18"
   },
   "go-arslanhane": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/8/83/Ankara_Arslanhani_Camii_Aussen.JPG",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Ankara_Arslanhani_Camii_Aussen.JPG/960px-Ankara_Arslanhani_Camii_Aussen.JPG",
     "file": "Ankara Arslanhani Camii Aussen.JPG",
     "page": "https://commons.wikimedia.org/wiki/File:Ankara_Arslanhani_Camii_Aussen.JPG",
     "artist": "Elelicht",
@@ -551,7 +538,7 @@
     "source": "Wikidata P18"
   },
   "tr-canakkale-troya-gelibolu": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Troy1.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Troy1.jpg/960px-Troy1.jpg",
     "file": "Troy1.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Troy1.jpg",
     "artist": "Bilinmiyor",
@@ -577,7 +564,7 @@
     "source": "Wikidata P18"
   },
   "tr-edirne-selimiye-meric": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Edirne_7333_Nevit.JPG",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Edirne_7333_Nevit.JPG/960px-Edirne_7333_Nevit.JPG",
     "file": "Edirne 7333 Nevit.JPG",
     "page": "https://commons.wikimedia.org/wiki/File:Edirne_7333_Nevit.JPG",
     "artist": "Nevit Dilmen",
@@ -629,7 +616,7 @@
     "source": "Wikidata P18"
   },
   "tr-erzincan-kemaliye-karanlik-kanyon": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Canyone_2_%2832828345%29.jpeg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Canyone_2_%2832828345%29.jpeg/960px-Canyone_2_%2832828345%29.jpeg",
     "file": "Canyone 2 (32828345).jpeg",
     "page": "https://commons.wikimedia.org/wiki/File:Canyone_2_(32828345).jpeg",
     "artist": "Engin Asil",
@@ -821,19 +808,6 @@
     "wikidataLabel": "İstiklal Caddesi",
     "matchedOn": "İstiklal Caddesi",
     "distanceKm": 0.11,
-    "source": "Wikidata P18"
-  },
-  "tr-ist-11": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Overview_of_Galataport_from_Cihangir_showing_Istanbul_Painting_and_Sculpture_Museum_on_left_and_Nusretiye_Mosque_on_right_with_Asian_shore_and_Princes%27_Islands_in_the_background.jpg/960px-thumbnail.jpg",
-    "file": "Overview of Galataport from Cihangir showing Istanbul Painting and Sculpture Museum on left and Nusretiye Mosque on right with Asian shore and Princes' Islands in the background.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Overview_of_Galataport_from_Cihangir_showing_Istanbul_Painting_and_Sculpture_Museum_on_left_and_Nusretiye_Mosque_on_right_with_Asian_shore_and_Princes%27_Islands_in_the_background.jpg",
-    "artist": "Ealinggirl1954",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "wikidata": "Q31190461",
-    "wikidataLabel": "Galataport",
-    "matchedOn": "Galataport",
-    "distanceKm": 0.22,
     "source": "Wikidata P18"
   },
   "tr-ist-12": {
@@ -1032,7 +1006,7 @@
     "source": "Wikidata P18"
   },
   "tr-ant-6": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Side.Great_Gate%2802%29.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Side.Great_Gate%2802%29.jpg/960px-Side.Great_Gate%2802%29.jpg",
     "file": "Side.Great Gate(02).jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Side.Great_Gate(02).jpg",
     "artist": "Bilinmiyor",
@@ -1123,7 +1097,7 @@
     "source": "Wikidata P18"
   },
   "tr-mug-4": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Sakl%C4%B1kent_Kanyonu_%282%29.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Sakl%C4%B1kent_Kanyonu_%282%29.jpg/960px-Sakl%C4%B1kent_Kanyonu_%282%29.jpg",
     "file": "Saklıkent Kanyonu (2).jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Sakl%C4%B1kent_Kanyonu_(2).jpg",
     "artist": "Cobija",
@@ -1253,7 +1227,7 @@
     "source": "Wikidata P18"
   },
   "tr-den-2": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/d/de/Lake_Salda_in_June_2020.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Lake_Salda_in_June_2020.jpg/960px-Lake_Salda_in_June_2020.jpg",
     "file": "Lake Salda in June 2020.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Lake_Salda_in_June_2020.jpg",
     "artist": "NASA Earth Observatory",
@@ -1513,7 +1487,7 @@
     "source": "Wikidata P18"
   },
   "tr-81-klr-2": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/5/50/Dupnisa_Cave%2C_Kirklareli_-_Ahmet_Baris_ISITAN.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Dupnisa_Cave%2C_Kirklareli_-_Ahmet_Baris_ISITAN.jpg/960px-Dupnisa_Cave%2C_Kirklareli_-_Ahmet_Baris_ISITAN.jpg",
     "file": "Dupnisa Cave, Kirklareli - Ahmet Baris ISITAN.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Dupnisa_Cave,_Kirklareli_-_Ahmet_Baris_ISITAN.jpg",
     "artist": "Ahmet Baris ISITAN",
@@ -1747,7 +1721,7 @@
     "source": "Wikidata P18"
   },
   "tr-81-tok-1": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/7/77/Ballica-magarasi_109064.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Ballica-magarasi_109064.jpg/960px-Ballica-magarasi_109064.jpg",
     "file": "Ballica-magarasi 109064.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Ballica-magarasi_109064.jpg",
     "artist": "Ümit1991",
@@ -1916,7 +1890,7 @@
     "source": "Wikidata P18"
   },
   "go-gokceada": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Gokceada5.JPG",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Gokceada5.JPG/960px-Gokceada5.JPG",
     "file": "Gokceada5.JPG",
     "page": "https://commons.wikimedia.org/wiki/File:Gokceada5.JPG",
     "artist": "Mehmet Ergun",
@@ -1929,7 +1903,7 @@
     "source": "Wikidata P18"
   },
   "go-datca-knidos": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Dat%C3%A7a.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Dat%C3%A7a.jpg/960px-Dat%C3%A7a.jpg",
     "file": "Datça.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Dat%C3%A7a.jpg",
     "artist": "Ostique",
@@ -2059,7 +2033,7 @@
     "source": "Wikidata P18"
   },
   "go-tarsus": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/8/83/Ulucami%2C_Tarsus%2C_Mersin_Province.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Ulucami%2C_Tarsus%2C_Mersin_Province.jpg/960px-Ulucami%2C_Tarsus%2C_Mersin_Province.jpg",
     "file": "Ulucami, Tarsus, Mersin Province.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Ulucami,_Tarsus,_Mersin_Province.jpg",
     "artist": "Nedim Ardoğa",
@@ -2098,7 +2072,7 @@
     "source": "Wikidata P18"
   },
   "go-patara": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Patara_ruins.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Patara_ruins.jpg/960px-Patara_ruins.jpg",
     "file": "Patara ruins.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Patara_ruins.jpg",
     "artist": "Erp",
@@ -2163,7 +2137,7 @@
     "source": "Wikidata P18"
   },
   "go-dilek-yarimadasi": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Ku%C5%9Fadas%C4%B1_from_Milli_Park.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Ku%C5%9Fadas%C4%B1_from_Milli_Park.jpg/960px-Ku%C5%9Fadas%C4%B1_from_Milli_Park.jpg",
     "file": "Kuşadası from Milli Park.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Ku%C5%9Fadas%C4%B1_from_Milli_Park.jpg",
     "artist": "ahenobarbus",
@@ -2368,19 +2342,6 @@
     "wikidataLabel": "Karl Köprüsü",
     "matchedOn": "Charles Bridge",
     "distanceKm": 0.04,
-    "source": "Wikidata P18"
-  },
-  "wld-amsterdam-jordaan": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Tram_10%2C_2018%2C_halte_13%2C_Spiegelgracht.jpg/960px-Tram_10%2C_2018%2C_halte_13%2C_Spiegelgracht.jpg",
-    "file": "Tram 10, 2018, halte 13, Spiegelgracht.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Tram_10,_2018,_halte_13,_Spiegelgracht.jpg",
-    "artist": "Ceescamel",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "wikidata": "Q111291263",
-    "wikidataLabel": "Tram stop Rijksmuseum",
-    "matchedOn": "Rijksmuseum",
-    "distanceKm": 1.36,
     "source": "Wikidata P18"
   },
   "wld-venedik-burano": {
@@ -2605,7 +2566,7 @@
     "source": "Wikidata P18"
   },
   "wld-mtp-bora-bora-tahiti": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/2/2d/BoraboraISS006-E-39815.PNG",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/BoraboraISS006-E-39815.PNG/960px-BoraboraISS006-E-39815.PNG",
     "file": "BoraboraISS006-E-39815.PNG",
     "page": "https://commons.wikimedia.org/wiki/File:BoraboraISS006-E-39815.PNG",
     "artist": "NASA",
@@ -2667,19 +2628,6 @@
     "wikidataLabel": "Kap Şehri",
     "matchedOn": "Cape Town",
     "distanceKm": 0.05,
-    "source": "Wikidata P18"
-  },
-  "wld-af-luksor-ebu-simbel": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/3/35/LuxorHotelsIbnWalidSt.jpg",
-    "file": "LuxorHotelsIbnWalidSt.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:LuxorHotelsIbnWalidSt.jpg",
-    "artist": "Roland Unger",
-    "license": "CC BY-SA 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-    "wikidata": "Q130514",
-    "wikidataLabel": "Uksur",
-    "matchedOn": "Luksor",
-    "distanceKm": 6.48,
     "source": "Wikidata P18"
   },
   "wld-ort-iran-isfahan-persepolis": {
@@ -2784,19 +2732,6 @@
     "wikidataLabel": "Moraine Gölü",
     "matchedOn": "Moraine Gölü",
     "distanceKm": 0.09,
-    "source": "Wikidata P18"
-  },
-  "wld-av-ingiltere-londra-stonehenge": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Senate_House_UoL.jpg/960px-Senate_House_UoL.jpg",
-    "file": "Senate House UoL.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Senate_House_UoL.jpg",
-    "artist": "An Siarach at English Wikipedia",
-    "license": "Public domain",
-    "licenseUrl": "",
-    "wikidata": "Q170027",
-    "wikidataLabel": "Londra Üniversitesi",
-    "matchedOn": "Londra",
-    "distanceKm": 0.23,
     "source": "Wikidata P18"
   },
   "wld-av-yunanistan-santorini-rodos": {
@@ -2930,7 +2865,7 @@
     "source": "Wikidata P18"
   },
   "wld-mtp4-malezya-borneo-mulu": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Kuala_Lumpur_with_Petronas_Towers.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Kuala_Lumpur_with_Petronas_Towers.jpg/960px-Kuala_Lumpur_with_Petronas_Towers.jpg",
     "file": "Kuala Lumpur with Petronas Towers.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Kuala_Lumpur_with_Petronas_Towers.jpg",
     "artist": "thomasgl",
@@ -3060,7 +2995,7 @@
     "source": "Wikidata P18"
   },
   "it-04": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/1/18/Paolo_Monti_-_Servizio_fotografico_%28Roma%2C_1966%29_-_BEIC_6329173.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Paolo_Monti_-_Servizio_fotografico_%28Roma%2C_1966%29_-_BEIC_6329173.jpg/960px-Paolo_Monti_-_Servizio_fotografico_%28Roma%2C_1966%29_-_BEIC_6329173.jpg",
     "file": "Paolo Monti - Servizio fotografico (Roma, 1966) - BEIC 6329173.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Paolo_Monti_-_Servizio_fotografico_(Roma,_1966)_-_BEIC_6329173.jpg",
     "artist": "Paolo Monti",
@@ -3228,19 +3163,6 @@
     "distanceKm": 0.34,
     "source": "Wikidata P18"
   },
-  "it-21": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/StazionediAlberobello.jpg/960px-StazionediAlberobello.jpg",
-    "file": "StazionediAlberobello.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:StazionediAlberobello.jpg",
-    "artist": "Inselmann",
-    "license": "CC BY-SA 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-    "wikidata": "Q16970637",
-    "wikidataLabel": "Alberobello railway station",
-    "matchedOn": "Alberobello",
-    "distanceKm": 0.52,
-    "source": "Wikidata P18"
-  },
   "it-22": {
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Taormina_BW_2012-10-05_16-23-06.JPG/960px-Taormina_BW_2012-10-05_16-23-06.JPG",
     "file": "Taormina BW 2012-10-05 16-23-06.JPG",
@@ -3268,7 +3190,7 @@
     "source": "Wikidata P18"
   },
   "fr-02": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/3/33/Szensapel.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Szensapel.jpg/960px-Szensapel.jpg",
     "file": "Szensapel.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Szensapel.jpg",
     "artist": "Mathae",
@@ -3723,7 +3645,7 @@
     "source": "Wikidata P18"
   },
   "uk-02": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/7/76/Entrance_to_Natural_History_Museum%2C_Cromwell_Road%2C_London_SW7_-_geograph.org.uk_-_1034304.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Entrance_to_Natural_History_Museum%2C_Cromwell_Road%2C_London_SW7_-_geograph.org.uk_-_1034304.jpg/960px-Entrance_to_Natural_History_Museum%2C_Cromwell_Road%2C_London_SW7_-_geograph.org.uk_-_1034304.jpg",
     "file": "Entrance to Natural History Museum, Cromwell Road, London SW7 - geograph.org.uk - 1034304.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Entrance_to_Natural_History_Museum,_Cromwell_Road,_London_SW7_-_geograph.org.uk_-_1034304.jpg",
     "artist": "Christine Matthews",
@@ -3772,19 +3694,6 @@
     "wikidataLabel": "National Gallery",
     "matchedOn": "National Gallery",
     "distanceKm": 0,
-    "source": "Wikidata P18"
-  },
-  "uk-06": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Ladbroke_Grove_station_building_2020.jpg/960px-Ladbroke_Grove_station_building_2020.jpg",
-    "file": "Ladbroke Grove station building 2020.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Ladbroke_Grove_station_building_2020.jpg",
-    "artist": "TheFrog001",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "wikidata": "Q1411854",
-    "wikidataLabel": "Ladbroke Grove metro istasyonu",
-    "matchedOn": "Notting Hill",
-    "distanceKm": 0.42,
     "source": "Wikidata P18"
   },
   "uk-07": {
@@ -3866,7 +3775,7 @@
     "source": "Wikidata P18"
   },
   "uk-17": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/3/37/Stratford-upon-Avon_railway_station_in_2000.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Stratford-upon-Avon_railway_station_in_2000.jpg/960px-Stratford-upon-Avon_railway_station_in_2000.jpg",
     "file": "Stratford-upon-Avon railway station in 2000.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Stratford-upon-Avon_railway_station_in_2000.jpg",
     "artist": "User:Edward",
@@ -3905,7 +3814,7 @@
     "source": "Wikidata P18"
   },
   "uk-20": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b9/The_Albert_Dock_-_geograph.org.uk_-_7527.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/The_Albert_Dock_-_geograph.org.uk_-_7527.jpg/960px-The_Albert_Dock_-_geograph.org.uk_-_7527.jpg",
     "file": "The Albert Dock - geograph.org.uk - 7527.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:The_Albert_Dock_-_geograph.org.uk_-_7527.jpg",
     "artist": "Eleanor Hurlock",
@@ -3944,7 +3853,7 @@
     "source": "Wikidata P18"
   },
   "uk-25": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/e/e7/The_Old_Man_of_Storr_-_geograph.org.uk_-_88057.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/The_Old_Man_of_Storr_-_geograph.org.uk_-_88057.jpg/960px-The_Old_Man_of_Storr_-_geograph.org.uk_-_88057.jpg",
     "file": "The Old Man of Storr - geograph.org.uk - 88057.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:The_Old_Man_of_Storr_-_geograph.org.uk_-_88057.jpg",
     "artist": "Nigel Homer",
@@ -3957,7 +3866,7 @@
     "source": "Wikidata P18"
   },
   "uk-26": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Wikibelfast1.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Wikibelfast1.jpg/960px-Wikibelfast1.jpg",
     "file": "Wikibelfast1.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Wikibelfast1.jpg",
     "artist": "Conor2k10",
@@ -4178,7 +4087,7 @@
     "source": "Wikidata P18"
   },
   "be-03": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/On_the_Meuse_near_Dinant.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/On_the_Meuse_near_Dinant.jpg/960px-On_the_Meuse_near_Dinant.jpg",
     "file": "On the Meuse near Dinant.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:On_the_Meuse_near_Dinant.jpg",
     "artist": "Annette Hannah Elias (17 June 1848 – 20 January 1921)",
@@ -4217,7 +4126,7 @@
     "source": "Wikidata P18"
   },
   "jp-04": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/UenoPark_Hanami.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/UenoPark_Hanami.jpg/960px-UenoPark_Hanami.jpg",
     "file": "UenoPark Hanami.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:UenoPark_Hanami.jpg",
     "artist": "The original uploader was Sdalu at English Wikipedia.",
@@ -4373,7 +4282,7 @@
     "source": "Wikidata P18"
   },
   "us-09": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/4/47/2025_New_Orleans_truck_attack_CCTV_still.png",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/2025_New_Orleans_truck_attack_CCTV_still.png/960px-2025_New_Orleans_truck_attack_CCTV_still.png",
     "file": "2025 New Orleans truck attack CCTV still.png",
     "page": "https://commons.wikimedia.org/wiki/File:2025_New_Orleans_truck_attack_CCTV_still.png",
     "artist": "CCTV Footage",
@@ -4503,7 +4412,7 @@
     "source": "Wikidata P18"
   },
   "cn-07": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Huangshan_fengjing.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Huangshan_fengjing.jpg/960px-Huangshan_fengjing.jpg",
     "file": "Huangshan fengjing.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Huangshan_fengjing.jpg",
     "artist": "Bilinmiyor",
@@ -4828,7 +4737,7 @@
     "source": "Wikidata P18"
   },
   "al-dp-1": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Mangalem.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Mangalem.jpg/960px-Mangalem.jpg",
     "file": "Mangalem.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Mangalem.jpg",
     "artist": "Etrusko25",
@@ -5010,7 +4919,7 @@
     "source": "Wikidata P18"
   },
   "pl-dp-6": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Lomnicky_and_Kezmarsky_stit_from_Skalnate_pleso_II.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Lomnicky_and_Kezmarsky_stit_from_Skalnate_pleso_II.jpg/960px-Lomnicky_and_Kezmarsky_stit_from_Skalnate_pleso_II.jpg",
     "file": "Lomnicky and Kezmarsky stit from Skalnate pleso II.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Lomnicky_and_Kezmarsky_stit_from_Skalnate_pleso_II.jpg",
     "artist": "Kristo",
@@ -5477,19 +5386,6 @@
     "distanceKm": 0.21,
     "source": "Wikidata P18"
   },
-  "uz-dp-2": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/%D0%A3%D1%81%D1%8B%D0%BF%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D0%B0_%D0%91%D0%B8%D0%B1%D0%B8-%D0%A5%D0%B0%D0%BD%D1%8B%D0%BC.jpg/960px-%D0%A3%D1%81%D1%8B%D0%BF%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D0%B0_%D0%91%D0%B8%D0%B1%D0%B8-%D0%A5%D0%B0%D0%BD%D1%8B%D0%BC.jpg",
-    "file": "Усыпальница Биби-Ханым.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:%D0%A3%D1%81%D1%8B%D0%BF%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D0%B0_%D0%91%D0%B8%D0%B1%D0%B8-%D0%A5%D0%B0%D0%BD%D1%8B%D0%BC.jpg",
-    "artist": "Arina Pan",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "wikidata": "Q20007114",
-    "wikidataLabel": "Bibi Hanım Türbesi",
-    "matchedOn": "Bibi Hanım",
-    "distanceKm": 0.55,
-    "source": "Wikidata P18"
-  },
   "uz-dp-3": {
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Ark_Citadel.jpg/960px-Ark_Citadel.jpg",
     "file": "Ark Citadel.jpg",
@@ -5646,19 +5542,6 @@
     "distanceKm": 2.35,
     "source": "Wikidata P18"
   },
-  "mx-dp-1": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/9/94/Musee_National_Anthropologie-Entree.jpg",
-    "file": "Musee National Anthropologie-Entree.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Musee_National_Anthropologie-Entree.jpg",
-    "artist": "kornemuz",
-    "license": "CC BY-SA 3.0",
-    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
-    "wikidata": "Q524249",
-    "wikidataLabel": "Ulusal Antropoloji Müzesi",
-    "matchedOn": "Ulusal Antropoloji Müzesi",
-    "distanceKm": 0.02,
-    "source": "Wikidata P18"
-  },
   "mx-dp-2": {
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Museo_Frida_Kahlo.JPG/960px-Museo_Frida_Kahlo.JPG",
     "file": "Museo Frida Kahlo.JPG",
@@ -5686,7 +5569,7 @@
     "source": "Wikidata P18"
   },
   "pe-dp-2": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Sacsayhuaman_Inca.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sacsayhuaman_Inca.jpg/960px-Sacsayhuaman_Inca.jpg",
     "file": "Sacsayhuaman Inca.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Sacsayhuaman_Inca.jpg",
     "artist": "Leon Petrosyan",
@@ -5907,7 +5790,7 @@
     "source": "Wikidata P18"
   },
   "gr-c-1": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Anafiotika.JPG",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Anafiotika.JPG/960px-Anafiotika.JPG",
     "file": "Anafiotika.JPG",
     "page": "https://commons.wikimedia.org/wiki/File:Anafiotika.JPG",
     "artist": "Antonio Fajardo i López",
@@ -5917,19 +5800,6 @@
     "wikidataLabel": "Anaphiotica",
     "matchedOn": "Anafiotika",
     "distanceKm": 0.27,
-    "source": "Wikidata P18"
-  },
-  "gr-c-4": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/07Epidaurus_Theater07.jpg/960px-07Epidaurus_Theater07.jpg",
-    "file": "07Epidaurus Theater07.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:07Epidaurus_Theater07.jpg",
-    "artist": "Fingalo",
-    "license": "CC BY-SA 2.0 de",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/de/deed.en",
-    "wikidata": "Q608198",
-    "wikidataLabel": "Epidauros Antik Tiyatrosu",
-    "matchedOn": "Epidauros Antik Tiyatrosu",
-    "distanceKm": 0,
     "source": "Wikidata P18"
   },
   "gr-c-7": {
@@ -6128,7 +5998,7 @@
     "source": "Wikidata P18"
   },
   "us-c-1": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/1/10/Empire_State_Building_%28aerial_view%29.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/960px-Empire_State_Building_%28aerial_view%29.jpg",
     "file": "Empire State Building (aerial view).jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Empire_State_Building_(aerial_view).jpg",
     "artist": "Sam Valadi",
@@ -6138,32 +6008,6 @@
     "wikidataLabel": "Empire State Binası",
     "matchedOn": "Empire State Building",
     "distanceKm": 0.01,
-    "source": "Wikidata P18"
-  },
-  "us-c-4": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/BwyWalk0505_StationWallSt.jpg/960px-BwyWalk0505_StationWallSt.jpg",
-    "file": "BwyWalk0505 StationWallSt.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:BwyWalk0505_StationWallSt.jpg",
-    "artist": "Bilinmiyor",
-    "license": "Public domain",
-    "licenseUrl": "",
-    "wikidata": "Q2183775",
-    "wikidataLabel": "Wall Street",
-    "matchedOn": "Wall Street",
-    "distanceKm": 0.46,
-    "source": "Wikidata P18"
-  },
-  "us-c-5": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Sanders_theater_2009y.JPG/960px-Sanders_theater_2009y.JPG",
-    "file": "Sanders theater 2009y.JPG",
-    "page": "https://commons.wikimedia.org/wiki/File:Sanders_theater_2009y.JPG",
-    "artist": "chensiyuan",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "wikidata": "Q13371",
-    "wikidataLabel": "Harvard Üniversitesi",
-    "matchedOn": "Harvard Üniversitesi",
-    "distanceKm": 0.28,
     "source": "Wikidata P18"
   },
   "cn-c-2": {
@@ -6192,21 +6036,8 @@
     "distanceKm": 0.5,
     "source": "Wikidata P18"
   },
-  "eg-c-2": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Flickr_-_HuTect_ShOts_-_Citadel_of_Salah_El.Din_and_Masjid_Muhammad_Ali_%D9%82%D9%84%D8%B9%D8%A9_%D8%B5%D9%84%D8%A7%D8%AD_%D8%A7%D9%84%D8%AF%D9%8A%D9%86_%D8%A7%D9%84%D8%A3%D9%8A%D9%88%D8%A8%D9%8A_%D9%88%D9%85%D8%B3%D8%AC%D8%AF_%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D9%84%D9%8A_-_Cairo_-_Egypt_-_17_04_2010_%284%29.jpg/960px-thumbnail.jpg",
-    "file": "Flickr - HuTect ShOts - Citadel of Salah El.Din and Masjid Muhammad Ali قلعة صلاح الدين الأيوبي ومسجد محمد علي - Cairo - Egypt - 17 04 2010 (4).jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Flickr_-_HuTect_ShOts_-_Citadel_of_Salah_El.Din_and_Masjid_Muhammad_Ali_%D9%82%D9%84%D8%B9%D8%A9_%D8%B5%D9%84%D8%A7%D8%AD_%D8%A7%D9%84%D8%AF%D9%8A%D9%86_%D8%A7%D9%84%D8%A3%D9%8A%D9%88%D8%A8%D9%8A_%D9%88%D9%85%D8%B3%D8%AC%D8%AF_%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D9%84%D9%8A_-_Cairo_-_Egypt_-_17_04_2010_(4).jpg",
-    "artist": "Ahmed Al.Badawy from Cairo, Egypt",
-    "license": "CC BY-SA 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-    "wikidata": "Q1988240",
-    "wikidataLabel": "Kahire Kalesi",
-    "matchedOn": "Kahire Kalesi",
-    "distanceKm": 0.16,
-    "source": "Wikidata P18"
-  },
   "eg-c-4": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/ThebesMadinatHabuAerial.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/ThebesMadinatHabuAerial.jpg/960px-ThebesMadinatHabuAerial.jpg",
     "file": "ThebesMadinatHabuAerial.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:ThebesMadinatHabuAerial.jpg",
     "artist": "Roland Unger",
@@ -6466,7 +6297,7 @@
     "source": "Wikidata P18"
   },
   "w195-bn-1": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Sultan_Omar_Ali_Saifuddien_Mosque%3B_2002.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Sultan_Omar_Ali_Saifuddien_Mosque%3B_2002.jpg/960px-Sultan_Omar_Ali_Saifuddien_Mosque%3B_2002.jpg",
     "file": "Sultan Omar Ali Saifuddien Mosque; 2002.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Sultan_Omar_Ali_Saifuddien_Mosque;_2002.jpg",
     "artist": "Daniel Weiss",
@@ -6570,7 +6401,7 @@
     "source": "Wikidata P18"
   },
   "w195-sn-1": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Senegal_Gor%C3%A9e_island_harbor.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Senegal_Gor%C3%A9e_island_harbor.jpg/960px-Senegal_Gor%C3%A9e_island_harbor.jpg",
     "file": "Senegal Gorée island harbor.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Senegal_Gor%C3%A9e_island_harbor.jpg",
     "artist": "Bilinmiyor",
@@ -6648,7 +6479,7 @@
     "source": "Wikidata P18"
   },
   "w195-bz-1": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/6/61/Great_Blue_Hole.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Great_Blue_Hole.jpg/960px-Great_Blue_Hole.jpg",
     "file": "Great Blue Hole.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Great_Blue_Hole.jpg",
     "artist": "U.S. Geological Survey (USGS)",
@@ -6778,7 +6609,7 @@
     "source": "Wikidata P18"
   },
   "blk-ba-8": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Stolac_pobliz_Mostaru_v_udoli_ricky_Bregavy%2C_pohled_z_hradu.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Stolac_pobliz_Mostaru_v_udoli_ricky_Bregavy%2C_pohled_z_hradu.jpg/960px-Stolac_pobliz_Mostaru_v_udoli_ricky_Bregavy%2C_pohled_z_hradu.jpg",
     "file": "Stolac pobliz Mostaru v udoli ricky Bregavy, pohled z hradu.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Stolac_pobliz_Mostaru_v_udoli_ricky_Bregavy,_pohled_z_hradu.jpg",
     "artist": "Martin Brož",
@@ -6843,7 +6674,7 @@
     "source": "Wikidata P18"
   },
   "blk-me-6": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Plava_spilja_by_Klackalica.JPG",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Plava_spilja_by_Klackalica.JPG/960px-Plava_spilja_by_Klackalica.JPG",
     "file": "Plava spilja by Klackalica.JPG",
     "page": "https://commons.wikimedia.org/wiki/File:Plava_spilja_by_Klackalica.JPG",
     "artist": "No machine-readable author provided. Klackalica~commonswiki assumed (based on copyright claims).",
@@ -6868,19 +6699,6 @@
     "distanceKm": 0.47,
     "source": "Wikidata P18"
   },
-  "blk-me-8": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/%D0%9F%D0%BE%D1%80%D1%82_%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%B0_%D0%91%D0%B0%D1%80._4_%D0%B8%D1%8E%D0%BD%D1%8F_2019.jpg/960px-%D0%9F%D0%BE%D1%80%D1%82_%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%B0_%D0%91%D0%B0%D1%80._4_%D0%B8%D1%8E%D0%BD%D1%8F_2019.jpg",
-    "file": "Порт города Бар. 4 июня 2019.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:%D0%9F%D0%BE%D1%80%D1%82_%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%B0_%D0%91%D0%B0%D1%80._4_%D0%B8%D1%8E%D0%BD%D1%8F_2019.jpg",
-    "artist": "Московская духовная академия",
-    "license": "CC BY-SA 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-    "wikidata": "Q115276",
-    "wikidataLabel": "Bar",
-    "matchedOn": "Stari Bar",
-    "distanceKm": 2.91,
-    "source": "Wikidata P18"
-  },
   "blk-al-1": {
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Rozafa_Castle_in_July_2013_%285%29.JPG/960px-Rozafa_Castle_in_July_2013_%285%29.JPG",
     "file": "Rozafa Castle in July 2013 (5).JPG",
@@ -6895,7 +6713,7 @@
     "source": "Wikidata P18"
   },
   "blk-al-3": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Pazari_i_Ri.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Pazari_i_Ri.jpg/960px-Pazari_i_Ri.jpg",
     "file": "Pazari i Ri.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Pazari_i_Ri.jpg",
     "artist": "Albinfo",
@@ -6960,7 +6778,7 @@
     "source": "Wikidata P18"
   },
   "blk-rs-1": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Sava_Lake_%28%D0%A1%D0%B0%D0%B2%D1%81%D0%BA%D0%BE_%D1%98%D0%B5%D0%B7%D0%B5%D1%80%D0%BE%29.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Sava_Lake_%28%D0%A1%D0%B0%D0%B2%D1%81%D0%BA%D0%BE_%D1%98%D0%B5%D0%B7%D0%B5%D1%80%D0%BE%29.jpg/960px-Sava_Lake_%28%D0%A1%D0%B0%D0%B2%D1%81%D0%BA%D0%BE_%D1%98%D0%B5%D0%B7%D0%B5%D1%80%D0%BE%29.jpg",
     "file": "Sava Lake (Савско језеро).jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Sava_Lake_(%D0%A1%D0%B0%D0%B2%D1%81%D0%BA%D0%BE_%D1%98%D0%B5%D0%B7%D0%B5%D1%80%D0%BE).jpg",
     "artist": "Zvonko at English Wikipedia; Transfer was made by User:Mifter.",
@@ -6986,7 +6804,7 @@
     "source": "Wikidata P18"
   },
   "blk-rs-4": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/%D0%A1%D1%83%D0%B1%D0%BE%D1%82%D0%B8%D1%86%D0%B0.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/%D0%A1%D1%83%D0%B1%D0%BE%D1%82%D0%B8%D1%86%D0%B0.jpg/960px-%D0%A1%D1%83%D0%B1%D0%BE%D1%82%D0%B8%D1%86%D0%B0.jpg",
     "file": "Суботица.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:%D0%A1%D1%83%D0%B1%D0%BE%D1%82%D0%B8%D1%86%D0%B0.jpg",
     "artist": "Саша Стефановић at Serbian Wikipedia",
@@ -7168,7 +6986,7 @@
     "source": "Wikidata P18"
   },
   "go-cadiz": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/3/35/Cadiz_aerea.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Cadiz_aerea.jpg/960px-Cadiz_aerea.jpg",
     "file": "Cadiz aerea.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Cadiz_aerea.jpg",
     "artist": "fuente: COVT",
@@ -7545,7 +7363,7 @@
     "source": "Wikidata P18"
   },
   "go-ghibli": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Ghibli-museum-mitaka.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Ghibli-museum-mitaka.jpg/960px-Ghibli-museum-mitaka.jpg",
     "file": "Ghibli-museum-mitaka.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Ghibli-museum-mitaka.jpg",
     "artist": "Bilinmiyor",
@@ -7610,7 +7428,7 @@
     "source": "Wikidata P18"
   },
   "go-alte-pinakothek": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Alte_Pinakothek.JPG",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Alte_Pinakothek.JPG/960px-Alte_Pinakothek.JPG",
     "file": "Alte Pinakothek.JPG",
     "page": "https://commons.wikimedia.org/wiki/File:Alte_Pinakothek.JPG",
     "artist": "Markus Würfel",
@@ -7636,7 +7454,7 @@
     "source": "Wikidata P18"
   },
   "go-louisiana": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Louisiana_Museum_of_Modern_Art_Hovedindgang.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Louisiana_Museum_of_Modern_Art_Hovedindgang.jpg/960px-Louisiana_Museum_of_Modern_Art_Hovedindgang.jpg",
     "file": "Louisiana Museum of Modern Art Hovedindgang.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Louisiana_Museum_of_Modern_Art_Hovedindgang.jpg",
     "artist": "Louisiana Museum of Modern Art / Kim Hansen",
@@ -7818,7 +7636,7 @@
     "source": "Wikidata P18"
   },
   "go-persepolis": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Gate_of_All_Nations%2C_Persepolis.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Gate_of_All_Nations%2C_Persepolis.jpg/960px-Gate_of_All_Nations%2C_Persepolis.jpg",
     "file": "Gate of All Nations, Persepolis.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Gate_of_All_Nations,_Persepolis.jpg",
     "artist": "Alborzagros",
@@ -7870,7 +7688,7 @@
     "source": "Wikidata P18"
   },
   "go-great-zimbabwe": {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/1/19/Great-Zimbabwe-6.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Great-Zimbabwe-6.jpg/960px-Great-Zimbabwe-6.jpg",
     "file": "Great-Zimbabwe-6.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Great-Zimbabwe-6.jpg",
     "artist": "Bilinmiyor",
