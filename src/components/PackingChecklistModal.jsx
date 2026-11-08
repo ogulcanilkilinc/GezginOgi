@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDocSync } from '../services/useDocSync';
 import { X, CheckSquare, Square, Plus, Trash2, RotateCcw, Briefcase, Sparkles, CheckCircle2 } from 'lucide-react';
 
 const STORAGE_KEY = 'kesif_atlasim_bavul_checklist_v1';
@@ -97,6 +98,16 @@ export default function PackingChecklistModal({ isOpen, onClose }) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
     } catch (_) {}
   }, [categories]);
+
+  // The packing list follows the user across devices
+  useDocSync({
+    id: 'packing',
+    value: categories,
+    setValue: (d) => {
+      if (Array.isArray(d) && d.length > 0) setCategories(d);
+    },
+    isEmpty: () => false
+  });
 
   if (!isOpen) return null;
 

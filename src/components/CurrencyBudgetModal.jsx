@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useDocSync } from '../services/useDocSync';
 import { X, Wallet, ArrowRightLeft, Plus, Trash2, PieChart, TrendingUp, AlertCircle, Check } from 'lucide-react';
 
 const STORAGE_KEY = 'kesif_atlasim_budget_v1';
@@ -28,7 +29,13 @@ export default function CurrencyBudgetModal({ isOpen, onClose }) {
   const [fromCurrency, setFromCurrency] = useState('EUR');
 
   // Budget & Expenses State
-  const [budgetLimitEur, setBudgetLimitEur] = useState('800');
+  const [budgetLimitEur, setBudgetLimitEur] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (saved && saved.budgetLimitEur !== undefined) return String(saved.budgetLimitEur);
+    } catch (_) {}
+    return '800';
+  });
   const [expenses, setExpenses] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -59,6 +66,18 @@ export default function CurrencyBudgetModal({ isOpen, onClose }) {
       );
     } catch (_) {}
   }, [budgetLimitEur, expenses]);
+
+  // The budget follows the user across devices
+  const budgetDoc = useMemo(() => ({ budgetLimitEur, expenses }), [budgetLimitEur, expenses]);
+  useDocSync({
+    id: 'budget',
+    value: budgetDoc,
+    setValue: (d) => {
+      if (Array.isArray(d?.expenses)) setExpenses(d.expenses);
+      if (d?.budgetLimitEur !== undefined) setBudgetLimitEur(String(d.budgetLimitEur));
+    },
+    isEmpty: () => false
+  });
 
   if (!isOpen) return null;
 

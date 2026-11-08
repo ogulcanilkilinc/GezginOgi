@@ -22,9 +22,19 @@ function writeMeta(id, meta) {
   } catch (e) {}
 }
 
+// JSON with sorted keys: the database returns objects with keys in its own order
+function canonical(v) {
+  if (Array.isArray(v)) return `[${v.map(canonical).join(',')}]`;
+  if (v && typeof v === 'object') {
+    return `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${canonical(v[k])}`).join(',')}}`;
+  }
+  return JSON.stringify(v ?? null);
+}
+
 export function useDocSync({ id, value, setValue, isEmpty, disabled }) {
   const valueRef = useRef(value);
-  const skipNextChangeRef = useRef(true); // the first render is the stored value, not an edit
+  const firstRenderRef = useRef(true); // the first render is the stored value, not an edit
+  const appliedRemoteRef = useRef(null); // canonical JSON of data just taken from the cloud
   const busyRef = useRef(false);
   const lastPullRef = useRef(0);
   valueRef.current = value;
@@ -57,7 +67,7 @@ export function useDocSync({ id, value, setValue, isEmpty, disabled }) {
       lastPullRef.current = Date.now();
       const meta = readMeta(id);
       if (cloud && cloud.updatedAt > meta.updatedAt && !meta.dirty) {
-        skipNextChangeRef.current = true;
+        appliedRemoteRef.current = canonical(cloud.data);
         setValue(cloud.data);
         writeMeta(id, { updatedAt: cloud.updatedAt, dirty: false });
       } else if (meta.dirty || (!cloud && !isEmpty(valueRef.current))) {
@@ -81,10 +91,14 @@ export function useDocSync({ id, value, setValue, isEmpty, disabled }) {
 
   // Local edits: stamp them and push after a short pause
   useEffect(() => {
-    if (skipNextChangeRef.current) {
-      skipNextChangeRef.current = false;
+    if (firstRenderRef.current) {
+      firstRenderRef.current = false;
       return;
     }
+    // A change that only mirrors what was just pulled is not a local edit
+    const mirrorsRemote = appliedRemoteRef.current !== null && canonical(value) === appliedRemoteRef.current;
+    appliedRemoteRef.current = null;
+    if (mirrorsRemote) return;
     if (disabled) return;
     writeMeta(id, { updatedAt: Date.now(), dirty: true });
     const t = setTimeout(push, PUSH_DELAY_MS);
