@@ -100,6 +100,9 @@ export async function sendMagicLink(supabaseUrl, supabaseKey, email) {
 function buildHeaders(config) {
   const session = getAuthSession();
   const token = session?.access_token || config.supabaseKey;
+  if (!/^[\x21-\x7e]+$/.test(config.supabaseKey || '')) {
+    throw new Error('Supabase anahtarı geçersiz (gizli ••• hâliyle kopyalanmış olabilir). Bulut Eşleme penceresinde anahtarı yeniden yapıştırın.');
+  }
 
   const headers = {
     'apikey': config.supabaseKey,
