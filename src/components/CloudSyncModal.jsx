@@ -16,16 +16,12 @@ import {
   ExternalLink,
   ArrowUpCircle,
   ArrowDownCircle,
-  Mail,
-  UserCheck
+  Sparkles
 } from 'lucide-react';
 import {
   getCloudConfig,
   saveCloudConfig,
   clearCloudConfig,
-  getAuthSession,
-  signInWithEmail,
-  sendMagicLink,
   pushPlacesToCloud,
   pullPlacesFromCloud
 } from '../services/cloudSyncService';
@@ -46,14 +42,7 @@ export default function CloudSyncModal({
     autoSync: true
   });
 
-  const [authEmail, setAuthEmail] = useState('');
-  const [authPassword, setAuthPassword] = useState('');
-  const [authSession, setAuthSession] = useState(() => getAuthSession());
-  const [authLoading, setAuthLoading] = useState(false);
-  const [authMessage, setAuthMessage] = useState(null);
-
   const [inputPass, setInputPass] = useState('');
-  const [newPass, setNewPass] = useState('');
   const [passMessage, setPassMessage] = useState(null);
 
   const [syncStatus, setSyncStatus] = useState('idle'); // 'idle' | 'syncing' | 'success' | 'error'
@@ -72,100 +61,67 @@ export default function CloudSyncModal({
       });
       if (saved.lastSync) setLastSyncTime(saved.lastSync);
     }
-    setAuthSession(getAuthSession());
   }, [isOpen]);
 
   if (!isOpen) return null;
 
+  const handleGenerateStrongPass = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
+    let res = 'Atlas!';
+    for (let i = 0; i < 10; i++) {
+      res += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setConfig({ ...config, privatePassphrase: res });
+    saveCloudConfig({ ...config, privatePassphrase: res });
+    onSetAdminPin(res, true);
+    setPassMessage({ type: 'success', text: `Yeni 16 haneli güçlü parola oluşturuldu!` });
+  };
+
   const handleSaveConfig = () => {
     saveCloudConfig(config);
-    setStatusMessage('Supabase bağlantı ayarları kaydedildi.');
+    if (config.privatePassphrase) {
+      onSetAdminPin(config.privatePassphrase, true);
+    }
+    setStatusMessage('Ayarlar başarıyla kaydedildi.');
     setTimeout(() => setStatusMessage(''), 3000);
-  };
-
-  const handleEmailLogin = async (e) => {
-    e.preventDefault();
-    if (!config.supabaseUrl || !config.supabaseKey) {
-      setAuthMessage({ type: 'error', text: 'Önce yukarıdaki Supabase URL ve Anon Key alanlarını kaydedin.' });
-      return;
-    }
-    setAuthLoading(true);
-    setAuthMessage(null);
-    try {
-      const session = await signInWithEmail(config.supabaseUrl, config.supabaseKey, authEmail, authPassword);
-      setAuthSession(session);
-      onSetAdminPin(authPassword, true);
-      setAuthMessage({ type: 'success', text: 'Başarıyla giriş yapıldı! Düzenleme ve bulut yetkiniz aktif.' });
-      setAuthPassword('');
-    } catch (err) {
-      setAuthMessage({ type: 'error', text: err.message || 'Giriş yapılamadı.' });
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const handleMagicLink = async () => {
-    if (!config.supabaseUrl || !config.supabaseKey || !authEmail) {
-      setAuthMessage({ type: 'error', text: 'Lütfen Supabase bilgilerinizi ve e-posta adresinizi girin.' });
-      return;
-    }
-    setAuthLoading(true);
-    setAuthMessage(null);
-    try {
-      await sendMagicLink(config.supabaseUrl, config.supabaseKey, authEmail);
-      setAuthMessage({ type: 'success', text: `Giriş bağlantısı ${authEmail} adresine gönderildi! Gelen kutunu kontrol et.` });
-    } catch (err) {
-      setAuthMessage({ type: 'error', text: err.message || 'Sihirli bağlantı gönderilemedi.' });
-    } finally {
-      setAuthLoading(false);
-    }
   };
 
   const handleVerifyPass = (e) => {
     e.preventDefault();
     const targetPass = adminPin || config.privatePassphrase;
     if (!targetPass) {
-      // If no password set yet, any entry sets it
       onSetAdminPin(inputPass, true);
       setConfig({ ...config, privatePassphrase: inputPass });
       saveCloudConfig({ ...config, privatePassphrase: inputPass });
-      setPassMessage({ type: 'success', text: 'Yönetici kilidi açıldı ve yeni parolanız kaydedildi!' });
+      setPassMessage({ type: 'success', text: 'Yönetici kilidi açıldı ve parolanız kaydedildi!' });
       setInputPass('');
       return;
     }
 
     if (inputPass === targetPass) {
       onSetAdminPin(targetPass, true);
-      setPassMessage({ type: 'success', text: 'Kilit açıldı! Düzenleme yetkisi aktif.' });
+      setPassMessage({ type: 'success', text: 'Kilit açıldı! Düzenleme ve bulut yetkiniz aktif.' });
       setInputPass('');
     } else {
-      setPassMessage({ type: 'error', text: 'Hatalı parola. Tekrar deneyin.' });
-    }
-  };
-
-  const handleUpdatePass = (e) => {
-    e.preventDefault();
-    if (newPass.trim().length >= 6) {
-      onSetAdminPin(newPass.trim(), true);
-      setConfig({ ...config, privatePassphrase: newPass.trim() });
-      saveCloudConfig({ ...config, privatePassphrase: newPass.trim() });
-      setPassMessage({ type: 'success', text: 'Yeni özel parolanız başarıyla kaydedildi!' });
-      setNewPass('');
-    } else {
-      setPassMessage({ type: 'error', text: 'Parola en az 6 karakter olmalıdır.' });
+      setPassMessage({ type: 'error', text: 'Hatalı parola. Lütfen tekrar deneyin.' });
     }
   };
 
   const handleSyncPush = async () => {
+    if (!config.privatePassphrase) {
+      setSyncStatus('error');
+      setStatusMessage('Lütfen önce veritabanınızı koruyacak gizli parolanızı belirleyin.');
+      return;
+    }
     setSyncStatus('syncing');
-    setStatusMessage('Değişiklikler satır bazında buluta gönderiliyor...');
+    setStatusMessage('Değişiklikler şifreli başlıkla buluta gönderiliyor...');
     try {
       const res = await pushPlacesToCloud(places, config);
       const nowStr = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
       setLastSyncTime(nowStr);
       saveCloudConfig({ ...config, lastSync: nowStr });
       setSyncStatus('success');
-      setStatusMessage(`Harika! ${res.syncedStatesCount} işaretli mekan durumu ve ${res.syncedCustomCount} özel keşif buluta başarıyla eşitlendi.`);
+      setStatusMessage(`Harika! ${res.syncedStatesCount} işaretli mekan durumu ve ${res.syncedCustomCount} özel keşif buluta eşitlendi.`);
     } catch (err) {
       setSyncStatus('error');
       setStatusMessage(err.message || 'Bulut eşitleme hatası');
@@ -173,6 +129,11 @@ export default function CloudSyncModal({
   };
 
   const handleSyncPull = async () => {
+    if (!config.privatePassphrase) {
+      setSyncStatus('error');
+      setStatusMessage('Lütfen önce veritabanınızı koruyacak gizli parolanızı girin.');
+      return;
+    }
     setSyncStatus('syncing');
     setStatusMessage('Buluttan güncel durumlar çekiliyor...');
     try {
@@ -194,6 +155,8 @@ export default function CloudSyncModal({
     }
   };
 
+  const activePass = config.privatePassphrase || 'BURAYA_12_16_HANELI_GIZLI_PAROLANIZI_YAZIN';
+
   const sqlSnippet = `-- 1. Kullanıcı Durumları Tablosu (Gittim, Notlar, Favori, Puan)
 create table if not exists user_place_state (
   place_id text primary key,
@@ -212,20 +175,26 @@ create table if not exists user_custom_places (
   updated_at timestamptz default now()
 );
 
--- 3. Row Level Security (RLS) - Banka Düzeyinde Güvenlik
+-- 3. Row Level Security (RLS) - Gerçek Veritabanı Düzeyinde Koruma
 alter table user_place_state enable row level security;
 alter table user_custom_places enable row level security;
 
--- Yabancıların okuma ve yazmasını engeller, sadece yetkili kullanıcı erişebilir:
-create policy "Yetkili Erisim - user_place_state"
-  on user_place_state for all
-  using (auth.role() = 'authenticated' or auth.role() = 'anon')
-  with check (auth.role() = 'authenticated' or auth.role() = 'anon');
+-- 4. Gizli Parola Kuralı:
+-- Sadece x-sync-pass başlığı bu parola ile eşleşen isteklere izin verilir.
+-- Parolayı bilmeyen hiç kimse veritabanını okuyamaz, değiştiremez veya silemez!
+drop policy if exists "Guvenli Parola - user_place_state" on user_place_state;
+create policy "Guvenli Parola - user_place_state"
+  on user_place_state
+  for all
+  using (coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}')
+  with check (coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}');
 
-create policy "Yetkili Erisim - user_custom_places"
-  on user_custom_places for all
-  using (auth.role() = 'authenticated' or auth.role() = 'anon')
-  with check (auth.role() = 'authenticated' or auth.role() = 'anon');`;
+drop policy if exists "Guvenli Parola - user_custom_places" on user_custom_places;
+create policy "Guvenli Parola - user_custom_places"
+  on user_custom_places
+  for all
+  using (coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}')
+  with check (coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}');`;
 
   const handleCopySql = () => {
     navigator.clipboard.writeText(sqlSnippet);
@@ -244,10 +213,10 @@ create policy "Yetkili Erisim - user_custom_places"
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <span>Supabase Bulut Eşleme & Yetkilendirme</span>
+                <span>Supabase Bulut Eşleme & Korumalı Senkronizasyon</span>
               </h2>
               <p className="text-xs text-slate-500">
-                Telefon ve bilgisayarın arasında satır bazlı anlık canlı senkronizasyon
+                Telefon ve bilgisayarın arasında satır bazlı, parolanla korunan canlı senkronizasyon
               </p>
             </div>
           </div>
@@ -260,47 +229,43 @@ create policy "Yetkili Erisim - user_custom_places"
         </div>
 
         {/* Content Body */}
-        <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5">
           {/* Admin Lock / Auth Status Banner */}
-          <div className="p-4 rounded-2xl border bg-slate-50/70 border-slate-200 space-y-3">
+          <div className="p-4 rounded-2xl border bg-slate-50 border-slate-200 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div
                   className={`w-9 h-9 rounded-xl flex items-center justify-center ${
-                    isAdmin || authSession
+                    isAdmin
                       ? 'bg-emerald-100 text-emerald-700'
                       : 'bg-amber-100 text-amber-700'
                   }`}
                 >
-                  {isAdmin || authSession ? (
-                    <Unlock className="w-4 h-4" />
-                  ) : (
-                    <Lock className="w-4 h-4" />
-                  )}
+                  {isAdmin ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-slate-900">
                     Yönetici & Düzenleme Durumu
                   </h4>
                   <p className="text-[11px] text-slate-500">
-                    {isAdmin || authSession
-                      ? 'Yetkili oturum açık — Yeni mekan ekleyebilir, puan ve notları düzenleyebilirsiniz.'
-                      : 'Ziyaretçi modu (Korumalı) — Verileri değiştirmek ve bulutla eşitlemek için kilidi açın.'}
+                    {isAdmin
+                      ? 'Yetkili oturum açık — Yeni mekan ekleyebilir, puan/notları ve bulutu yönetebilirsiniz.'
+                      : 'Ziyaretçi modu (Salt-okunur) — Not ve işaretlemeleri yönetmek için kilidi açın.'}
                   </p>
                 </div>
               </div>
               <span
                 className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                  isAdmin || authSession
+                  isAdmin
                     ? 'bg-emerald-100 text-emerald-800'
                     : 'bg-amber-100 text-amber-800'
                 }`}
               >
-                {isAdmin || authSession ? 'Yetkili Açık' : 'Kilitli'}
+                {isAdmin ? 'Yetkili Açık' : 'Kilitli'}
               </span>
             </div>
 
-            {/* Auth / PIN Feedback Message */}
+            {/* Auth Message */}
             {passMessage && (
               <div
                 className={`p-2.5 rounded-xl text-xs flex items-center gap-2 ${
@@ -319,13 +284,13 @@ create policy "Yetkili Erisim - user_custom_places"
             )}
 
             {/* Unlock Form if locked */}
-            {!isAdmin && !authSession ? (
+            {!isAdmin ? (
               <form onSubmit={handleVerifyPass} className="flex items-center gap-2 pt-1">
                 <input
                   type="password"
                   value={inputPass}
                   onChange={(e) => setInputPass(e.target.value)}
-                  placeholder="Yönetici Parolası Girin"
+                  placeholder="Gizli Parolanızı Girin"
                   className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-amber-500 shadow-inner"
                 />
                 <button
@@ -336,30 +301,16 @@ create policy "Yetkili Erisim - user_custom_places"
                 </button>
               </form>
             ) : (
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-2 border-t border-slate-200/70">
-                <form onSubmit={handleUpdatePass} className="flex items-center gap-2 w-full sm:w-auto">
-                  <input
-                    type="password"
-                    value={newPass}
-                    onChange={(e) => setNewPass(e.target.value)}
-                    placeholder="Yeni Özel Parola Belirle"
-                    className="flex-1 sm:w-48 bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-amber-500"
-                  />
-                  <button
-                    type="submit"
-                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition"
-                  >
-                    Güncelle
-                  </button>
-                </form>
-
+              <div className="flex items-center justify-between pt-1">
+                <span className="text-[11px] text-emerald-700 font-medium">
+                  ✓ Bu tarayıcıda yönetici yetkisi aktif
+                </span>
                 <button
                   onClick={() => {
                     onSetAdminPin(null, false);
                     clearCloudConfig();
-                    setAuthSession(null);
                   }}
-                  className="text-[11px] text-rose-600 hover:underline shrink-0"
+                  className="text-[11px] text-rose-600 hover:underline"
                 >
                   Kilitle & Çıkış Yap
                 </button>
@@ -392,7 +343,7 @@ create policy "Yetkili Erisim - user_custom_places"
                   type="text"
                   value={config.supabaseUrl}
                   onChange={(e) => setConfig({ ...config, supabaseUrl: e.target.value.trim() })}
-                  placeholder="https://xyzcompany.supabase.co"
+                  placeholder="https://abcdefgh.supabase.co"
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-sky-500"
                 />
               </div>
@@ -409,12 +360,41 @@ create policy "Yetkili Erisim - user_custom_places"
               </div>
             </div>
 
+            {/* Secret Passphrase for Database Enforcement */}
+            <div className="p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] font-bold text-slate-800 flex items-center gap-1.5">
+                  <Key className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Gizli Senkronizasyon Parolanız (En Az 12-16 Karakter)</span>
+                </label>
+                <button
+                  type="button"
+                  onClick={handleGenerateStrongPass}
+                  className="text-[10px] text-amber-800 font-bold hover:underline flex items-center gap-1"
+                >
+                  <Sparkles className="w-3 h-3 text-amber-600" />
+                  <span>Güçlü Parola Üret</span>
+                </button>
+              </div>
+
+              <input
+                type="text"
+                value={config.privatePassphrase}
+                onChange={(e) => setConfig({ ...config, privatePassphrase: e.target.value.trim() })}
+                placeholder="Örn: OgiAtlas2026!SecuRe"
+                className="w-full bg-white border border-amber-200 rounded-xl px-3 py-2 text-xs font-mono font-bold text-slate-900 focus:outline-none focus:border-amber-500 shadow-inner"
+              />
+              <p className="text-[10px] text-slate-500">
+                Bu parola kodda ASLA yer almaz. Sadece tarayıcında ve Supabase veritabanındaki güvenlik kuralında yaşar.
+              </p>
+            </div>
+
             <div className="flex items-center justify-between pt-1">
               <button
                 onClick={handleSaveConfig}
                 className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-xs"
               >
-                Bilgileri Kaydet
+                Bilgileri ve Parolayı Kaydet
               </button>
             </div>
           </div>
@@ -424,7 +404,7 @@ create policy "Yetkili Erisim - user_custom_places"
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Tek Seferlik SQL Kurulumu (Güvenli Tablo)</span>
+                <span>Tek Seferlik SQL Kurulumu (Parola Korumalı RLS)</span>
               </div>
               <button
                 onClick={handleCopySql}
@@ -435,7 +415,7 @@ create policy "Yetkili Erisim - user_custom_places"
               </button>
             </div>
             <p className="text-[11px] text-slate-600 leading-relaxed">
-              Supabase Dashboard ➔ <strong>SQL Editor</strong> bölümüne yapıştırıp <strong>Run</strong> diyerek tablonuzu kurabilirsiniz.
+              Yukarıdaki parolan otomatik olarak aşağıdaki SQL koduna gömülür. Supabase Dashboard ➔ <strong>SQL Editor</strong> bölümüne yapıştırıp <strong>Run</strong> diyerek tablonuzu kurabilirsiniz.
             </p>
           </div>
 
