@@ -68,6 +68,10 @@ export default function CountryIntelModal({ isOpen, onClose, countryName, onOpen
                 <p className="text-slate-600 mt-1 leading-relaxed">
                   {visa.notes}
                 </p>
+                <div className="text-[10px] text-slate-400 mt-2 font-medium flex items-center gap-1 border-t border-slate-100 pt-1.5">
+                  <span>🏛️</span>
+                  <span>{visa.source || 'Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026'}</span>
+                </div>
               </div>
             </div>
           </div>

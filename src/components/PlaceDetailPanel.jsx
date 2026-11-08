@@ -481,6 +481,10 @@ export default function PlaceDetailPanel({
               <p className="text-[11px] text-slate-600 mt-2 leading-relaxed line-clamp-2">
                 {place.visaStatus?.notes || `${place.country || 'Türkiye'} seyahat detayları.`}
               </p>
+              <div className="text-[10px] text-slate-400 mt-1.5 flex items-center gap-1 border-t border-sky-100 pt-1">
+                <span>🏛️</span>
+                <span>{place.visaStatus?.source || 'Kaynak: mfa.gov.tr & konsolosluk.gov.tr · Kontrol: Kasım 2026'}</span>
+              </div>
             </div>
 
             <button

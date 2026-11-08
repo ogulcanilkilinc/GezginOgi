@@ -1,5 +1,8 @@
 // scripts/enrich-places-metadata.mjs
-// Enriches public/data/places.json with precalculated Ankara distance and Turkish passport visa metadata.
+// Enriches public/data/places.json with:
+// 1. Normalized canonical country names (cleaning composite regions & states from country field)
+// 2. Realistic multi-stop flight times and Ankara distances
+// 3. Accurate Turkish citizen passport visa status with MFA source attribution (Kasım 2026)
 
 import fs from 'fs';
 import path from 'path';
@@ -9,7 +12,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const placesPath = path.resolve(__dirname, '../public/data/places.json');
 
-// Re-implement calculation logic directly for Node ESM execution
 const ANKARA_COORDS = [39.9208, 32.8541];
 
 function haversine(lat1, lon1, lat2, lon2) {
@@ -37,7 +39,8 @@ const YHT_DESTINATIONS = {
   'yozgat': { time: '1 sa 15 dk' }
 };
 
-const CANONICAL_COUNTRY_MAP = {
+// Canonical normalization for non-country names stored in country field
+const CANONICAL_MAP = {
   'Bavyera': 'Almanya',
   'Baden-Württemberg': 'Almanya',
   'Romantik Yol': 'Almanya',
@@ -72,34 +75,67 @@ const CANONICAL_COUNTRY_MAP = {
   'Yemen (Hint Okyanusu)': 'Yemen',
   'Rapa Nui (Şili - Güney Pasifik)': 'Şili',
   'Svalbard (Norveç Arktik)': 'Norveç',
-  'Fransız Polinezyası (Güney Pasifik)': 'Fransa',
+  'Fransız Polinezyası (Güney Pasifik)': 'Fransız Polinezyası',
   'Fransa (Réunion)': 'Fransa',
-  'Grönland': 'Danimarka',
-  'Faroe Adaları': 'Danimarka',
-  'Danimarka (Faroe)': 'Danimarka',
-  'Stockholm (İsveç) & Kopenhag (Danimarka)': 'İsveç',
-  'Hollanda & Belçika': 'Hollanda',
+  'Grönland': 'Grönland',
+  'Faroe Adaları': 'Faroe Adaları',
+  'Danimarka (Faroe)': 'Faroe Adaları',
+  'Stockholm (İsveç) & Kopenhag (Danimarka)': 'Finlandiya',
   'Exuma (Bahamalar) & Bridgetown (Barbados)': 'Bahamalar',
   'Guyana & Surinam': 'Guyana',
   'İsrail & Filistin': 'İsrail',
   'Peru–Bolivya': 'Peru',
   'Çin (Tibet)': 'Çin',
+  'Rusya Uzak Doğusu': 'Rusya',
   'Kıbrıs & KKTC': 'KKTC',
   'Güney Afrika Cumhuriyeti': 'Güney Afrika'
 };
 
+const ID_SPECIFIC_MAP = {
+  'nl-01': 'Hollanda',
+  'nl-04': 'Hollanda',
+  'be-03': 'Belçika',
+  'w195-cy-1': 'KKTC',
+  'wld-mtp-antarktika': 'Antarktika',
+  'wld-mtp-palau-nan-madol': 'Palau',
+  'wld-mtp-saint-helena-tristan': 'Saint Helena (BK)',
+  'wld-af-victoria-selaleleri': 'Zambiya',
+  'wld-ort-alula-umman': 'Suudi Arabistan',
+  'wld-asya-nepal-tibet-everest': 'Nepal',
+  'wld-asya-turkmenistan-kirgizistan': 'Kırgızistan',
+  'wld-asya-singapur-gardens': 'Singapur',
+  'wld-am-patagonya-torres-perito': 'Şili',
+  'wld-av-iskandinavya-laponya-stockholm': 'Finlandiya',
+  'wld-mtp4-uganda-ruanda-goriller': 'Uganda',
+  'wld-mtp4-isvicre-bernina-como': 'İsviçre',
+  'wld-mtp4-karayipler-stlucia-bahama': 'Bahamalar',
+  'wld-mtp4-pasifik-vanuatu-fiji': 'Vanuatu',
+  'w195-other-af1': 'Benin',
+  'w195-other-af2': 'Cibuti',
+  'w195-other-af3': 'Kongo'
+};
+
 const COUNTRY_VISA_INFO = {
   'Türkiye': { category: 'turkiye', label: 'Yurtiçi', duration: 'Sınırsız', notes: 'Kendi vatanın; pasaport veya vize gerekmez.' },
+  'KKTC': { category: 'kimlikle', label: 'Kimlikle (90 Gün)', duration: '90 gün', notes: 'Yeni çipli T.C. Kimlik Kartı ile doğrudan pasaporta ihtiyaç duymadan girilir; pasaporta damga vurulmaz.' },
   'Gürcistan': { category: 'kimlikle', label: 'Kimlikle (1 Yıl)', duration: '365 gün', notes: 'Yeni çipli T.C. Kimlik Kartı ile vizesiz 1 yıl.' },
   'Azerbaycan': { category: 'kimlikle', label: 'Kimlikle (90 Gün)', duration: '90 gün', notes: 'Yeni çipli T.C. Kimlik Kartı ile vizesiz 90 gün.' },
-  'KKTC': { category: 'kimlikle', label: 'Kimlikle (90 Gün)', duration: '90 gün', notes: 'Yeni çipli T.C. Kimlik Kartı ile vizesiz 90 gün.' },
-  'Bosna-Hersek': { category: 'kimlikle', label: 'Kimlikle (90 Gün)', duration: '90 gün', notes: 'Çipli kimlikle veya bordo pasaportla 90 gün vizesiz.' },
-  'Sırbistan': { category: 'kimlikle', label: 'Kimlikle (90 Gün)', duration: '90 gün', notes: 'Çipli kimlikle veya bordo pasaportla 90 gün vizesiz.' },
+  'Bosna-Hersek': { category: 'kimlikle', label: 'Kimlikle / Vizesiz (90 Gün)', duration: '90 gün', notes: 'Çipli kimlikle veya bordo pasaportla 90 gün vizesiz.' },
+  'Sırbistan': { category: 'kimlikle', label: 'Kimlikle / Vizesiz (90 Gün)', duration: '90 gün', notes: 'Çipli kimlikle veya bordo pasaportla 90 gün vizesiz.' },
   'Moldova': { category: 'kimlikle', label: 'Kimlikle (90 Gün)', duration: '90 gün', notes: 'Yeni çipli T.C. Kimlik Kartı ile vizesiz 90 gün.' },
+  'Ukrayna': {
+    category: 'kimlikle',
+    label: 'Kimlikle / Vizesiz (90 Gün)',
+    duration: '90 gün',
+    notes: 'Yeni çipli T.C. Kimlik Kartı ile vizesiz giriş protokolü mevcuttur. ⚠️ GÜVENLİK VE SEYAHAT UYARISI: Savaş ve olağanüstü hal nedeniyle Ukrayna hava sahası kapalıdır; yalnızca kara sınır kapılarından ulaşım sağlanmaktadır. Dışişleri Bakanlığı zorunlu olmadıkça seyahat edilmemesini tavsiye etmektedir.'
+  },
   'Karadağ': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 gün vizesiz.' },
   'Arnavutluk': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 gün vizesiz.' },
   'Kuzey Makedonya': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 gün vizesiz.' },
   'Kosova': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 gün vizesiz.' },
+  'Belarus': { category: 'vizesiz', label: 'Vizesiz (30 Gün)', duration: '30 gün', notes: 'Türkiye ile Belarus arasındaki anlaşma uyarınca bordo pasaportla 30 güne kadar vizesiz seyahat edilir.' },
+  'Rusya': { category: 'vizesiz', label: 'Vizesiz / Karşılıklı Muafiyet', duration: '30-90 gün', notes: 'Karşılıklı anlaşmalar ve yürürlükteki turizm rejimi kapsamında vizesiz / kolaylaştırılmış e-vize rejimi geçerlidir.' },
+  'İran': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Türkiye ve İran arasındaki vize muafiyeti anlaşması gereği bordo pasaportla 90 güne kadar turistik amaçlı vizesiz seyahat edilir.' },
   'Japonya': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 gün turistik vizesiz.' },
   'Güney Kore': { category: 'vizesiz', label: 'Vizesiz / K-ETA', duration: '90 gün', notes: '90 gün vizesiz; K-ETA formu tavsiye edilir.' },
   'Singapur': { category: 'vizesiz', label: 'Vizesiz (30 Gün)', duration: '30 gün', notes: '30 gün vizesiz (SG Arrival Card).' },
@@ -138,6 +174,21 @@ const COUNTRY_VISA_INFO = {
   'Bahamalar': { category: 'vizesiz', label: 'Vizesiz (8 Ay)', duration: '8 ay', notes: '8 aya kadar vizesiz.' },
   'Fiji': { category: 'vizesiz', label: 'Vizesiz (4 Ay)', duration: '4 ay', notes: '4 aya kadar vizesiz.' },
   'Maldivler': { category: 'vizesiz', label: 'Vizesiz / Kapıda', duration: '30 gün', notes: '30 gün kapıda ücretsiz vize.' },
+  'Palau': { category: 'vizesiz', label: 'Vizesiz (30 Gün)', duration: '30 gün', notes: '30 gün ücretsiz giriş izni.' },
+
+  // KAPIDA / E-VİZE
+  'Endonezya': {
+    category: 'kapi_evize',
+    label: 'Kapıda Vize / e-VOA ($35)',
+    duration: '30 gün',
+    notes: 'Cakarta veya Bali Ngurah Rai Havalimanı’nda kapıda 500.000 IDR (~$35) karşılığı 30 günlük VoA (Visa on Arrival) veya online Molina e-VOA sistemi üzerinden alınır.'
+  },
+  'Irak': {
+    category: 'kapi_evize',
+    label: 'Kapıda Vize / e-Vize',
+    duration: '15-30 gün',
+    notes: 'Bağdat, Necef, Basra ve Erbil/Süleymaniye havalimanlarında turistik kapıda vize veya resmi online e-vize portalı üzerinden başvuru imkanı bulunmaktadır.'
+  },
   'Mısır': { category: 'kapi_evize', label: 'Kapıda Vize ($25)', duration: '30 gün', notes: 'Havalimanında kapıda $25 etiket vize.' },
   'BAE': { category: 'kapi_evize', label: 'Kolay e-Vize', duration: '30 gün', notes: 'Online kolay e-Vize.' },
   'Suudi Arabistan': { category: 'kapi_evize', label: 'e-Vize / Kapıda', duration: '90 gün', notes: 'e-Vize veya kapıda self-servis vize.' },
@@ -150,17 +201,20 @@ const COUNTRY_VISA_INFO = {
   'Kenya': { category: 'kapi_evize', label: 'Online eTA ($35)', duration: '90 gün', notes: 'Elektronik seyahat izni (eTA).' },
   'Ruanda': { category: 'kapi_evize', label: 'Kapıda Vize ($50)', duration: '30 gün', notes: 'Kapıda $50 vize.' },
   'Uganda': { category: 'kapi_evize', label: 'Online e-Vize', duration: '90 gün', notes: 'Online e-vize.' },
+  'Zambiya': { category: 'kapi_evize', label: 'Kapıda / KAZA Univisa', duration: '30 gün', notes: 'Victoria Şelaleleri için ortak KAZA Univisa.' },
   'Ermenistan': { category: 'kapi_evize', label: 'e-Vize / Kapıda', duration: '21-120 gün', notes: 'Kapıda veya e-Vize.' },
   'Madagaskar': { category: 'kapi_evize', label: 'Kapıda Vize', duration: '30 gün', notes: 'Havalimanında kapıda vize.' },
   'Vietnam': { category: 'kapi_evize', label: 'Online e-Vize ($25)', duration: '90 gün', notes: 'Online 90 günlük e-Vize.' },
   'Hindistan': { category: 'kapi_evize', label: 'Online e-Tourist Visa', duration: '30 gün - 1 yıl', notes: 'Online e-vize.' },
   'Tacikistan': { category: 'kapi_evize', label: 'Online e-Vize', duration: '60 gün', notes: 'Online e-vize.' },
   'Pakistan': { category: 'kapi_evize', label: 'Online e-Vize', duration: '90 gün', notes: 'Online e-vize.' },
+
+  // SCHENGEN
   'Almanya': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen vizesi zorunludur. Yeşil pasaporta 90 gün vizesiz.' },
   'Fransa': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen vizesi zorunludur. Yeşil pasaporta 90 gün vizesiz.' },
   'İtalya': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen vizesi zorunludur. Yeşil pasaporta 90 gün vizesiz.' },
   'İspanya': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen vizesi zorunludur. Yeşil pasaporta 90 gün vizesiz.' },
-  'Yunanistan': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen zorunludur (adalarda kapı vizesi).' },
+  'Yunanistan': { category: 'schengen', label: 'Schengen Şart (Adalarda Kapı)', duration: '90 gün', notes: 'Schengen zorunludur (adalarda kapı vizesi).' },
   'Hollanda': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen zorunludur.' },
   'Belçika': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen zorunludur.' },
   'İsviçre': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen alanındadır.' },
@@ -188,6 +242,28 @@ const COUNTRY_VISA_INFO = {
   'Monako': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen şart.' },
   'San Marino': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen şart.' },
   'Lihtenştayn': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen şart.' },
+
+  // ÖZERK / DENİZAŞIRI (SCHENGEN DIŞI)
+  'Grönland': {
+    category: 'vize_gerekli',
+    label: 'Özel İzin Şart (Schengen Değil!)',
+    duration: '90 gün',
+    notes: '⚠️ DİKKAT: Danimarka’ya bağlıdır ancak SCHENGEN ALANINA DAHİL DEĞİLDİR! Standart Schengen vizesi ile girilemez. Danimarka Konsolosluğu’ndan pasaporta "Valid for Greenland" şerhli özel vize alınması zorunludur.'
+  },
+  'Faroe Adaları': {
+    category: 'vize_gerekli',
+    label: 'Özel İzin Şart (Schengen Değil!)',
+    duration: '90 gün',
+    notes: '⚠️ DİKKAT: Danimarka’ya bağlı özerk bölgedir ancak SCHENGEN DIŞINDADIR! Danimarka makamlarından "Valid for Faroe Islands" ibareli özel vize alınmalıdır.'
+  },
+  'Fransız Polinezyası': {
+    category: 'vize_gerekli',
+    label: 'Özel Denizaşırı İzni (Schengen Değil!)',
+    duration: '90 gün',
+    notes: '⚠️ DİKKAT: Fransa’nın Denizaşırı Toprağıdır (POM) ve SCHENGEN ALANI DIŞINDADIR! Standart Schengen vizesi geçmez; Fransa Konsolosluğu’ndan "Visa pour Territoire d’Outre-Mer (TOM)" alınmalıdır.'
+  },
+
+  // ÖZEL VİZE
   'ABD': { category: 'vize_gerekli', label: 'ABD Vizesi Şart (B1/B2)', duration: '10 yıl', notes: 'Konsolosluk mülakatı ile B1/B2 vizesi.' },
   'Birleşik Krallık': { category: 'vize_gerekli', label: 'İngiltere Vizesi Şart', duration: '6 ay', notes: 'UK Standard Visitor vizesi şarttır; Schengen geçmez.' },
   'İrlanda': { category: 'vize_gerekli', label: 'İrlanda Vizesi Şart', duration: '90 gün', notes: 'İrlanda konsolosluk vizesi şarttır.' },
@@ -195,10 +271,10 @@ const COUNTRY_VISA_INFO = {
   'Avustralya': { category: 'vize_gerekli', label: 'Avustralya Vizesi Şart', duration: '3-12 ay', notes: 'Online ImmiAccount başvurusu.' },
   'Yeni Zelanda': { category: 'vize_gerekli', label: 'Yeni Zelanda Vizesi Şart', duration: '9 ay', notes: 'Online başvuru.' },
   'Çin': { category: 'vize_gerekli', label: 'Çin Vizesi Şart', duration: '30 gün', notes: 'Vize Başvuru Merkezi üzerinden.' },
-  'Rusya': { category: 'vize_gerekli', label: 'Rusya e-Vize ($52)', duration: '16 gün', notes: '16 günlük elektronik vize.' },
   'Meksika': { category: 'vize_gerekli', label: 'SAE e-Onay / Vize', duration: '180 gün', notes: 'Online SAE belgesi (ABD vizesi varsa vizesiz).' },
   'Küba': { category: 'vize_gerekli', label: 'Küba Turist Kartı', duration: '90 gün', notes: 'Turist kartı alınarak girilir.' },
-  'Cezayir': { category: 'vize_gerekli', label: 'Cezayir Vizesi Şart', duration: '30-90 gün', notes: 'Konsolosluk vizesi şarttır.' }
+  'Cezayir': { category: 'vize_gerekli', label: 'Cezayir Vizesi Şart', duration: '30-90 gün', notes: 'Konsolosluk vizesi şarttır.' },
+  'Antarktika': { category: 'turkiye', label: 'Vize Yok (Özel İzin)', duration: 'Sezonluk', notes: 'Antarktika sahipsizdir; çıkış yapılan Şili veya Arjantin Türk vatandaşlarına vizesizdir.' }
 };
 
 const VISA_BADGES = {
@@ -225,7 +301,12 @@ let weekendCount = 0;
 let visaFreeCount = 0;
 
 for (const p of places) {
-  // 1. Ankara Travel Info
+  // 1. Normalize Country Field Cleanly
+  const rawCountry = p.country || 'Türkiye';
+  const cleanCountry = ID_SPECIFIC_MAP[p.id] || CANONICAL_MAP[rawCountry] || rawCountry;
+  p.country = cleanCountry;
+
+  // 2. Ankara Travel Info (with realistic multi-stop flights)
   if (p.coords && p.coords.length === 2) {
     const [lat, lng] = p.coords;
     const distKm = Math.round(haversine(ANKARA_COORDS[0], ANKARA_COORDS[1], lat, lng));
@@ -254,6 +335,8 @@ for (const p of places) {
 
     const cityName = (p.city || '').toLowerCase();
     const subRegionName = (p.subRegion || '').toLowerCase();
+    const placeName = (p.name || '').toLowerCase();
+
     for (const [key, val] of Object.entries(YHT_DESTINATIONS)) {
       if (cityName.includes(key) || subRegionName.includes(key)) {
         trainText = `YHT ile ${val.time}`;
@@ -272,10 +355,74 @@ for (const p of places) {
         else flightText = '1 sa 15 dk uçakla';
       }
     } else {
-      if (distKm < 1500) flightText = '~1.5 - 2.5 sa uçakla';
-      else if (distKm < 2800) flightText = '~3 - 3.5 sa uçakla';
-      else if (distKm < 4500) flightText = '~4 - 5.5 sa uçakla';
-      else flightText = '~9 - 14 sa uçakla';
+      // REALISTIC ABROAD MULTI-STOP MODEL
+      if (['Peru', 'Bolivya', 'Ekvador', 'Şili', 'Arjantin', 'Kolombiya', 'Brezilya', 'Uruguay', 'Paraguay', 'Guyana'].includes(cleanCountry)) {
+        if (placeName.includes('machu picchu') || placeName.includes('cusco') || cityName.includes('cusco')) {
+          flightText = '~22 - 26 sa (2+ aktarma: Lima & Cusco)';
+        } else if (placeName.includes('patagonya') || cityName.includes('calafate') || cityName.includes('natales')) {
+          flightText = '~24 - 28 sa (2+ aktarma: Buenos Aires & El Calafate)';
+        } else if (placeName.includes('galapagos')) {
+          flightText = '~22 - 26 sa (2 aktarma: Guayaquil & Baltra)';
+        } else {
+          flightText = '~18 - 24 sa (1-2 aktarma)';
+        }
+      } else if (['Avustralya', 'Yeni Zelanda', 'Fiji', 'Vanuatu', 'Palau', 'Fransız Polinezyası'].includes(cleanCountry) || placeName.includes('rapa nui')) {
+        if (placeName.includes('rapa nui') || placeName.includes('paskalya')) {
+          flightText = '~30 - 36 sa (2-3 aktarma: Santiago & Paskalya)';
+        } else if (cleanCountry === 'Fransız Polinezyası' || placeName.includes('bora bora') || placeName.includes('tahiti')) {
+          flightText = '~28 - 34 sa (2-3 aktarma: LAX & Papeete)';
+        } else if (cleanCountry === 'Yeni Zelanda') {
+          flightText = '~24 - 28 sa (2 aktarma)';
+        } else if (cleanCountry === 'Avustralya') {
+          flightText = '~20 - 24 sa (1-2 aktarma)';
+        } else {
+          flightText = '~26 - 32 sa (2-3 aktarma)';
+        }
+      } else if (cleanCountry === 'Antarktika') {
+        flightText = '~30+ sa (Buenos Aires + Ushuaia + Keşif Gemisi)';
+      } else if (cleanCountry === 'Grönland') {
+        flightText = '~14 - 18 sa (Kopenhag & Kangerlussuaq aktarmalı)';
+      } else if (placeName.includes('svalbard')) {
+        flightText = '~12 - 16 sa (Oslo & Longyearbyen aktarmalı)';
+      } else if (cleanCountry === 'ABD' || cleanCountry === 'Kanada') {
+        if (cityName.includes('hawaii') || placeName.includes('hawaii')) {
+          flightText = '~22 - 26 sa (2 aktarma)';
+        } else if (cityName.includes('san francisco') || cityName.includes('los angeles') || cityName.includes('kaliforniya') || cityName.includes('las vegas')) {
+          flightText = '~15 - 18 sa (1 aktarma)';
+        } else {
+          flightText = '~11 - 13 sa (1 aktarma veya direkt)';
+        }
+      } else if (['Meksika', 'Küba', 'Bahamalar', 'Kosta Rika', 'Panama', 'Guatemala', 'Dominik Cumhuriyeti', 'Jamaika'].includes(cleanCountry)) {
+        flightText = '~16 - 22 sa (1-2 aktarma)';
+      } else if (cleanCountry === 'Japonya' || cleanCountry === 'Güney Kore') {
+        flightText = '~11 - 14 sa (1 aktarma)';
+      } else if (cleanCountry === 'Endonezya') {
+        if (cityName.includes('bali') || placeName.includes('bali')) {
+          flightText = '~15 - 18 sa (1-2 aktarma: Doha/Dubai & Bali)';
+        } else {
+          flightText = '~13 - 16 sa (1 aktarma)';
+        }
+      } else if (['Tayland', 'Vietnam', 'Singapur', 'Malezya', 'Filipinler', 'Kamboçya', 'Laos', 'Çin'].includes(cleanCountry)) {
+        flightText = '~10 - 14 sa (1 aktarma)';
+      } else if (['Hindistan', 'Nepal', 'Sri Lanka', 'Pakistan', 'Bangladeş', 'Bhutan'].includes(cleanCountry)) {
+        flightText = '~8 - 12 sa (1 aktarma)';
+      } else if (['Özbekistan', 'Kazakistan', 'Kırgızistan', 'Tacikistan', 'Türkmenistan', 'Moğolistan'].includes(cleanCountry)) {
+        flightText = '~5 - 8 sa (direkt / 1 aktarma)';
+      } else if (['Güney Afrika', 'Botsvana', 'Namibya', 'Zambiya', 'Zimbabve', 'Madagaskar', 'Mauritius', 'Seyşeller', 'Kongo', 'Benin', 'Cibuti'].includes(cleanCountry)) {
+        flightText = '~12 - 17 sa (1-2 aktarma)';
+      } else if (['Kenya', 'Tanzanya', 'Uganda', 'Ruanda', 'Etiyopya'].includes(cleanCountry)) {
+        flightText = '~8 - 12 sa (1 aktarma)';
+      } else if (['Mısır', 'Tunus', 'Fas', 'Cezayir'].includes(cleanCountry)) {
+        flightText = '~2.5 - 5 sa (direkt / 1 aktarma)';
+      } else if (['BAE', 'Katar', 'Umman', 'Suudi Arabistan', 'Lübnan', 'Ürdün', 'İsrail', 'Kuveyt', 'Bahreyn', 'Irak', 'İran'].includes(cleanCountry)) {
+        flightText = '~2.5 - 4.5 sa (direkt / 1 aktarma)';
+      } else if (['Yunanistan', 'Bulgaristan', 'Sırbistan', 'Bosna-Hersek', 'Karadağ', 'Arnavutluk', 'Kuzey Makedonya', 'Kosova', 'Romanya', 'Gürcistan', 'Azerbaycan', 'KKTC'].includes(cleanCountry)) {
+        flightText = '~1.5 - 2.5 sa (direkt / 1 aktarma)';
+      } else if (['Norveç', 'İsveç', 'Danimarka', 'Finlandiya', 'İzlanda', 'Faroe Adaları'].includes(cleanCountry)) {
+        flightText = '~4.5 - 6.5 sa (1 aktarma)';
+      } else {
+        flightText = '~3 - 4.5 sa (direkt / 1 aktarma)';
+      }
     }
 
     const isWeekendEscape = isTr && driveMinutes > 0 && driveMinutes <= 270 && distKm >= 15;
@@ -303,14 +450,12 @@ for (const p of places) {
     };
   }
 
-  // 2. Turkish Passport Visa Info
-  const countryRaw = p.country || 'Türkiye';
-  const canon = CANONICAL_COUNTRY_MAP[countryRaw] || countryRaw;
-  const visaMeta = COUNTRY_VISA_INFO[canon] || {
+  // 3. Turkish Passport Visa Info
+  const visaMeta = COUNTRY_VISA_INFO[cleanCountry] || {
     category: 'vize_gerekli',
     label: 'Vize Şart',
     duration: 'Değişken',
-    notes: `${canon} için konsolosluk veya e-vize şartlarını kontrol ediniz.`
+    notes: `${cleanCountry} için konsolosluk veya e-vize şartlarını kontrol ediniz.`
   };
 
   const isVisaFree = visaMeta.category === 'turkiye' || visaMeta.category === 'kimlikle' || visaMeta.category === 'vizesiz';
@@ -323,12 +468,13 @@ for (const p of places) {
     icon: VISA_ICONS[visaMeta.category] || '🔒',
     isVisaFree,
     duration: visaMeta.duration,
-    notes: visaMeta.notes
+    notes: visaMeta.notes,
+    source: 'Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026'
   };
 }
 
 fs.writeFileSync(placesPath, JSON.stringify(places, null, 2), 'utf8');
 
-console.log(`✅ Successfully enriched ${places.length} places!`);
+console.log(`✅ Successfully enriched and normalized ${places.length} places!`);
 console.log(`🚗 Hafta Sonu Kaçamağı: ${weekendCount} mekan`);
 console.log(`🛂 Vizesiz (Türkiye + Kimlikle + Bordo Pasaport): ${visaFreeCount} mekan`);

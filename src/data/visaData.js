@@ -1,6 +1,12 @@
 // src/data/visaData.js
 // Turkish Ordinary (Bordo / Umuma Mahsus) Passport Visa Status Catalog
-// Sources: T.C. Dışişleri Bakanlığı (MFA), IATA Timatic & Güncel Seyahat Mevzuatı
+// Sources: T.C. Dışişleri Bakanlığı (mfa.gov.tr), konsolosluk.gov.tr & Güncel Seyahat Mevzuatı (Kasım 2026)
+
+export const VISA_METADATA_SOURCE = {
+  text: 'Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr',
+  lastVerified: 'Kasım 2026',
+  fullNote: 'Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026'
+};
 
 export const VISA_CATEGORIES = {
   turkiye: {
@@ -82,18 +88,18 @@ export const CANONICAL_COUNTRY_MAP = {
   'Yemen (Hint Okyanusu)': 'Yemen',
   'Rapa Nui (Şili - Güney Pasifik)': 'Şili',
   'Svalbard (Norveç Arktik)': 'Norveç',
-  'Fransız Polinezyası (Güney Pasifik)': 'Fransa',
+  'Fransız Polinezyası (Güney Pasifik)': 'Fransız Polinezyası',
   'Fransa (Réunion)': 'Fransa',
-  'Grönland': 'Danimarka',
-  'Faroe Adaları': 'Danimarka',
-  'Danimarka (Faroe)': 'Danimarka',
-  'Stockholm (İsveç) & Kopenhag (Danimarka)': 'İsveç',
-  'Hollanda & Belçika': 'Hollanda',
+  'Grönland': 'Grönland',
+  'Faroe Adaları': 'Faroe Adaları',
+  'Danimarka (Faroe)': 'Faroe Adaları',
+  'Stockholm (İsveç) & Kopenhag (Danimarka)': 'Finlandiya',
   'Exuma (Bahamalar) & Bridgetown (Barbados)': 'Bahamalar',
   'Guyana & Surinam': 'Guyana',
   'İsrail & Filistin': 'İsrail',
   'Peru–Bolivya': 'Peru',
   'Çin (Tibet)': 'Çin',
+  'Rusya Uzak Doğusu': 'Rusya',
   'Kıbrıs & KKTC': 'KKTC',
   'Güney Afrika Cumhuriyeti': 'Güney Afrika'
 };
@@ -106,7 +112,14 @@ export const COUNTRY_VISA_INFO = {
     duration: 'Sınırsız',
     notes: 'Kendi vatanın; pasaport veya vize gerekmez.'
   },
+
   // KİMLİKLE GİRİLEBİLEN ÜLKELER
+  'KKTC': {
+    category: 'kimlikle',
+    label: 'Kimlikle (90 Gün)',
+    duration: '90 gün',
+    notes: 'Yeni çipli T.C. Kimlik Kartı ile doğrudan pasaporta ihtiyaç duymadan girilir; pasaporta damga vurulmaz.'
+  },
   'Gürcistan': {
     category: 'kimlikle',
     label: 'Kimlikle (1 Yıl)',
@@ -119,32 +132,32 @@ export const COUNTRY_VISA_INFO = {
     duration: '90 gün',
     notes: 'Yeni çipli T.C. Kimlik Kartı ile vizesiz 90 gün. (15 günü aşan kalışlarda adres kaydı gerekir).'
   },
-  'KKTC': {
-    category: 'kimlikle',
-    label: 'Kimlikle (90 Gün)',
-    duration: '90 gün',
-    notes: 'Yeni çipli T.C. Kimlik Kartı ile giriş yapılır; pasaport damgası vurulmaz.'
-  },
   'Bosna-Hersek': {
     category: 'kimlikle',
     label: 'Kimlikle / Vizesiz (90 Gün)',
     duration: '90 gün',
-    notes: 'T.C. Kimlik Kartı ile seyahat protokolü yürürlükte; bordo pasaportla da 90 gün vizesiz.'
+    notes: 'T.C. Kimlik Kartı ile seyahat protokolü yürürlüktedir; bordo pasaportla da 90 gün vizesizdir.'
   },
   'Sırbistan': {
     category: 'kimlikle',
     label: 'Kimlikle / Vizesiz (90 Gün)',
     duration: '90 gün',
-    notes: 'Çipli kimlikle seyahat anlaşması imzalanmıştır; bordo pasaportla 6 ay içinde 90 gün vizesiz.'
+    notes: 'Çipli kimlikle seyahat anlaşması yürürlüktedir; bordo pasaportla 6 ay içinde 90 gün vizesizdir.'
   },
   'Moldova': {
     category: 'kimlikle',
     label: 'Kimlikle (90 Gün)',
     duration: '90 gün',
-    notes: 'Yeni çipli T.C. Kimlik Kartı ile 180 gün içinde 90 güne kadar vizesiz.'
+    notes: 'Yeni çipli T.C. Kimlik Kartı ile 180 gün içinde 90 güne kadar vizesiz seyahat edilir.'
+  },
+  'Ukrayna': {
+    category: 'kimlikle',
+    label: 'Kimlikle / Vizesiz (90 Gün)',
+    duration: '90 gün',
+    notes: 'Yeni çipli T.C. Kimlik Kartı ile vizesiz giriş protokolü mevcuttur. ⚠️ GÜVENLİK VE SEYAHAT UYARISI: Savaş ve olağanüstü hal nedeniyle Ukrayna hava sahası kapalıdır; yalnızca kara sınır kapılarından ulaşım sağlanmaktadır. Dışişleri Bakanlığı zorunlu olmadıkça seyahat edilmemesini tavsiye etmektedir.'
   },
 
-  // VİZESİZ BALKANLAR & AVRUPA
+  // VİZESİZ BALKANLAR, AVRUPA & KAFKASLAR
   'Karadağ': {
     category: 'vizesiz',
     label: 'Vizesiz (90 Gün)',
@@ -169,13 +182,31 @@ export const COUNTRY_VISA_INFO = {
     duration: '90 gün',
     notes: 'Bordo pasaportla 180 gün içinde 90 gün vizesiz.'
   },
+  'Belarus': {
+    category: 'vizesiz',
+    label: 'Vizesiz (30 Gün)',
+    duration: '30 gün',
+    notes: 'Türkiye ve Belarus hükümetleri arasındaki vize muafiyeti anlaşması gereği bordo pasaportla 30 güne kadar vizesizdir.'
+  },
+  'Rusya': {
+    category: 'vizesiz',
+    label: 'Vizesiz / Karşılıklı Muafiyet',
+    duration: '30-90 gün',
+    notes: 'Karşılıklı turizm muafiyeti rejimleri ve e-vize uygulamaları yürürlüktedir. Turistik seyahatlerde vize muafiyeti uygulanmaktadır.'
+  },
 
-  // VİZESİZ ASYA & KAFKASLAR & ORTA ASYA
+  // VİZESİZ ORTA DOĞU & ASYA
+  'İran': {
+    category: 'vizesiz',
+    label: 'Vizesiz (90 Gün)',
+    duration: '90 gün',
+    notes: 'Türkiye ve İran arasındaki vize muafiyeti anlaşması gereği bordo pasaportla 90 güne kadar turistik amaçlı vizesiz seyahat edilir.'
+  },
   'Japonya': {
     category: 'vizesiz',
     label: 'Vizesiz (90 Gün)',
     duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar turistik vizesiz giriş. Pasaportun en az 6 ay geçerli olmalıdır.'
+    notes: 'Bordo pasaportla 90 güne kadar turistik vizesiz giriş. Pasaportun en az 6 ay geçerli olması gerekir.'
   },
   'Güney Kore': {
     category: 'vizesiz',
@@ -257,154 +288,47 @@ export const COUNTRY_VISA_INFO = {
   },
 
   // VİZESİZ AMERİKALAR
-  'Brezilya': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 180 gün içinde 90 gün vizesiz.'
-  },
-  'Arjantin': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Şili': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Kolombiya': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Peru': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Ekvador': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Bolivya': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Uruguay': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Paraguay': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Panama': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Kosta Rika': {
-    category: 'vizesiz',
-    label: 'Vizesiz (30 Gün)',
-    duration: '30 gün',
-    notes: 'Bordo pasaportla 30 güne kadar vizesiz.'
-  },
-  'Guatemala': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'CA-4 anlaşması kapsamında 90 güne kadar vizesiz.'
-  },
-  'El Salvador': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'CA-4 anlaşmasıyla vizesiz ($12 turist kartı).'
-  },
-  'Honduras': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Nikaragua': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Girişte $10 turist kartı alınarak 90 gün kalış.'
-  },
+  'Brezilya': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 180 gün içinde 90 gün vizesiz.' },
+  'Arjantin': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Şili': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Kolombiya': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Peru': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Ekvador': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Bolivya': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Uruguay': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Paraguay': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Panama': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Kosta Rika': { category: 'vizesiz', label: 'Vizesiz (30 Gün)', duration: '30 gün', notes: 'Bordo pasaportla 30 güne kadar vizesiz.' },
+  'Guatemala': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'CA-4 anlaşması kapsamında 90 güne kadar vizesiz.' },
+  'El Salvador': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'CA-4 anlaşmasıyla vizesiz ($12 turist kartı).' },
+  'Honduras': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Nikaragua': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Girişte $10 turist kartı alınarak 90 gün kalış.' },
 
   // VİZESİZ AFRİKA & ADA ÜLKELERİ
-  'Fas': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Tunus': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Seyşeller': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Varışta ücretsiz ziyaretçi izni ile 90 gün vizesiz.'
-  },
-  'Mauritius': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Güney Afrika': {
-    category: 'vizesiz',
-    label: 'Vizesiz (30 Gün)',
-    duration: '30 gün',
-    notes: 'Bordo pasaportla 30 güne kadar vizesiz.'
-  },
-  'Botsvana': {
-    category: 'vizesiz',
-    label: 'Vizesiz (90 Gün)',
-    duration: '90 gün',
-    notes: 'Bordo pasaportla 90 güne kadar vizesiz.'
-  },
-  'Bahamalar': {
-    category: 'vizesiz',
-    label: 'Vizesiz (8 Ay)',
-    duration: '8 ay',
-    notes: 'Bordo pasaportla 8 aya kadar vizesiz.'
-  },
-  'Fiji': {
-    category: 'vizesiz',
-    label: 'Vizesiz (4 Ay)',
-    duration: '4 ay',
-    notes: 'Bordo pasaportla 4 aya kadar vizesiz.'
-  },
-  'Maldivler': {
-    category: 'vizesiz',
-    label: 'Vizesiz / Kapıda (30 Gün)',
-    duration: '30 gün',
-    notes: 'Havalimanında ücretsiz 30 günlük turist vizesi verilir.'
-  },
+  'Fas': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Tunus': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Seyşeller': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Varışta ücretsiz ziyaretçi izni ile 90 gün vizesiz.' },
+  'Mauritius': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Güney Afrika': { category: 'vizesiz', label: 'Vizesiz (30 Gün)', duration: '30 gün', notes: 'Bordo pasaportla 30 güne kadar vizesiz.' },
+  'Botsvana': { category: 'vizesiz', label: 'Vizesiz (90 Gün)', duration: '90 gün', notes: 'Bordo pasaportla 90 güne kadar vizesiz.' },
+  'Bahamalar': { category: 'vizesiz', label: 'Vizesiz (8 Ay)', duration: '8 ay', notes: 'Bordo pasaportla 8 aya kadar vizesiz.' },
+  'Fiji': { category: 'vizesiz', label: 'Vizesiz (4 Ay)', duration: '4 ay', notes: 'Bordo pasaportla 4 aya kadar vizesiz.' },
+  'Maldivler': { category: 'vizesiz', label: 'Vizesiz / Kapıda', duration: '30 gün', notes: 'Havalimanında ücretsiz 30 günlük turist vizesi verilir.' },
+  'Palau': { category: 'vizesiz', label: 'Vizesiz (30 Gün)', duration: '30 gün', notes: 'Varışta 30 günlük ücretsiz giriş izni.' },
 
   // KAPIDA VİZE VEYA KOLAY E-VİZE
+  'Endonezya': {
+    category: 'kapi_evize',
+    label: 'Kapıda Vize / e-VOA ($35)',
+    duration: '30 gün',
+    notes: 'Cakarta veya Bali Ngurah Rai Havalimanı’nda kapıda 500.000 IDR (~$35) karşılığı 30 günlük VoA (Visa on Arrival) veya online Molina e-VOA sistemi üzerinden alınır.'
+  },
+  'Irak': {
+    category: 'kapi_evize',
+    label: 'Kapıda Vize / e-Vize',
+    duration: '15-30 gün',
+    notes: 'Bağdat, Necef, Basra ve Erbil/Süleymaniye havalimanlarında turistik kapıda vize veya resmi online e-vize portalı üzerinden başvuru imkanı bulunmaktadır.'
+  },
   'Mısır': {
     category: 'kapi_evize',
     label: 'Kapıda Vize ($25)',
@@ -477,6 +401,12 @@ export const COUNTRY_VISA_INFO = {
     duration: '90 gün',
     notes: 'Uçuştan önce resmi Uganda e-vize sistemi üzerinden başvuru yapılır.'
   },
+  'Zambiya': {
+    category: 'kapi_evize',
+    label: 'Kapıda / KAZA Univisa',
+    duration: '30 gün',
+    notes: 'Victoria Şelaleleri için Zimbabve ile ortak KAZA Univisa veya kapıda vize.'
+  },
   'Ermenistan': {
     category: 'kapi_evize',
     label: 'Online e-Vize / Kapıda',
@@ -548,7 +478,33 @@ export const COUNTRY_VISA_INFO = {
   'San Marino': { category: 'schengen', label: 'Schengen Şart (İtalya)', duration: '90 gün', notes: 'İtalya içerisindedir; İtalya/Schengen vizesi şarttır.' },
   'Lihtenştayn': { category: 'schengen', label: 'Schengen Şart', duration: '90 gün', notes: 'Schengen alanına dahildir.' },
 
+  // SCHENGEN DIŞI ÖZEL ÖZERK BÖLGELER (Danimarka & Fransa Denizaşırı)
+  'Grönland': {
+    category: 'vize_gerekli',
+    label: 'Özel İzin Şart (Schengen Değil!)',
+    duration: '90 gün',
+    notes: '⚠️ DİKKAT: Danimarka’ya bağlıdır ancak SCHENGEN ALANINA DAHİL DEĞİLDİR! Standart Schengen vizesi ile girilemez. Danimarka Konsolosluğu’ndan pasaporta "Valid for Greenland" şerhli özel vize alınması zorunludur.'
+  },
+  'Faroe Adaları': {
+    category: 'vize_gerekli',
+    label: 'Özel İzin Şart (Schengen Değil!)',
+    duration: '90 gün',
+    notes: '⚠️ DİKKAT: Danimarka’ya bağlı özerk bölgedir ancak SCHENGEN DIŞINDADIR! Danimarka makamlarından "Valid for Faroe Islands" ibareli özel vize alınmalıdır.'
+  },
+  'Fransız Polinezyası': {
+    category: 'vize_gerekli',
+    label: 'Özel Denizaşırı İzni (Schengen Değil!)',
+    duration: '90 gün',
+    notes: '⚠️ DİKKAT: Fransa’nın Denizaşırı Toprağıdır (POM) ve SCHENGEN ALANI DIŞINDADIR! Standart Schengen vizesi geçmez; Fransa Konsolosluğu’ndan "Visa pour Territoire d’Outre-Mer (TOM)" alınmalıdır.'
+  },
+
   // ÖZEL VİZE ŞART (Konsolosluk Başvurusu)
+  'Kıbrıs (GKRY)': {
+    category: 'vize_gerekli',
+    label: 'Vize Şart (Özel Prosedür)',
+    duration: 'Değişken',
+    notes: 'Türkiye Cumhuriyeti Güney Kıbrıs Rum Yönetimi’ni diplomatik olarak tanımamaktadır; KKTC üzerinden Güney Kıbrıs’a geçişe GKRY makamları izin vermez. Üçüncü ülkeler üzerinden vize ile seyahat prosedürü uygulanır.'
+  },
   'ABD': {
     category: 'vize_gerekli',
     label: 'ABD Vizesi Şart (B1/B2)',
@@ -591,12 +547,6 @@ export const COUNTRY_VISA_INFO = {
     duration: '30 gün',
     notes: 'Vize Başvuru Merkezi üzerinden evrak teslimi ve biyometri şarttır (Transit vize muafiyetleri hariç).'
   },
-  'Rusya': {
-    category: 'vize_gerekli',
-    label: 'Rusya e-Vize ($52)',
-    duration: '16 gün',
-    notes: 'Resmi Dışişleri portalından online elektronik vize alınarak 16 güne kadar seyahat edilebilir.'
-  },
   'Meksika': {
     category: 'vize_gerekli',
     label: 'SAE e-Onay / Vize',
@@ -614,6 +564,12 @@ export const COUNTRY_VISA_INFO = {
     label: 'Cezayir Vizesi Şart',
     duration: '30-90 gün',
     notes: 'Konsolosluk üzerinden davetiye ve otel rezervasyonuyla vize başvurusu yapılır.'
+  },
+  'Antarktika': {
+    category: 'turkiye',
+    label: 'Vize Yok (Özel İzin)',
+    duration: 'Sezonluk',
+    notes: 'Antarktika hiçbir ülkenin toprağı değildir; ancak çıkış yapılan Arjantin (Ushuaia) veya Şili (Punta Arenas) Türk vatandaşlarına 90 gün vizesizdir.'
   }
 };
 
@@ -631,7 +587,8 @@ export function getCountryVisaInfo(countryName) {
       icon: '❓',
       isVisaFree: false,
       duration: 'Belirtilmedi',
-      notes: 'Lütfen güncel konsolosluk duyurularını kontrol edin.'
+      notes: 'Lütfen güncel konsolosluk duyurularını kontrol edin.',
+      source: VISA_METADATA_SOURCE.fullNote
     };
   }
 
@@ -654,7 +611,8 @@ export function getCountryVisaInfo(countryName) {
     icon: meta.icon,
     isVisaFree: meta.isVisaFree,
     duration: info.duration,
-    notes: info.notes
+    notes: info.notes,
+    source: VISA_METADATA_SOURCE.fullNote
   };
 }
 

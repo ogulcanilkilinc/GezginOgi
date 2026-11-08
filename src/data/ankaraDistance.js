@@ -1,5 +1,5 @@
 // src/data/ankaraDistance.js
-// Ankara Base Distance & Travel Time Calculator (Drive, Flight, YHT Train)
+// Ankara Base Distance & Travel Time Calculator (Drive, Realistic Multi-Stop Flight, YHT Train)
 // Ankara Reference: Kızılay / Çankaya [39.9208, 32.8541]
 
 export const ANKARA_COORDS = [39.9208, 32.8541];
@@ -20,14 +20,14 @@ export function haversineDistance(lat1, lon1, lat2, lon2) {
 
 // YHT (Yüksek Hızlı Tren) routes originating from Ankara YHT Gar
 const YHT_DESTINATIONS = {
-  'eskişehir': { time: '1 sa 25 dk', note: 'Ankara Gar’dan günde 14+ sefer' },
-  'konya': { time: '1 sa 45 dk', note: 'Ankara Gar’dan direkt hızlı tren' },
-  'karaman': { time: '2 sa 40 dk', note: 'Konya aktarmasız hızlı tren' },
-  'sivas': { time: '2 sa 30 dk', note: 'Yeni Ankara-Sivas YHT hattı' },
-  'istanbul': { time: '4 sa 15 dk', note: 'Söğütlüçeşme & Halkalı yönü' },
-  'bilecik': { time: '2 sa 15 dk', note: 'Bozüyük & Bilecik YHT' },
-  'kırıkkale': { time: '35 dk', note: 'YHT ile yarım saat' },
-  'yozgat': { time: '1 sa 15 dk', note: 'YHT hattı üzeri' }
+  'eskişehir': { time: '1 sa 25 dk' },
+  'konya': { time: '1 sa 45 dk' },
+  'karaman': { time: '2 sa 40 dk' },
+  'sivas': { time: '2 sa 30 dk' },
+  'istanbul': { time: '4 sa 15 dk' },
+  'bilecik': { time: '2 sa 15 dk' },
+  'kırıkkale': { time: '35 dk' },
+  'yozgat': { time: '1 sa 15 dk' }
 };
 
 export function getAnkaraTravelInfo(place) {
@@ -82,7 +82,10 @@ export function getAnkaraTravelInfo(place) {
     }
   }
 
-  // 3. Flight Calculation
+  // 3. Realistic Flight Calculation (Considering transfers and real transit corridors)
+  const country = place.country || '';
+  const placeName = (place.name || '').toLowerCase();
+
   if (isTr) {
     if (distKm >= 320) {
       if (cityName.includes('istanbul')) flightText = '1 sa uçakla';
@@ -94,11 +97,93 @@ export function getAnkaraTravelInfo(place) {
       else flightText = '1 sa 15 dk uçakla';
     }
   } else {
-    // Abroad flights from Ankara (direct / 1-stop)
-    if (distKm < 1500) flightText = '~1.5 - 2.5 sa uçakla';
-    else if (distKm < 2800) flightText = '~3 - 3.5 sa uçakla';
-    else if (distKm < 4500) flightText = '~4 - 5.5 sa uçakla';
-    else flightText = '~9 - 14 sa uçakla';
+    // ABROAD: Realistic transit & multi-stop modeling
+    // A. South America (Multi-stop international + domestic connection)
+    if (['Peru', 'Bolivya', 'Ekvador', 'Şili', 'Arjantin', 'Kolombiya', 'Brezilya', 'Uruguay', 'Paraguay', 'Guyana'].includes(country)) {
+      if (placeName.includes('machu picchu') || placeName.includes('cusco') || cityName.includes('cusco')) {
+        flightText = '~22 - 26 sa (2+ aktarma: Lima & Cusco)';
+      } else if (placeName.includes('patagonya') || cityName.includes('calafate') || cityName.includes('natales')) {
+        flightText = '~24 - 28 sa (2+ aktarma: Buenos Aires & El Calafate)';
+      } else if (placeName.includes('galapagos')) {
+        flightText = '~22 - 26 sa (2 aktarma: Guayaquil & Baltra)';
+      } else {
+        flightText = '~18 - 24 sa (1-2 aktarma)';
+      }
+    }
+    // B. Oceania & Pacific
+    else if (['Avustralya', 'Yeni Zelanda', 'Fiji', 'Vanuatu', 'Palau', 'Fransız Polinezyası'].includes(country) || placeName.includes('rapa nui')) {
+      if (placeName.includes('rapa nui') || placeName.includes('paskalya')) {
+        flightText = '~30 - 36 sa (2-3 aktarma: Santiago & Paskalya)';
+      } else if (country === 'Fransız Polinezyası' || placeName.includes('bora bora') || placeName.includes('tahiti')) {
+        flightText = '~28 - 34 sa (2-3 aktarma: LAX & Papeete)';
+      } else if (country === 'Yeni Zelanda') {
+        flightText = '~24 - 28 sa (2 aktarma)';
+      } else if (country === 'Avustralya') {
+        flightText = '~20 - 24 sa (1-2 aktarma)';
+      } else {
+        flightText = '~26 - 32 sa (2-3 aktarma)';
+      }
+    }
+    // C. Antarctica & Extremes
+    else if (country === 'Antarktika') {
+      flightText = '~30+ sa (Buenos Aires + Ushuaia + Keşif Gemisi)';
+    } else if (country === 'Grönland') {
+      flightText = '~14 - 18 sa (Kopenhag & Kangerlussuaq aktarmalı)';
+    } else if (placeName.includes('svalbard')) {
+      flightText = '~12 - 16 sa (Oslo & Longyearbyen aktarmalı)';
+    }
+    // D. North America & Caribbean
+    else if (country === 'ABD' || country === 'Kanada') {
+      if (cityName.includes('hawaii') || placeName.includes('hawaii')) {
+        flightText = '~22 - 26 sa (2 aktarma)';
+      } else if (cityName.includes('san francisco') || cityName.includes('los angeles') || cityName.includes('kaliforniya') || cityName.includes('las vegas')) {
+        flightText = '~15 - 18 sa (1 aktarma)';
+      } else {
+        // East Coast (New York, Boston, Washington)
+        flightText = '~11 - 13 sa (1 aktarma veya direkt)';
+      }
+    } else if (['Meksika', 'Küba', 'Bahamalar', 'Kosta Rika', 'Panama', 'Guatemala', 'Dominik Cumhuriyeti', 'Jamaika'].includes(country)) {
+      flightText = '~16 - 22 sa (1-2 aktarma)';
+    }
+    // E. East Asia & Southeast Asia
+    else if (country === 'Japonya' || country === 'Güney Kore') {
+      flightText = '~11 - 14 sa (1 aktarma)';
+    } else if (country === 'Endonezya') {
+      if (cityName.includes('bali') || placeName.includes('bali')) {
+        flightText = '~15 - 18 sa (1-2 aktarma: Doha/Dubai & Bali)';
+      } else {
+        flightText = '~13 - 16 sa (1 aktarma)';
+      }
+    } else if (['Tayland', 'Vietnam', 'Singapur', 'Malezya', 'Filipinler', 'Kamboçya', 'Laos', 'Çin'].includes(country)) {
+      flightText = '~10 - 14 sa (1 aktarma)';
+    }
+    // F. Central Asia & Indian Subcontinent
+    else if (['Hindistan', 'Nepal', 'Sri Lanka', 'Pakistan', 'Bangladeş', 'Bhutan'].includes(country)) {
+      flightText = '~8 - 12 sa (1 aktarma)';
+    } else if (['Özbekistan', 'Kazakistan', 'Kırgızistan', 'Tacikistan', 'Türkmenistan', 'Moğolistan'].includes(country)) {
+      flightText = '~5 - 8 sa (direkt / 1 aktarma)';
+    }
+    // G. Africa
+    else if (['Güney Afrika', 'Botsvana', 'Namibya', 'Zambiya', 'Zimbabve', 'Madagaskar', 'Mauritius', 'Seyşeller'].includes(country)) {
+      flightText = '~12 - 17 sa (1-2 aktarma)';
+    } else if (['Kenya', 'Tanzanya', 'Uganda', 'Ruanda', 'Etiyopya'].includes(country)) {
+      flightText = '~8 - 12 sa (1 aktarma)';
+    } else if (['Mısır', 'Tunus', 'Fas', 'Cezayir'].includes(country)) {
+      flightText = '~2.5 - 5 sa (direkt / 1 aktarma)';
+    }
+    // H. Middle East & Gulf
+    else if (['BAE', 'Katar', 'Umman', 'Suudi Arabistan', 'Lübnan', 'Ürdün', 'İsrail', 'Kuveyt', 'Bahreyn', 'Irak', 'İran'].includes(country)) {
+      flightText = '~2.5 - 4.5 sa (direkt / 1 aktarma)';
+    }
+    // I. Europe
+    else if (['Yunanistan', 'Bulgaristan', 'Sırbistan', 'Bosna-Hersek', 'Karadağ', 'Arnavutluk', 'Kuzey Makedonya', 'Kosova', 'Romanya', 'Gürcistan', 'Azerbaycan', 'KKTC'].includes(country)) {
+      flightText = '~1.5 - 2.5 sa (direkt / 1 aktarma)';
+    } else if (['Norveç', 'İsveç', 'Danimarka', 'Finlandiya', 'İzlanda', 'Faroe Adaları'].includes(country)) {
+      flightText = '~4.5 - 6.5 sa (1 aktarma)';
+    } else {
+      // General Western/Central Europe
+      flightText = '~3 - 4.5 sa (direkt / 1 aktarma)';
+    }
   }
 
   // 4. Weekend Escape Criteria:
