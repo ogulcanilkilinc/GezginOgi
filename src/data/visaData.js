@@ -565,6 +565,44 @@ export const COUNTRY_VISA_INFO = {
     duration: '30-90 gün',
     notes: 'Konsolosluk üzerinden davetiye ve otel rezervasyonuyla vize başvurusu yapılır.'
   },
+
+  // GÜVENLİK UYARISI OLAN VE ÖZEL STATÜLÜ ÜLKELER (T.C. Dışişleri Bakanlığı Duyuruları)
+  'Yemen': {
+    category: 'vize_gerekli',
+    label: 'Vize Şart · ⚠️ Yüksek Güvenlik Riski',
+    duration: 'Özel İzin',
+    notes: '⚠️ DİKKAT (T.C. Dışişleri Bakanlığı Seyahat Uyarısı): Devam eden iç çatışmalar ve yüksek güvenlik riski nedeniyle zorunlu olmadıkça Yemen’e kesinlikle seyahat edilmemesi tavsiye edilmektedir. Sokotra Adası dahil özel güvenlik izinleri gerekmektedir.'
+  },
+  'Afganistan': {
+    category: 'vize_gerekli',
+    label: 'Vize Şart · ⛔ Seyahat Uyarısı',
+    duration: 'Değişken',
+    notes: '⛔ DİKKAT (T.C. Dışişleri Bakanlığı Seyahat Uyarısı): Ülkedeki güvenlik boşluğu ve yüksek terör riski nedeniyle Afganistan’a seyahat edilmemesi şiddetle tavsiye edilir.'
+  },
+  'Suriye': {
+    category: 'vize_gerekli',
+    label: 'Vize Şart · ⛔ Seyahat Uyarısı',
+    duration: 'Değişken',
+    notes: '⛔ DİKKAT (T.C. Dışişleri Bakanlığı Seyahat Uyarısı): Çatışmalar ve can güvenliği riski nedeniyle Suriye’ye hiçbir surette seyahat edilmemelidir.'
+  },
+  'Venezuela': {
+    category: 'vizesiz',
+    label: 'Vizesiz (90 Gün) · ⚠️ Güvenlik Uyarısı',
+    duration: '90 gün',
+    notes: 'Türk vatandaşlarına 90 güne kadar vizesizdir; ancak ⚠️ DİKKAT: Ülkedeki asayiş olayları, ekonomik kriz ve yüksek suç oranı nedeniyle Dışişleri Bakanlığı seyahat uyarısı mevcuttur. Bireysel güvenlik tedbirlerine azami dikkat edilmelidir.'
+  },
+  'İsrail': {
+    category: 'vize_gerekli',
+    label: 'Vize Şart · ⚠️ Güvenlik Uyarısı',
+    duration: 'Değişken',
+    notes: '⚠️ DİKKAT (T.C. Dışişleri Bakanlığı Seyahat Uyarısı): Bölgedeki süregelen askeri gerginlik, roket tehditleri ve güvenlik operasyonları sebebiyle zorunlu olmadıkça bölgeye seyahat etmekten kaçınılmalıdır.'
+  },
+  'Filistin': {
+    category: 'vize_gerekli',
+    label: 'Vize / İzin Şart · ⚠️ Güvenlik Uyarısı',
+    duration: 'Değişken',
+    notes: '⚠️ DİKKAT (T.C. Dışişleri Bakanlığı Seyahat Uyarısı): Bölgedeki askeri çatışmalar ve insani durum nedeniyle seyahat güvenliği bulunmamaktadır; girişler İsrail/Ürdün sınır kontrollerine tabidir.'
+  },
   'Antarktika': {
     category: 'turkiye',
     label: 'Vize Yok (Özel İzin)',

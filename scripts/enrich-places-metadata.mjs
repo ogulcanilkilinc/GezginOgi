@@ -274,6 +274,12 @@ const COUNTRY_VISA_INFO = {
   'Meksika': { category: 'vize_gerekli', label: 'SAE e-Onay / Vize', duration: '180 gün', notes: 'Online SAE belgesi (ABD vizesi varsa vizesiz).' },
   'Küba': { category: 'vize_gerekli', label: 'Küba Turist Kartı', duration: '90 gün', notes: 'Turist kartı alınarak girilir.' },
   'Cezayir': { category: 'vize_gerekli', label: 'Cezayir Vizesi Şart', duration: '30-90 gün', notes: 'Konsolosluk vizesi şarttır.' },
+  'Yemen': { category: 'vize_gerekli', label: 'Vize Şart · ⚠️ Yüksek Güvenlik Riski', duration: 'Özel İzin', notes: '⚠️ DİKKAT (T.C. Dışişleri Bakanlığı Seyahat Uyarısı): Devam eden çatışmalar ve güvenlik riskleri nedeniyle zorunlu olmadıkça seyahat edilmemesi tavsiye edilmektedir. Sokotra için askeri izin gerekir.' },
+  'Afganistan': { category: 'vize_gerekli', label: 'Vize Şart · ⛔ Seyahat Uyarısı', duration: 'Değişken', notes: '⛔ DİKKAT: Ülkedeki güvenlik boşluğu nedeniyle seyahat edilmemesi tavsiye edilir.' },
+  'Suriye': { category: 'vize_gerekli', label: 'Vize Şart · ⛔ Seyahat Uyarısı', duration: 'Değişken', notes: '⛔ DİKKAT: Çatışmalar nedeniyle Suriye’ye hiçbir koşulda seyahat edilmemelidir.' },
+  'Venezuela': { category: 'vizesiz', label: 'Vizesiz (90 Gün) · ⚠️ Güvenlik Uyarısı', duration: '90 gün', notes: '90 gün vizesizdir; ancak asayiş ve suç oranı nedeniyle Dışişleri seyahat uyarısı mevcuttur.' },
+  'İsrail': { category: 'vize_gerekli', label: 'Vize Şart · ⚠️ Güvenlik Uyarısı', duration: 'Değişken', notes: '⚠️ DİKKAT (Dışişleri Seyahat Uyarısı): Askeri çatışmalar ve roket tehditleri sebebiyle zorunlu olmadıkça bölgeye gidilmemelidir.' },
+  'Filistin': { category: 'vize_gerekli', label: 'Vize / İzin Şart · ⚠️ Güvenlik Uyarısı', duration: 'Değişken', notes: '⚠️ DİKKAT: Askeri operasyonlar ve can güvenliği riski nedeniyle seyahat uyarısı mevcuttur.' },
   'Antarktika': { category: 'turkiye', label: 'Vize Yok (Özel İzin)', duration: 'Sezonluk', notes: 'Antarktika sahipsizdir; çıkış yapılan Şili veya Arjantin Türk vatandaşlarına vizesizdir.' }
 };
 
@@ -330,7 +336,7 @@ for (const p of places) {
       driveMinutes = Math.round(20 + (roadKm / 90) * 60);
       const h = Math.floor(driveMinutes / 60);
       const m = driveMinutes % 60;
-      driveText = m > 0 ? `${h} sa ${m} dk araçla` : `${h} sa araçla`;
+      driveText = h > 0 ? (m > 0 ? `${h} sa ${m} dk araçla` : `${h} sa araçla`) : `${m} dk araçla`;
     }
 
     const cityName = (p.city || '').toLowerCase();

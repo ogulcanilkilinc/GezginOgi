@@ -32,8 +32,43 @@ import {
   Volume2,
   Smile,
   Plane,
-  Hotel
+  Hotel,
+  ChevronDown,
+  Loader2
 } from 'lucide-react';
+
+// Client-side image downscaler to prevent localStorage quota exhaustion (converts 10MB raw photos to ~100-150KB JPEG)
+function resizeImageToMax(file, maxDimension = 1200, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Dosya okunamadı.'));
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Görsel formatı desteklenmiyor.'));
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          } else {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve(dataUrl);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 const DEFAULT_CHECKLIST_BY_CATEGORY = {
   muze: ['Müzekart / Online Bilet kontrolü', 'Rahat yürüyüş ayakkabısı', 'Powerbank & Kamera', 'Kulaklık (Sesli rehber için)'],
@@ -81,7 +116,14 @@ export default function PlaceDetailPanel({
   // User Photos State
   const [userPhotos, setUserPhotos] = useState([]);
   const [imgError, setImgError] = useState(false);
+  const [photoCompressing, setPhotoCompressing] = useState(false);
+  const [photoError, setPhotoError] = useState('');
   const photoInputRef = useRef(null);
+
+  // Accordion Expand/Collapse States (Improves mobile layout)
+  const [isBlogExpanded, setIsBlogExpanded] = useState(false);
+  const [isChecklistExpanded, setIsChecklistExpanded] = useState(false);
+  const [isPhrasebookExpanded, setIsPhrasebookExpanded] = useState(false);
 
   useEffect(() => {
     if (!place) return;
@@ -176,16 +218,30 @@ export default function PlaceDetailPanel({
     onUpdateNotes(place.id, { checklist: updated });
   };
 
-  const handlePhotoUpload = (e) => {
+  const handlePhotoUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const updated = [...userPhotos, ev.target.result];
+
+    if (userPhotos.length >= 6) {
+      alert('Bu mekan için en fazla 6 fotoğraf ekleyebilirsiniz.');
+      return;
+    }
+
+    try {
+      setPhotoCompressing(true);
+      setPhotoError('');
+      // Downscale to max 1200px and JPEG quality 0.82 to prevent localStorage overflow
+      const compressedDataUrl = await resizeImageToMax(file, 1200, 0.82);
+      const updated = [...userPhotos, compressedDataUrl];
       setUserPhotos(updated);
       onUpdateNotes(place.id, { userPhotos: updated });
-    };
-    reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Fotoğraf küçültme/kaydetme hatası:', err);
+      setPhotoError('Fotoğraf kaydedilemedi. Depolama alanı dolu olabilir.');
+    } finally {
+      setPhotoCompressing(false);
+      if (photoInputRef.current) photoInputRef.current.value = '';
+    }
   };
 
   const handleRemoveUserPhoto = (idx) => {
@@ -615,149 +671,190 @@ export default function PlaceDetailPanel({
           </p>
         </div>
 
-        {/* 3.1 Fotoğraf Rehberi & Altın Saat */}
-        <div className="bg-gradient-to-r from-amber-50/80 via-white to-rose-50/80 border border-amber-200 rounded-2xl p-4 sm:p-5 space-y-2.5 shadow-xs">
-          <div className="flex items-center justify-between">
-            <h4 className="text-sm font-bold text-amber-900 flex items-center gap-2">
-              <Camera className="w-4 h-4 text-amber-600" />
-              <span>Fotoğraf Rehberi & En İyi Çekim Zamanı</span>
-            </h4>
-            <span className="text-[10px] bg-amber-100 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-full font-bold">
-              🌅 Altın Saat
-            </span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700">
-            <div className="bg-white p-3 rounded-xl border border-slate-200/90 shadow-xs flex items-start gap-2.5">
-              <Sunset className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-slate-900 block">İdeal Işık Saati:</strong>
-                <span className="text-slate-600">
-                  {place.category === 'doga'
-                    ? 'Gün Doğumu (06:30 - 08:00) & Gün Batımı Altın Saat'
-                    : place.category === 'muze'
-                    ? 'Sabah Erken (09:00) veya Öğleden Sonra Işığı'
-                    : 'Akşam Alacakaranlığı & Mavi Saat (Işıklar Yanarken)'}
-                </span>
+        {/* 3.1 Fotoğraf Rehberi (Yalnızca özgün/özel ipucu varsa gösterilir) */}
+        {place.practicalTips && !place.practicalTips.includes('Geniş açı ile mekanı çevreleyen') ? (
+          <div className="bg-gradient-to-r from-amber-50/80 via-white to-rose-50/80 border border-amber-200 rounded-2xl p-4 sm:p-5 space-y-2.5 shadow-xs">
+            <div className="flex items-center justify-between">
+              <h4 className="text-sm font-bold text-amber-900 flex items-center gap-2">
+                <Camera className="w-4 h-4 text-amber-600" />
+                <span>Fotoğraf Rehberi & En İyi Çekim Zamanı</span>
+              </h4>
+              <span className="text-[10px] bg-amber-100 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-full font-bold">
+                🌅 Altın Saat
+              </span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700">
+              <div className="bg-white p-3 rounded-xl border border-slate-200/90 shadow-xs flex items-start gap-2.5">
+                <Sunset className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-slate-900 block">İdeal Işık Saati:</strong>
+                  <span className="text-slate-600">
+                    {place.category === 'doga'
+                      ? 'Gün Doğumu (06:30 - 08:00) & Gün Batımı Altın Saat'
+                      : place.category === 'muze'
+                      ? 'Sabah Erken (09:00) veya Öğleden Sonra Işığı'
+                      : 'Akşam Alacakaranlığı & Mavi Saat (Işıklar Yanarken)'}
+                  </span>
+                </div>
+              </div>
+              <div className="bg-white p-3 rounded-xl border border-slate-200/90 shadow-xs flex items-start gap-2.5">
+                <Compass className="w-4 h-4 text-cyan-600 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-slate-900 block">Önerilen Çekim Açısı:</strong>
+                  <span className="text-slate-600">{place.practicalTips}</span>
+                </div>
               </div>
             </div>
-            <div className="bg-white p-3 rounded-xl border border-slate-200/90 shadow-xs flex items-start gap-2.5">
-              <Compass className="w-4 h-4 text-cyan-600 shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-slate-900 block">Önerilen Çekim Açısı:</strong>
-                <span className="text-slate-600">
-                  {place.practicalTips || 'Geniş açı ile mekanı çevreleyen doğayı ve gökyüzünü kadraja dahil edin.'}
-                </span>
-              </div>
-            </div>
           </div>
-        </div>
+        ) : null}
 
-        {/* 3.2 Yerel İpuçları & Hayat Kurtaran Kelimeler */}
+        {/* 3.2 Yerel İpuçları & Hayat Kurtaran Kelimeler (Yalnızca Yurtdışı Destinasyonlarında Gösterilir) */}
         {(() => {
+          if (!place.country || place.country === 'Türkiye') return null;
           const pb = getPhrasebookForCountry(place.country);
           if (!pb) return null;
           return (
             <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-xs">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+              <button
+                type="button"
+                onClick={() => setIsPhrasebookExpanded(!isPhrasebookExpanded)}
+                className="w-full flex items-center justify-between text-left focus:outline-none"
+              >
                 <div className="flex items-center gap-2">
                   <span className="text-xl">{pb.flag}</span>
                   <div>
-                    <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-1.5">
                       <span>{pb.language} — Hayat Kurtaran İfadeler</span>
                     </h4>
-                    <span className="text-[10px] text-slate-500">{place.country} seyahatinde yerel esnafla iletişim için</span>
+                    <span className="text-[10px] text-slate-500">{place.country} seyahatinde yerel esnafla pratik iletişim</span>
                   </div>
                 </div>
-                <span className="text-[10px] text-amber-800 font-bold bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-full">
-                  🗣️ Mini Sözlük
-                </span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {pb.phrases.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2"
-                  >
-                    <div>
-                      <span className="text-[11px] text-slate-500 block">{item.tr}</span>
-                      <strong className="text-xs text-slate-900 block mt-0.5">{item.local}</strong>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] text-amber-800 font-bold bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-full">
+                    🗣️ {isPhrasebookExpanded ? 'Kapat' : 'Sözlüğü Aç'}
+                  </span>
+                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isPhrasebookExpanded ? 'rotate-180' : ''}`} />
+                </div>
+              </button>
+
+              {isPhrasebookExpanded && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-slate-100 animate-fadeIn">
+                  {pb.phrases.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2"
+                    >
+                      <div>
+                        <span className="text-[11px] text-slate-500 block">{item.tr}</span>
+                        <strong className="text-xs text-slate-900 block mt-0.5">{item.local}</strong>
+                      </div>
+                      <span className="text-[10px] font-mono text-amber-800 bg-amber-50 px-2 py-1 rounded-md border border-amber-200 shrink-0">
+                        /{item.phonetic}/
+                      </span>
                     </div>
-                    <span className="text-[10px] font-mono text-amber-800 bg-amber-50 px-2 py-1 rounded-md border border-amber-200 shrink-0">
-                      /{item.phonetic}/
-                    </span>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           );
         })()}
 
-        {/* 4. Mini-Blog & Rehber Hikayesi */}
+        {/* 4. Mini-Blog & Rehber Hikayesi (Katlanabilir Akordiyon) */}
         {place.blogArticle && (
-          <div className="bg-amber-50/40 border border-amber-200/80 rounded-2xl p-5 space-y-3 shadow-xs">
-            <div className="flex items-center justify-between border-b border-amber-200/60 pb-2.5">
-              <h4 className="text-base font-serif font-bold text-amber-950 flex items-center gap-2">
+          <div className="bg-amber-50/40 border border-amber-200/80 rounded-2xl p-4 sm:p-5 space-y-2.5 shadow-xs">
+            <button
+              type="button"
+              onClick={() => setIsBlogExpanded(!isBlogExpanded)}
+              className="w-full flex items-center justify-between text-left focus:outline-none"
+            >
+              <div className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-amber-600" />
-                <span>Gezi Rehberi & Mini-Blog Yazısı</span>
-              </h4>
-              <span className="text-[11px] text-slate-500 italic">Editörün Keşif Notu</span>
-            </div>
-            <div className="space-y-3 text-sm text-slate-700 leading-relaxed whitespace-pre-line font-normal">
-              {place.blogArticle}
-            </div>
+                <h4 className="text-sm sm:text-base font-serif font-bold text-amber-950">
+                  Gezi Rehberi & Mini-Blog Hikayesi
+                </h4>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] text-amber-800 font-semibold bg-amber-100/70 border border-amber-300/70 px-2.5 py-0.5 rounded-full">
+                  {isBlogExpanded ? 'Hikayeyi Kapat' : 'Devamını Oku'}
+                </span>
+                <ChevronDown className={`w-4 h-4 text-amber-700 transition-transform duration-200 ${isBlogExpanded ? 'rotate-180' : ''}`} />
+              </div>
+            </button>
+            {isBlogExpanded ? (
+              <div className="space-y-3 pt-2 border-t border-amber-200/60 text-sm text-slate-700 leading-relaxed whitespace-pre-line font-normal animate-fadeIn">
+                {place.blogArticle}
+              </div>
+            ) : (
+              <p className="text-xs text-slate-600 line-clamp-2 italic pt-1">
+                {place.blogArticle.slice(0, 150)}...
+              </p>
+            )}
           </div>
         )}
 
-        {/* 5. Hazırlık & Çanta Kontrol Listesi (Checklist) */}
+        {/* 5. Hazırlık & Çanta Kontrol Listesi (Checklist - Katlanabilir Akordiyon) */}
         <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-xs">
-          <div className="flex items-center justify-between">
-            <h4 className="text-sm font-bold text-purple-900 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsChecklistExpanded(!isChecklistExpanded)}
+            className="w-full flex items-center justify-between text-left focus:outline-none"
+          >
+            <div className="flex items-center gap-2">
               <Briefcase className="w-4 h-4 text-purple-600" />
-              <span>Gitmeden Önce Hazırlık & Çanta Listesi</span>
-            </h4>
-            <span className="text-[11px] text-slate-500">
-              {checklist.filter((c) => c.done).length}/{checklist.length} Tamamlandı
-            </span>
-          </div>
+              <h4 className="text-sm font-bold text-purple-900">
+                Gitmeden Önce Hazırlık & Çanta Listesi
+              </h4>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-purple-800 font-medium bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
+                {checklist.filter((c) => c.done).length}/{checklist.length} Tamamlandı
+              </span>
+              <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isChecklistExpanded ? 'rotate-180' : ''}`} />
+            </div>
+          </button>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {checklist.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => handleToggleCheckItem(item.id)}
-                className={`flex items-center gap-2 p-2 rounded-xl border text-left text-xs transition ${
-                  item.done
-                    ? 'bg-emerald-50 border-emerald-200 text-slate-400 line-through'
-                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300'
-                }`}
-              >
-                {item.done ? (
-                  <CheckSquare className="w-4 h-4 text-emerald-600 shrink-0" />
-                ) : (
-                  <Square className="w-4 h-4 text-slate-400 shrink-0" />
-                )}
-                <span className="truncate">{item.text}</span>
-              </button>
-            ))}
-          </div>
+          {isChecklistExpanded && (
+            <div className="space-y-3 pt-2 border-t border-slate-100 animate-fadeIn">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {checklist.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => handleToggleCheckItem(item.id)}
+                    className={`flex items-center gap-2 p-2 rounded-xl border text-left text-xs transition ${
+                      item.done
+                        ? 'bg-emerald-50 border-emerald-200 text-slate-400 line-through'
+                        : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300'
+                    }`}
+                  >
+                    {item.done ? (
+                      <CheckSquare className="w-4 h-4 text-emerald-600 shrink-0" />
+                    ) : (
+                      <Square className="w-4 h-4 text-slate-400 shrink-0" />
+                    )}
+                    <span className="truncate">{item.text}</span>
+                  </button>
+                ))}
+              </div>
 
-          <form onSubmit={handleAddCheckItem} className="flex gap-2 pt-1">
-            <input
-              type="text"
-              value={newCheckItem}
-              onChange={(e) => setNewCheckItem(e.target.value)}
-              placeholder="Listeye kendi hazırlık maddeni ekle..."
-              className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500"
-            />
-            <button
-              type="submit"
-              className="bg-purple-100 hover:bg-purple-200 text-purple-800 border border-purple-200 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>Ekle</span>
-            </button>
-          </form>
+              <form onSubmit={handleAddCheckItem} className="flex gap-2 pt-1">
+                <input
+                  type="text"
+                  value={newCheckItem}
+                  onChange={(e) => setNewCheckItem(e.target.value)}
+                  placeholder="Listeye kendi hazırlık maddeni ekle..."
+                  className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500"
+                />
+                <button
+                  type="submit"
+                  className="bg-purple-100 hover:bg-purple-200 text-purple-800 border border-purple-200 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Ekle</span>
+                </button>
+              </form>
+            </div>
+          )}
         </div>
 
         {/* 6. Kişisel Gezi Günlüğüm, Puanım & Fotoğraf Albümüm */}
@@ -802,18 +899,30 @@ export default function PlaceDetailPanel({
           {/* User Photo Gallery */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-                <Camera className="w-3.5 h-3.5 text-amber-600" />
-                <span>Kendi Çektiğim Fotoğraflar ({userPhotos.length})</span>
-              </span>
-              <button
-                type="button"
-                onClick={() => photoInputRef.current?.click()}
-                className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition font-medium"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Fotoğraf Yükle</span>
-              </button>
+              <div>
+                <span className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                  <Camera className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Kendi Çektiğim Fotoğraflar ({userPhotos.length}/6)</span>
+                </span>
+                <span className="text-[10px] text-slate-400 block">Otomatik sıkıştırılır (maks. ~120KB)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {photoCompressing && (
+                  <span className="text-xs text-amber-600 font-medium flex items-center gap-1 animate-pulse">
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Küçültülüyor...</span>
+                  </span>
+                )}
+                <button
+                  type="button"
+                  disabled={photoCompressing || userPhotos.length >= 6}
+                  onClick={() => photoInputRef.current?.click()}
+                  className="text-xs bg-slate-100 hover:bg-slate-200 disabled:opacity-50 text-slate-800 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition font-medium"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Fotoğraf Ekle</span>
+                </button>
+              </div>
               <input
                 ref={photoInputRef}
                 type="file"
@@ -822,6 +931,12 @@ export default function PlaceDetailPanel({
                 className="hidden"
               />
             </div>
+
+            {photoError && (
+              <div className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-xl p-2.5 font-medium animate-fadeIn">
+                ⚠️ {photoError}
+              </div>
+            )}
 
             {userPhotos.length > 0 && (
               <div className="grid grid-cols-3 gap-2 pt-1">

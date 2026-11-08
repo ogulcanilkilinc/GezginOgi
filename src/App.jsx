@@ -676,11 +676,11 @@ export default function App() {
               {isToolsDropdownOpen && (
                 <>
                   <div
-                    className="fixed inset-0 z-[540] bg-slate-950/40 backdrop-blur-xs lg:hidden"
+                    className="fixed inset-0 z-[540] bg-slate-950/60 lg:hidden"
                     onClick={() => setIsToolsDropdownOpen(false)}
                   />
                   <div
-                    className="fixed lg:absolute bottom-16 lg:bottom-auto left-4 right-4 lg:left-auto lg:right-0 lg:mt-2 lg:w-72 bg-white/98 border border-slate-200 rounded-2xl shadow-xl p-2.5 z-[550] backdrop-blur-xl animate-fadeIn space-y-1 text-slate-800"
+                    className="fixed lg:absolute bottom-16 lg:bottom-auto left-4 right-4 lg:left-auto lg:right-0 lg:mt-2 lg:w-72 bg-white border border-slate-300 rounded-2xl shadow-2xl p-2.5 z-[550] animate-fadeIn space-y-1 text-slate-800"
                     onClick={() => setIsToolsDropdownOpen(false)}
                   >
                   <button
@@ -1376,9 +1376,11 @@ export default function App() {
                             >
                               {catObj.icon}
                             </span>
-                            <span className="absolute bottom-1 right-1 text-xs bg-white/90 text-slate-800 border border-slate-200 rounded px-1 shadow-2xs">
-                              {catObj.icon}
-                            </span>
+                            {place.coverImage && (
+                              <span className="absolute bottom-1 right-1 text-xs bg-white/90 text-slate-800 border border-slate-200 rounded px-1 shadow-2xs">
+                                {catObj.icon}
+                              </span>
+                            )}
                             {tripIdx !== -1 && (
                               <span className="absolute top-1 left-1 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow">
                                 {tripIdx + 1}

@@ -67,7 +67,7 @@ export function getAnkaraTravelInfo(place) {
     driveMinutes = Math.round(20 + (roadKm / 90) * 60);
     const h = Math.floor(driveMinutes / 60);
     const m = driveMinutes % 60;
-    driveText = m > 0 ? `${h} sa ${m} dk araçla` : `${h} sa araçla`;
+    driveText = h > 0 ? (m > 0 ? `${h} sa ${m} dk araçla` : `${h} sa araçla`) : `${m} dk araçla`;
   } else {
     driveText = null; // Too far for driving from Ankara
   }

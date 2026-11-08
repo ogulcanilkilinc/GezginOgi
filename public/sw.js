@@ -12,25 +12,25 @@ const PRECACHE_URLS = [
   "./manifest.json",
   "./data/places.json",
   "./data/photos.json",
-  "./assets/BorderCrossingsModal-DKWTbwgi.js",
-  "./assets/CloudSyncModal-C0j4aIjK.js",
-  "./assets/CountryIntelModal-C4JJapqM.js",
-  "./assets/CurrencyBudgetModal-Cal8Bl7y.js",
-  "./assets/EmergencyConsulateModal-DU0tZgKL.js",
-  "./assets/icons-vendor-BkHC99CF.js",
-  "./assets/index-DRieAT4h.css",
-  "./assets/index-SxSeDIfc.js",
-  "./assets/ItineraryModal-DOCJ-znk.js",
-  "./assets/leaflet-vendor-rMjKAqOA.js",
-  "./assets/NearbyRadarModal-qtMup4I8.js",
-  "./assets/PackingChecklistModal-C19iLuxr.js",
-  "./assets/PassportModal-BQryH-Ea.js",
-  "./assets/PlaceFormModal-D8FJHJtP.js",
-  "./assets/RouteSimulatorModal-BK4I4Sfl.js",
-  "./assets/ScratchMapModal-BAi7mqir.js",
-  "./assets/SearchableLocationModal-bjCh_0qd.js",
-  "./assets/SeasonalCalendarModal-hcCs17mi.js",
-  "./assets/TravelSoundtrackModal-MqRZJMJe.js"
+  "./assets/BorderCrossingsModal-BbVccx4V.js",
+  "./assets/CloudSyncModal-igpopOeZ.js",
+  "./assets/CountryIntelModal-Bx-POMaX.js",
+  "./assets/CurrencyBudgetModal-DgEp2MnM.js",
+  "./assets/EmergencyConsulateModal-BCv3vESs.js",
+  "./assets/icons-vendor-dXrqPX5M.js",
+  "./assets/index-Dbcho-mn.css",
+  "./assets/index-DUlj7DQm.js",
+  "./assets/ItineraryModal-MqXn0x6g.js",
+  "./assets/leaflet-vendor-jaox9G8N.js",
+  "./assets/NearbyRadarModal-C_x_AVyF.js",
+  "./assets/PackingChecklistModal-CEDvQODI.js",
+  "./assets/PassportModal-Bry9jVBs.js",
+  "./assets/PlaceFormModal-CM7yiC4V.js",
+  "./assets/RouteSimulatorModal-CR2ApV-Q.js",
+  "./assets/ScratchMapModal-DWBax4LI.js",
+  "./assets/SearchableLocationModal-CQD6Km0q.js",
+  "./assets/SeasonalCalendarModal-quTcgRWL.js",
+  "./assets/TravelSoundtrackModal-C2ijpGLI.js"
 ];
 
 self.addEventListener('install', (event) => {
@@ -85,11 +85,14 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       caches.open(CACHE_NAME).then(async (cache) => {
         const cleanUrl = getNormalizedUrl(req.url);
-        // Look up using normalized URL or with ignoreSearch
+        const isPhotos = url.pathname.includes('/data/photos.json');
+
+        // Look up using normalized URL or with ignoreSearch; never cross-fallback photos to places!
         const cachedResponse =
           (await cache.match(cleanUrl)) ||
           (await cache.match(req, { ignoreSearch: true })) ||
-          (await cache.match('./data/places.json'));
+          (isPhotos ? (await cache.match('./data/photos.json')) : (await cache.match('./data/places.json'))) ||
+          (isPhotos ? new Response('[]', { headers: { 'Content-Type': 'application/json' } }) : null);
 
         const networkFetch = fetch(req)
           .then((networkResponse) => {

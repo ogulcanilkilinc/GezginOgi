@@ -1811,11 +1811,11 @@
       "distKm": 37,
       "roadKm": 46,
       "driveMinutes": 51,
-      "driveText": "0 sa 51 dk araçla",
+      "driveText": "51 dk araçla",
       "flightText": null,
       "trainText": null,
       "isWeekendEscape": true,
-      "summaryText": "Ankara’dan 0 sa 51 dk araçla"
+      "summaryText": "Ankara’dan 51 dk araçla"
     },
     "visaStatus": {
       "category": "turkiye",
@@ -4402,11 +4402,11 @@
       "distKm": 43,
       "roadKm": 54,
       "driveMinutes": 56,
-      "driveText": "0 sa 56 dk araçla",
+      "driveText": "56 dk araçla",
       "flightText": null,
       "trainText": null,
       "isWeekendEscape": true,
-      "summaryText": "Ankara’dan 0 sa 56 dk araçla"
+      "summaryText": "Ankara’dan 56 dk araçla"
     },
     "visaStatus": {
       "category": "turkiye",
@@ -4524,11 +4524,11 @@
       "distKm": 45,
       "roadKm": 56,
       "driveMinutes": 57,
-      "driveText": "0 sa 57 dk araçla",
+      "driveText": "57 dk araçla",
       "flightText": null,
       "trainText": null,
       "isWeekendEscape": true,
-      "summaryText": "Ankara’dan 0 sa 57 dk araçla"
+      "summaryText": "Ankara’dan 57 dk araçla"
     },
     "visaStatus": {
       "category": "turkiye",
@@ -26682,12 +26682,12 @@
     },
     "visaStatus": {
       "category": "vize_gerekli",
-      "label": "Vize Şart",
+      "label": "Vize Şart · ⚠️ Yüksek Güvenlik Riski",
       "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
       "icon": "🔒",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Yemen için konsolosluk veya e-vize şartlarını kontrol ediniz.",
+      "duration": "Özel İzin",
+      "notes": "⚠️ DİKKAT (T.C. Dışişleri Bakanlığı Seyahat Uyarısı): Devam eden çatışmalar ve güvenlik riskleri nedeniyle zorunlu olmadıkça seyahat edilmemesi tavsiye edilmektedir. Sokotra için askeri izin gerekir.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
@@ -30793,13 +30793,13 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
-      "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Venezuela için konsolosluk veya e-vize şartlarını kontrol ediniz.",
+      "category": "vizesiz",
+      "label": "Vizesiz (90 Gün) · ⚠️ Güvenlik Uyarısı",
+      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
+      "icon": "✈️",
+      "isVisaFree": true,
+      "duration": "90 gün",
+      "notes": "90 gün vizesizdir; ancak asayiş ve suç oranı nedeniyle Dışişleri seyahat uyarısı mevcuttur.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
@@ -64284,12 +64284,12 @@
     },
     "visaStatus": {
       "category": "vize_gerekli",
-      "label": "Vize Şart",
+      "label": "Vize Şart · ⛔ Seyahat Uyarısı",
       "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
       "icon": "🔒",
       "isVisaFree": false,
       "duration": "Değişken",
-      "notes": "Suriye için konsolosluk veya e-vize şartlarını kontrol ediniz.",
+      "notes": "⛔ DİKKAT: Çatışmalar nedeniyle Suriye’ye hiçbir koşulda seyahat edilmemelidir.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
@@ -64402,12 +64402,12 @@
     },
     "visaStatus": {
       "category": "vize_gerekli",
-      "label": "Vize Şart",
+      "label": "Vize Şart · ⚠️ Yüksek Güvenlik Riski",
       "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
       "icon": "🔒",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Yemen için konsolosluk veya e-vize şartlarını kontrol ediniz.",
+      "duration": "Özel İzin",
+      "notes": "⚠️ DİKKAT (T.C. Dışişleri Bakanlığı Seyahat Uyarısı): Devam eden çatışmalar ve güvenlik riskleri nedeniyle zorunlu olmadıkça seyahat edilmemesi tavsiye edilmektedir. Sokotra için askeri izin gerekir.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
@@ -64467,12 +64467,12 @@
     },
     "visaStatus": {
       "category": "vize_gerekli",
-      "label": "Vize Şart",
+      "label": "Vize Şart · ⚠️ Güvenlik Uyarısı",
       "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
       "icon": "🔒",
       "isVisaFree": false,
       "duration": "Değişken",
-      "notes": "İsrail için konsolosluk veya e-vize şartlarını kontrol ediniz.",
+      "notes": "⚠️ DİKKAT (Dışişleri Seyahat Uyarısı): Askeri çatışmalar ve roket tehditleri sebebiyle zorunlu olmadıkça bölgeye gidilmemelidir.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
@@ -64526,12 +64526,12 @@
     },
     "visaStatus": {
       "category": "vize_gerekli",
-      "label": "Vize Şart",
+      "label": "Vize Şart · ⛔ Seyahat Uyarısı",
       "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
       "icon": "🔒",
       "isVisaFree": false,
       "duration": "Değişken",
-      "notes": "Afganistan için konsolosluk veya e-vize şartlarını kontrol ediniz.",
+      "notes": "⛔ DİKKAT: Ülkedeki güvenlik boşluğu nedeniyle seyahat edilmemesi tavsiye edilir.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
@@ -74475,13 +74475,13 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
-      "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Venezuela için konsolosluk veya e-vize şartlarını kontrol ediniz.",
+      "category": "vizesiz",
+      "label": "Vizesiz (90 Gün) · ⚠️ Güvenlik Uyarısı",
+      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
+      "icon": "✈️",
+      "isVisaFree": true,
+      "duration": "90 gün",
+      "notes": "90 gün vizesizdir; ancak asayiş ve suç oranı nedeniyle Dışişleri seyahat uyarısı mevcuttur.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
@@ -76260,12 +76260,12 @@
     },
     "visaStatus": {
       "category": "vize_gerekli",
-      "label": "Vize Şart",
+      "label": "Vize Şart · ⚠️ Güvenlik Uyarısı",
       "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
       "icon": "🔒",
       "isVisaFree": false,
       "duration": "Değişken",
-      "notes": "İsrail için konsolosluk veya e-vize şartlarını kontrol ediniz.",
+      "notes": "⚠️ DİKKAT (Dışişleri Seyahat Uyarısı): Askeri çatışmalar ve roket tehditleri sebebiyle zorunlu olmadıkça bölgeye gidilmemelidir.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
