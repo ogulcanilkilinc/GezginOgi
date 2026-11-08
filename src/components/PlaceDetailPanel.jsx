@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CATEGORIES, SEASONS, REGIONS } from '../data/initialPlaces';
+import { CATEGORIES, SEASONS, REGIONS } from '../data/metadata';
 import { getPhrasebookForCountry } from '../data/phrasebookData';
 import {
   X,

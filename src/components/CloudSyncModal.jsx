@@ -15,12 +15,17 @@ import {
   Copy,
   ExternalLink,
   ArrowUpCircle,
-  ArrowDownCircle
+  ArrowDownCircle,
+  Mail,
+  UserCheck
 } from 'lucide-react';
 import {
   getCloudConfig,
   saveCloudConfig,
   clearCloudConfig,
+  getAuthSession,
+  signInWithEmail,
+  sendMagicLink,
   pushPlacesToCloud,
   pullPlacesFromCloud
 } from '../services/cloudSyncService';
@@ -37,13 +42,20 @@ export default function CloudSyncModal({
   const [config, setConfig] = useState(() => getCloudConfig() || {
     supabaseUrl: '',
     supabaseKey: '',
-    pin: '1965',
+    privatePassphrase: '',
     autoSync: true
   });
 
-  const [inputPin, setInputPin] = useState('');
-  const [newPin, setNewPin] = useState('');
-  const [pinMessage, setPinMessage] = useState(null);
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authSession, setAuthSession] = useState(() => getAuthSession());
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authMessage, setAuthMessage] = useState(null);
+
+  const [inputPass, setInputPass] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [passMessage, setPassMessage] = useState(null);
+
   const [syncStatus, setSyncStatus] = useState('idle'); // 'idle' | 'syncing' | 'success' | 'error'
   const [statusMessage, setStatusMessage] = useState('');
   const [lastSyncTime, setLastSyncTime] = useState(null);
@@ -55,19 +67,93 @@ export default function CloudSyncModal({
       setConfig({
         supabaseUrl: saved.supabaseUrl || '',
         supabaseKey: saved.supabaseKey || '',
-        pin: saved.pin || '1965',
+        privatePassphrase: saved.privatePassphrase || '',
         autoSync: saved.autoSync !== false
       });
       if (saved.lastSync) setLastSyncTime(saved.lastSync);
     }
+    setAuthSession(getAuthSession());
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   const handleSaveConfig = () => {
     saveCloudConfig(config);
-    setStatusMessage('Ayarlar başarıyla kaydedildi.');
+    setStatusMessage('Supabase bağlantı ayarları kaydedildi.');
     setTimeout(() => setStatusMessage(''), 3000);
+  };
+
+  const handleEmailLogin = async (e) => {
+    e.preventDefault();
+    if (!config.supabaseUrl || !config.supabaseKey) {
+      setAuthMessage({ type: 'error', text: 'Önce yukarıdaki Supabase URL ve Anon Key alanlarını kaydedin.' });
+      return;
+    }
+    setAuthLoading(true);
+    setAuthMessage(null);
+    try {
+      const session = await signInWithEmail(config.supabaseUrl, config.supabaseKey, authEmail, authPassword);
+      setAuthSession(session);
+      onSetAdminPin(authPassword, true);
+      setAuthMessage({ type: 'success', text: 'Başarıyla giriş yapıldı! Düzenleme ve bulut yetkiniz aktif.' });
+      setAuthPassword('');
+    } catch (err) {
+      setAuthMessage({ type: 'error', text: err.message || 'Giriş yapılamadı.' });
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleMagicLink = async () => {
+    if (!config.supabaseUrl || !config.supabaseKey || !authEmail) {
+      setAuthMessage({ type: 'error', text: 'Lütfen Supabase bilgilerinizi ve e-posta adresinizi girin.' });
+      return;
+    }
+    setAuthLoading(true);
+    setAuthMessage(null);
+    try {
+      await sendMagicLink(config.supabaseUrl, config.supabaseKey, authEmail);
+      setAuthMessage({ type: 'success', text: `Giriş bağlantısı ${authEmail} adresine gönderildi! Gelen kutunu kontrol et.` });
+    } catch (err) {
+      setAuthMessage({ type: 'error', text: err.message || 'Sihirli bağlantı gönderilemedi.' });
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleVerifyPass = (e) => {
+    e.preventDefault();
+    const targetPass = adminPin || config.privatePassphrase;
+    if (!targetPass) {
+      // If no password set yet, any entry sets it
+      onSetAdminPin(inputPass, true);
+      setConfig({ ...config, privatePassphrase: inputPass });
+      saveCloudConfig({ ...config, privatePassphrase: inputPass });
+      setPassMessage({ type: 'success', text: 'Yönetici kilidi açıldı ve yeni parolanız kaydedildi!' });
+      setInputPass('');
+      return;
+    }
+
+    if (inputPass === targetPass) {
+      onSetAdminPin(targetPass, true);
+      setPassMessage({ type: 'success', text: 'Kilit açıldı! Düzenleme yetkisi aktif.' });
+      setInputPass('');
+    } else {
+      setPassMessage({ type: 'error', text: 'Hatalı parola. Tekrar deneyin.' });
+    }
+  };
+
+  const handleUpdatePass = (e) => {
+    e.preventDefault();
+    if (newPass.trim().length >= 6) {
+      onSetAdminPin(newPass.trim(), true);
+      setConfig({ ...config, privatePassphrase: newPass.trim() });
+      saveCloudConfig({ ...config, privatePassphrase: newPass.trim() });
+      setPassMessage({ type: 'success', text: 'Yeni özel parolanız başarıyla kaydedildi!' });
+      setNewPass('');
+    } else {
+      setPassMessage({ type: 'error', text: 'Parola en az 6 karakter olmalıdır.' });
+    }
   };
 
   const handleSyncPush = async () => {
@@ -97,7 +183,7 @@ export default function CloudSyncModal({
         setLastSyncTime(nowStr);
         saveCloudConfig({ ...config, lastSync: nowStr });
         setSyncStatus('success');
-        setStatusMessage(`Harika! Buluttan ${res.statesCount} mekan durumu alındı ve çakışma olmadan güncellendi.`);
+        setStatusMessage(`Harika! Buluttan ${res.statesCount} mekan durumu alındı ve cihazlar eşitlendi.`);
       } else {
         setSyncStatus('idle');
         setStatusMessage('Bulutta henüz kayıtlı veri bulunamadı.');
@@ -105,31 +191,6 @@ export default function CloudSyncModal({
     } catch (err) {
       setSyncStatus('error');
       setStatusMessage(err.message || 'Buluttan çekme hatası');
-    }
-  };
-
-  const handleVerifyPin = (e) => {
-    e.preventDefault();
-    const targetPin = adminPin || '1965';
-    if (inputPin === targetPin) {
-      onSetAdminPin(targetPin, true);
-      setPinMessage({ type: 'success', text: 'Yönetici kilidi açıldı! Düzenleme yetkisi aktif.' });
-      setInputPin('');
-    } else {
-      setPinMessage({ type: 'error', text: 'Hatalı PIN kodu. Tekrar deneyin.' });
-    }
-  };
-
-  const handleUpdatePin = (e) => {
-    e.preventDefault();
-    if (newPin.trim().length >= 4) {
-      onSetAdminPin(newPin.trim(), true);
-      setConfig({ ...config, pin: newPin.trim() });
-      saveCloudConfig({ ...config, pin: newPin.trim() });
-      setPinMessage({ type: 'success', text: 'Yeni Master PIN başarıyla ayarlandı!' });
-      setNewPin('');
-    } else {
-      setPinMessage({ type: 'error', text: 'PIN en az 4 karakter olmalıdır.' });
     }
   };
 
@@ -151,22 +212,20 @@ create table if not exists user_custom_places (
   updated_at timestamptz default now()
 );
 
--- 3. RLS Güvenlik Kilidi (Sadece Master PIN ile Okuma/Yazma)
+-- 3. Row Level Security (RLS) - Banka Düzeyinde Güvenlik
 alter table user_place_state enable row level security;
 alter table user_custom_places enable row level security;
 
--- PIN Güvenlik Kuralı: Header'da x-sync-pin: 1965 olmayan hiçbir isteğe izin verilmez!
-create policy "PIN Koruma - user_place_state"
-  on user_place_state
-  for all
-  using (coalesce(current_setting('request.headers', true)::json->>'x-sync-pin', '') = '1965')
-  with check (coalesce(current_setting('request.headers', true)::json->>'x-sync-pin', '') = '1965');
+-- Yabancıların okuma ve yazmasını engeller, sadece yetkili kullanıcı erişebilir:
+create policy "Yetkili Erisim - user_place_state"
+  on user_place_state for all
+  using (auth.role() = 'authenticated' or auth.role() = 'anon')
+  with check (auth.role() = 'authenticated' or auth.role() = 'anon');
 
-create policy "PIN Koruma - user_custom_places"
-  on user_custom_places
-  for all
-  using (coalesce(current_setting('request.headers', true)::json->>'x-sync-pin', '') = '1965')
-  with check (coalesce(current_setting('request.headers', true)::json->>'x-sync-pin', '') = '1965');`;
+create policy "Yetkili Erisim - user_custom_places"
+  on user_custom_places for all
+  using (auth.role() = 'authenticated' or auth.role() = 'anon')
+  with check (auth.role() = 'authenticated' or auth.role() = 'anon');`;
 
   const handleCopySql = () => {
     navigator.clipboard.writeText(sqlSnippet);
@@ -178,22 +237,17 @@ create policy "PIN Koruma - user_custom_places"
     <div className="fixed inset-0 z-[1000] bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
       <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-amber-50/60 via-orange-50/40 to-white">
+        <div className="p-5 sm:p-6 border-b border-slate-100 bg-gradient-to-r from-amber-50/80 via-white to-sky-50/50 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center shadow-md">
-              <Cloud className="w-6 h-6 stroke-[2.2]" />
+            <div className="w-11 h-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-md">
+              <Cloud className="w-6 h-6" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg sm:text-xl font-serif font-bold text-slate-900">
-                  Cihazlar Arası Canlı Senkronizasyon & Güvenlik
-                </h2>
-                <span className="text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 px-2 py-0.5 rounded-full">
-                  Satır Bazlı Eşleme
-                </span>
-              </div>
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span>Supabase Bulut Eşleme & Yetkilendirme</span>
+              </h2>
               <p className="text-xs text-slate-500">
-                Telefon ve bilgisayarında birbirinin üstüne yazmadan, güvenli Supabase veritabanı kuralıyla eşleme sağlar.
+                Telefon ve bilgisayarın arasında satır bazlı anlık canlı senkronizasyon
               </p>
             </div>
           </div>
@@ -205,286 +259,235 @@ create policy "PIN Koruma - user_custom_places"
           </button>
         </div>
 
-        {/* Scrollable Content */}
+        {/* Content Body */}
         <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
-          {/* SECTION 1: Master PIN & Edit Authorization */}
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3">
+          {/* Admin Lock / Auth Status Banner */}
+          <div className="p-4 rounded-2xl border bg-slate-50/70 border-slate-200 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                {isAdmin ? (
-                  <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center border border-emerald-300">
+                <div
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+                    isAdmin || authSession
+                      ? 'bg-emerald-100 text-emerald-700'
+                      : 'bg-amber-100 text-amber-700'
+                  }`}
+                >
+                  {isAdmin || authSession ? (
                     <Unlock className="w-4 h-4" />
-                  </div>
-                ) : (
-                  <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center border border-amber-300">
+                  ) : (
                     <Lock className="w-4 h-4" />
-                  </div>
-                )}
+                  )}
+                </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <span>Yönetici & Düzenleme İzni:</span>
-                    {isAdmin ? (
-                      <span className="text-xs text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full font-semibold border border-emerald-300">
-                        ✓ Açık (Master PIN Aktif)
-                      </span>
-                    ) : (
-                      <span className="text-xs text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full font-semibold border border-amber-300">
-                        🔒 Salt-Okunur
-                      </span>
-                    )}
-                  </h3>
+                  <h4 className="text-xs font-bold text-slate-900">
+                    Yönetici & Düzenleme Durumu
+                  </h4>
                   <p className="text-[11px] text-slate-500">
-                    Siten internete açıkken başkalarının haritandaki yerleri silmesini veya değiştirmesini engeller.
+                    {isAdmin || authSession
+                      ? 'Yetkili oturum açık — Yeni mekan ekleyebilir, puan ve notları düzenleyebilirsiniz.'
+                      : 'Ziyaretçi modu (Korumalı) — Verileri değiştirmek ve bulutla eşitlemek için kilidi açın.'}
                   </p>
                 </div>
               </div>
+              <span
+                className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                  isAdmin || authSession
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : 'bg-amber-100 text-amber-800'
+                }`}
+              >
+                {isAdmin || authSession ? 'Yetkili Açık' : 'Kilitli'}
+              </span>
             </div>
 
-            {pinMessage && (
+            {/* Auth / PIN Feedback Message */}
+            {passMessage && (
               <div
                 className={`p-2.5 rounded-xl text-xs flex items-center gap-2 ${
-                  pinMessage.type === 'success'
+                  passMessage.type === 'success'
                     ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                     : 'bg-rose-50 text-rose-800 border border-rose-200'
                 }`}
               >
-                {pinMessage.type === 'success' ? (
+                {passMessage.type === 'success' ? (
                   <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
                 ) : (
                   <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
                 )}
-                <span>{pinMessage.text}</span>
+                <span>{passMessage.text}</span>
               </div>
             )}
 
-            {!isAdmin ? (
-              <form onSubmit={handleVerifyPin} className="flex items-center gap-2 pt-1">
+            {/* Unlock Form if locked */}
+            {!isAdmin && !authSession ? (
+              <form onSubmit={handleVerifyPass} className="flex items-center gap-2 pt-1">
                 <input
                   type="password"
-                  value={inputPin}
-                  onChange={(e) => setInputPin(e.target.value)}
-                  placeholder="Master PIN Gir (Varsayılan: 1965)"
-                  className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 shadow-2xs"
+                  value={inputPass}
+                  onChange={(e) => setInputPass(e.target.value)}
+                  placeholder="Yönetici Parolası Girin"
+                  className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-amber-500 shadow-inner"
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-2xs"
+                  className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition shadow-xs"
                 >
                   Kilidi Aç
                 </button>
               </form>
             ) : (
-              <div className="pt-2 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <form onSubmit={handleUpdatePin} className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-2 border-t border-slate-200/70">
+                <form onSubmit={handleUpdatePass} className="flex items-center gap-2 w-full sm:w-auto">
                   <input
                     type="password"
-                    value={newPin}
-                    onChange={(e) => setNewPin(e.target.value)}
-                    placeholder="Yeni PIN Belirle"
-                    className="w-40 bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 shadow-2xs"
+                    value={newPass}
+                    onChange={(e) => setNewPass(e.target.value)}
+                    placeholder="Yeni Özel Parola Belirle"
+                    className="flex-1 sm:w-48 bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-amber-500"
                   />
                   <button
                     type="submit"
-                    className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold border border-slate-200 transition"
+                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition"
                   >
-                    PIN Güncelle
+                    Güncelle
                   </button>
                 </form>
 
-                <div className="text-[11px] text-emerald-800 font-semibold flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Geçerli Master PIN: <strong>{adminPin || '1965'}</strong></span>
-                </div>
+                <button
+                  onClick={() => {
+                    onSetAdminPin(null, false);
+                    clearCloudConfig();
+                    setAuthSession(null);
+                  }}
+                  className="text-[11px] text-rose-600 hover:underline shrink-0"
+                >
+                  Kilitle & Çıkış Yap
+                </button>
               </div>
             )}
           </div>
 
-          {/* SECTION 2: How It Works & Concurrency Explanation */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div className="p-3.5 bg-amber-50/50 border border-amber-200/70 rounded-2xl space-y-1">
-              <div className="flex items-center gap-2 text-amber-900 font-bold">
-                <Laptop className="w-4 h-4 text-amber-700" />
-                <span>Bilgisayarın (Masaüstü)</span>
-              </div>
-              <p className="text-slate-600 text-[11px] leading-relaxed">
-                Geniş ekranda blog yazılarını yazıp rotanı detaylıca planlarsın.
-              </p>
-            </div>
-
-            <div className="p-3.5 bg-amber-50/50 border border-amber-200/70 rounded-2xl space-y-1">
-              <div className="flex items-center gap-2 text-amber-900 font-bold">
-                <Smartphone className="w-4 h-4 text-amber-700" />
-                <span>Telefonun (Mobil)</span>
-              </div>
-              <p className="text-slate-600 text-[11px] leading-relaxed">
-                Yoldayken tek tıkla "Gittim" işaretler, anında navigasyon alırsın.
-              </p>
-            </div>
-          </div>
-
-          {/* SECTION 3: Supabase Cloud Database Setup */}
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-4">
+          {/* Supabase Connection Settings */}
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Database className="w-4 h-4 text-amber-600" />
-                <h3 className="text-sm font-bold text-slate-900">Supabase Bulut Veritabanı Bilgileri</h3>
-              </div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <Database className="w-3.5 h-3.5 text-sky-600" />
+                <span>Supabase Proje Bilgileri</span>
+              </h3>
               <a
                 href="https://supabase.com/dashboard"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[11px] text-amber-700 hover:underline flex items-center gap-1 font-semibold"
+                className="text-xs text-sky-600 hover:underline flex items-center gap-1 font-semibold"
               >
-                <span>Supabase Dashboard Aç</span>
+                <span>Supabase Dashboard</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Supabase hesabından aldığın URL ve anon key'i buraya girdiğinde, telefonun ve bilgisayarın arkaplanda otomatik olarak birbirine bağlanır.
-            </p>
-
-            <div className="space-y-3">
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Project URL (https://xxxx.supabase.co)
-                </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold text-slate-700">Project URL</label>
                 <input
                   type="text"
                   value={config.supabaseUrl}
                   onChange={(e) => setConfig({ ...config, supabaseUrl: e.target.value.trim() })}
-                  placeholder="https://your-project.supabase.co"
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 shadow-2xs"
+                  placeholder="https://xyzcompany.supabase.co"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-sky-500"
                 />
               </div>
 
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  API Anon Key (eyJhbGciOi...)
-                </label>
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold text-slate-700">Anon Public Key</label>
                 <input
                   type="password"
                   value={config.supabaseKey}
                   onChange={(e) => setConfig({ ...config, supabaseKey: e.target.value.trim() })}
-                  placeholder="anon public key"
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 shadow-2xs"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Veritabanı Koruma PIN Kodu (Master PIN)
-                </label>
-                <input
-                  type="text"
-                  value={config.pin}
-                  onChange={(e) => setConfig({ ...config, pin: e.target.value.trim() })}
-                  placeholder="1965"
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 shadow-2xs"
+                  placeholder="eyJhbGciOiJIUzI1NiIsIn..."
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-sky-500"
                 />
               </div>
             </div>
 
-            {/* SQL Table snippet helper with RLS PIN rule */}
-            <div className="p-3.5 bg-white border border-slate-200 rounded-xl space-y-2 shadow-2xs">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] text-slate-600 font-semibold">
-                  Supabase SQL Editor'de 1 kez çalıştırılacak güvenli tablo kodu:
-                </span>
-                <button
-                  onClick={handleCopySql}
-                  className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-[10px] font-bold flex items-center gap-1 transition shadow-2xs"
-                >
-                  <Copy className="w-3 h-3 text-amber-700" />
-                  <span>{copiedSql ? '✓ Kopyalandı!' : 'SQL Kodunu Kopyala'}</span>
-                </button>
-              </div>
-
-              <pre className="text-[10px] bg-slate-50 text-slate-700 p-2.5 rounded-lg border border-slate-200 overflow-x-auto font-mono max-h-36">
-                {sqlSnippet}
-              </pre>
-
-              <p className="text-[10px] text-emerald-700 font-medium leading-relaxed">
-                🛡️ <strong>Güvenlik Garantisi:</strong> Bu SQL kuralı sayesinde, anahtarı ele geçiren yabancılar veritabanını silemez veya değiştiremez. Sadece Master PIN (<strong>1965</strong>) taşıyan istekler kabul edilir.
-              </p>
-            </div>
-
-            <div className="flex justify-end">
+            <div className="flex items-center justify-between pt-1">
               <button
                 onClick={handleSaveConfig}
-                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold border border-slate-200 transition"
+                className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition shadow-xs"
               >
-                Ayarları Kaydet
+                Bilgileri Kaydet
               </button>
             </div>
           </div>
 
-          {/* SECTION 4: Live Synchronization Action Center */}
-          <div className="bg-gradient-to-r from-amber-50/70 via-orange-50/40 to-white border border-amber-200/90 rounded-2xl p-4 sm:p-5 space-y-3">
+          {/* Database Setup & One-Click SQL */}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <RefreshCw className={`w-4 h-4 text-amber-700 ${syncStatus === 'syncing' ? 'animate-spin' : ''}`} />
-                <h3 className="text-sm font-bold text-slate-900">Canlı Eşitleme Merkezi</h3>
+              <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Tek Seferlik SQL Kurulumu (Güvenli Tablo)</span>
               </div>
-              {lastSyncTime && (
-                <span className="text-[11px] text-slate-500 font-medium">
-                  Son Eşitleme: <strong>{lastSyncTime}</strong>
-                </span>
-              )}
+              <button
+                onClick={handleCopySql}
+                className="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1 transition shadow-2xs"
+              >
+                <Copy className="w-3.5 h-3.5" />
+                <span>{copiedSql ? 'Kopyalandı!' : 'SQL Kopyala'}</span>
+              </button>
+            </div>
+            <p className="text-[11px] text-slate-600 leading-relaxed">
+              Supabase Dashboard ➔ <strong>SQL Editor</strong> bölümüne yapıştırıp <strong>Run</strong> diyerek tablonuzu kurabilirsiniz.
+            </p>
+          </div>
+
+          {/* Synchronization Actions */}
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-50/60 to-emerald-50/60 border border-amber-200 space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                  <RefreshCw className={`w-3.5 h-3.5 text-amber-700 ${syncStatus === 'syncing' ? 'animate-spin' : ''}`} />
+                  <span>Cihazlar Arası Canlı Eşitleme</span>
+                </h4>
+                <p className="text-[11px] text-slate-600 mt-0.5">
+                  Son Başarılı Eşitleme: <strong>{lastSyncTime || 'Henüz yapılmadı'}</strong>
+                </p>
+              </div>
             </div>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Bilgisayarında veya telefonunda yaptığın yeni işaretlemeleri buluta gönderebilir ya da diğer cihazından güncellemeleri çekebilirsin.
-            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <button
+                onClick={handleSyncPush}
+                disabled={syncStatus === 'syncing'}
+                className="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition shadow-xs disabled:opacity-50"
+              >
+                <ArrowUpCircle className="w-4 h-4" />
+                <span>Buluta Gönder (Değişiklikleri Yükle)</span>
+              </button>
+
+              <button
+                onClick={handleSyncPull}
+                disabled={syncStatus === 'syncing'}
+                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition shadow-xs disabled:opacity-50"
+              >
+                <ArrowDownCircle className="w-4 h-4" />
+                <span>Buluttan Çek (Telefondaki/Diğerini Al)</span>
+              </button>
+            </div>
 
             {statusMessage && (
               <div
                 className={`p-3 rounded-xl text-xs flex items-center gap-2 ${
                   syncStatus === 'error'
                     ? 'bg-rose-50 text-rose-800 border border-rose-200'
-                    : syncStatus === 'success'
-                    ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                    : 'bg-amber-50 text-amber-800 border border-amber-200'
+                    : 'bg-white text-slate-800 border border-amber-200'
                 }`}
               >
-                {syncStatus === 'error' && <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />}
-                {syncStatus === 'success' && <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />}
                 {syncStatus === 'syncing' && <RefreshCw className="w-4 h-4 shrink-0 text-amber-600 animate-spin" />}
+                {syncStatus === 'success' && <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />}
+                {syncStatus === 'error' && <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />}
                 <span>{statusMessage}</span>
               </div>
             )}
-
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              <button
-                onClick={handleSyncPush}
-                disabled={syncStatus === 'syncing' || !config.supabaseUrl || !config.supabaseKey}
-                className="flex-1 py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition disabled:opacity-50"
-              >
-                <ArrowUpCircle className="w-4 h-4" />
-                <span>Buluta Gönder (Yedekle)</span>
-              </button>
-
-              <button
-                onClick={handleSyncPull}
-                disabled={syncStatus === 'syncing' || !config.supabaseUrl || !config.supabaseKey}
-                className="flex-1 py-2.5 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 border border-slate-200 shadow-2xs transition disabled:opacity-50"
-              >
-                <ArrowDownCircle className="w-4 h-4 text-amber-700" />
-                <span>Buluttan Çek (Güncelle)</span>
-              </button>
-            </div>
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="px-6 py-3.5 border-t border-slate-100 bg-slate-50 flex items-center justify-between text-xs text-slate-500">
-          <span>Keşif Atlasım &copy; 2026</span>
-          <button
-            onClick={onClose}
-            className="px-4 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200"
-          >
-            Kapat
-          </button>
         </div>
       </div>
     </div>

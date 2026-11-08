@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react';
 import confetti from 'canvas-confetti';
-import { INITIAL_PLACES, CATEGORIES, REGIONS, SEASONS, DURATIONS } from './data/initialPlaces';
+import { CATEGORIES, REGIONS, SEASONS, DURATIONS } from './data/metadata';
 import TravelMap from './components/TravelMap';
 import PlaceDetailPanel from './components/PlaceDetailPanel';
 
@@ -45,25 +45,26 @@ import {
   SlidersHorizontal,
   Cloud,
   Lock,
+  Unlock,
   ShieldCheck
 } from 'lucide-react';
 
-const STORAGE_KEY = 'kesif_atlasim_places_v9';
+const STORAGE_KEY = 'kesif_atlasim_places_v10';
 
 export default function App() {
   const [places, setPlaces] = useState(() => {
     try {
-      // Clear legacy storage keys to ensure deduplicated places & Gezgin Ogi pack load fresh
       localStorage.removeItem('kesif_atlasim_places_v3');
       localStorage.removeItem('kesif_atlasim_places_v4');
       localStorage.removeItem('kesif_atlasim_places_v5');
       localStorage.removeItem('kesif_atlasim_places_v6');
       localStorage.removeItem('kesif_atlasim_places_v7');
       localStorage.removeItem('kesif_atlasim_places_v8');
+      localStorage.removeItem('kesif_atlasim_places_v9');
 
-      const savedV9 = localStorage.getItem(STORAGE_KEY);
-      if (savedV9) {
-        const parsed = JSON.parse(savedV9);
+      const savedV10 = localStorage.getItem(STORAGE_KEY);
+      if (savedV10) {
+        const parsed = JSON.parse(savedV10);
         if (Array.isArray(parsed) && parsed.length > 0) {
           return parsed;
         }
@@ -71,14 +72,34 @@ export default function App() {
     } catch (e) {
       console.error('LocalStorage okuma hatası:', e);
     }
-    // Clean initial state: 100% unvisited and unfavorited with curated photos and deduplicated places
-    return INITIAL_PLACES.map((p) => ({
-      ...p,
-      visited: false,
-      visitedDate: '',
-      favorite: false
-    }));
+    return [];
   });
+  const [isLoadingPlaces, setIsLoadingPlaces] = useState(false);
+
+  // Asynchronous data loading: keeps initial JS bundle tiny (< 150 KB)
+  useEffect(() => {
+    if (places.length === 0) {
+      setIsLoadingPlaces(true);
+      const basePath = import.meta.env.BASE_URL || '/';
+      const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
+      fetch(`${cleanBase}data/places.json`)
+        .then((res) => {
+          if (!res.ok) throw new Error('places.json yüklenemedi');
+          return res.json();
+        })
+        .then((data) => {
+          setPlaces(data);
+          setIsLoadingPlaces(false);
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          } catch (e) {}
+        })
+        .catch((err) => {
+          console.error('Veri yükleme hatası:', err);
+          setIsLoadingPlaces(false);
+        });
+    }
+  }, [places.length]);
 
   // Filters & Navigation State
   const [activeRegion, setActiveRegion] = useState('all');
@@ -124,40 +145,23 @@ export default function App() {
   const [isEmergencyOpen, setIsEmergencyOpen] = useState(false);
   const [isSeasonalCalendarOpen, setIsSeasonalCalendarOpen] = useState(false);
   const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true);
+
+  // Admin & Editing State: Starts as read-only visitor mode by default
+  const [isAdmin, setIsAdmin] = useState(false);
   const [adminPin, setAdminPin] = useState(() => {
-    return localStorage.getItem('kesif_atlasim_admin_pin') || '1965';
+    return localStorage.getItem('kesif_atlasim_admin_pass') || '';
   });
 
-  const handleSetAdminPin = (pin, adminStatus) => {
-    setAdminPin(pin);
+  const handleSetAdminPin = (pass, adminStatus) => {
+    setAdminPin(pass || '');
     setIsAdmin(adminStatus);
-    localStorage.setItem('kesif_atlasim_admin_pin', pin);
-  };
-
-  // Full-Site Access Security Gate: Master PIN 1965 protects entire site
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem('kesif_atlasim_auth_token') === '1965';
-  });
-  const [loginPinInput, setLoginPinInput] = useState('');
-  const [loginError, setLoginError] = useState(false);
-
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    if (loginPinInput.trim() === '1965' || loginPinInput.trim() === adminPin) {
-      localStorage.setItem('kesif_atlasim_auth_token', '1965');
-      setIsAuthenticated(true);
-      setLoginError(false);
+    if (pass) {
+      localStorage.setItem('kesif_atlasim_admin_pass', pass);
     } else {
-      setLoginError(true);
+      localStorage.removeItem('kesif_atlasim_admin_pass');
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('kesif_atlasim_auth_token');
-    setIsAuthenticated(false);
-    setLoginPinInput('');
-  };
   const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
   const [editingPlace, setEditingPlace] = useState(null);
   const [isPickingLocation, setIsPickingLocation] = useState(false);
@@ -450,71 +454,17 @@ export default function App() {
       )
     ) {
       localStorage.removeItem(STORAGE_KEY);
-      localStorage.removeItem('kesif_atlasim_places_v3');
-      localStorage.removeItem('kesif_atlasim_places_v4');
-      localStorage.removeItem('kesif_atlasim_places_v5');
-      const resetList = INITIAL_PLACES.map((p) => ({ ...p, visited: false, visitedDate: '', favorite: false }));
-      setPlaces(resetList);
-      setSelectedPlaceId(resetList[0]?.id || null);
-      setStatusFilter('todo');
+      const basePath = import.meta.env.BASE_URL || '/';
+      const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
+      fetch(`${cleanBase}data/places.json`)
+        .then((res) => res.json())
+        .then((resetList) => {
+          setPlaces(resetList);
+          setSelectedPlaceId(resetList[0]?.id || null);
+          setStatusFilter('todo');
+        });
     }
   };
-
-  // FULL-SITE PIN SECURITY GATE: Protects site from unauthorized access
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-slate-50 to-orange-50 flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white border border-stone-200/90 rounded-3xl p-6 sm:p-8 shadow-xl text-center space-y-6">
-          <div className="w-16 h-16 mx-auto rounded-3xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 flex items-center justify-center shadow-lg shadow-amber-500/20">
-            <Compass className="w-9 h-9 stroke-[2.2]" />
-          </div>
-
-          <div className="space-y-1.5">
-            <h1 className="text-2xl font-serif font-bold text-slate-900">Keşif Atlasım</h1>
-            <p className="text-xs text-slate-500 max-w-xs mx-auto">
-              Bu atlas kişisel gezi rotalarını ve notlarını içerir. Devam etmek için Master PIN kodunu girin.
-            </p>
-          </div>
-
-          <form onSubmit={handleLoginSubmit} className="space-y-4">
-            <div>
-              <input
-                type="password"
-                inputMode="numeric"
-                maxLength={8}
-                value={loginPinInput}
-                onChange={(e) => {
-                  setLoginPinInput(e.target.value);
-                  setLoginError(false);
-                }}
-                placeholder="4 Haneli PIN Kodunu Girin"
-                autoFocus
-                className="w-full bg-slate-50 border border-slate-200 focus:border-amber-500 rounded-2xl px-4 py-3.5 text-center text-xl font-bold tracking-widest text-slate-900 placeholder:text-sm placeholder:tracking-normal placeholder:font-normal focus:outline-none transition shadow-inner"
-              />
-              {loginError && (
-                <p className="text-xs text-rose-500 font-semibold mt-2 animate-shake">
-                  Hatalı PIN kodu girdiniz. Lütfen tekrar deneyin.
-                </p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              className="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md shadow-amber-500/20 transition transform active:scale-95 flex items-center justify-center gap-2"
-            >
-              <Lock className="w-4 h-4" />
-              <span>Haritayı & Atlası Aç</span>
-            </button>
-          </form>
-
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-center gap-1.5 text-[11px] text-slate-400">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Kişisel & Şifreli Gezgin Alanı</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-amber-100 selection:text-amber-900">
@@ -841,13 +791,17 @@ export default function App() {
               </button>
             </div>
 
-            {/* Lock / Logout Button */}
+            {/* Admin Status / Cloud Sync Button */}
             <button
-              onClick={handleLogout}
-              className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition shadow-xs"
-              title="Güvenli Çıkış (Atlası Kilitle)"
+              onClick={() => setIsCloudSyncOpen(true)}
+              className={`p-2 rounded-xl border transition shadow-xs ${
+                isAdmin
+                  ? 'text-emerald-700 bg-emerald-50 border-emerald-200 hover:bg-emerald-100'
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100 border-slate-200'
+              }`}
+              title={isAdmin ? 'Yönetici Oturumu Açık (Bulut Eşleme & Yetki)' : 'Giriş Yap & Bulut Eşleme'}
             >
-              <Lock className="w-4 h-4" />
+              {isAdmin ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
             </button>
 
             {/* Add New Place Button */}
@@ -866,11 +820,15 @@ export default function App() {
           {/* Mobile Single-Row Header Right Actions */}
           <div className="lg:hidden flex items-center gap-1.5 shrink-0">
             <button
-              onClick={handleLogout}
-              className="p-1.5 rounded-xl text-slate-400 hover:text-rose-600 border border-slate-200 transition"
-              title="Atlası Kilitle"
+              onClick={() => setIsCloudSyncOpen(true)}
+              className={`p-1.5 rounded-xl border transition ${
+                isAdmin
+                  ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                  : 'text-slate-500 border-slate-200'
+              }`}
+              title={isAdmin ? 'Yönetici Açık' : 'Giriş Yap'}
             >
-              <Lock className="w-4 h-4" />
+              {isAdmin ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
             </button>
             <button
               onClick={() => {

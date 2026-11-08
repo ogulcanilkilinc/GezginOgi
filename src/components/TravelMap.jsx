@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
-import { CATEGORIES } from '../data/initialPlaces';
+import { CATEGORIES } from '../data/metadata';
 import {
   Crosshair,
   Route,
@@ -13,28 +13,14 @@ import {
 
 const MAP_STYLES = [
   {
-    id: 'carto-voyager',
-    name: 'Keşif (Açık & Net)',
-    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-    subdomains: 'abcd',
-    attr: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-  },
-  {
     id: 'osm',
-    name: 'OpenStreetMap',
+    name: 'OpenStreetMap (Açık & Detaylı)',
     url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
     attr: '&copy; OpenStreetMap contributors'
   },
   {
-    id: 'carto-positron',
-    name: 'Minimal Açık',
-    url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-    subdomains: 'abcd',
-    attr: '&copy; OpenStreetMap &copy; CARTO'
-  },
-  {
     id: 'google-hybrid',
-    name: 'Uydu Görünümü',
+    name: 'Uydu & Arazi Görünümü',
     url: 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&hl=tr',
     attr: '&copy; Google Maps'
   }
@@ -60,7 +46,7 @@ export default function TravelMap({
   const routeLayerRef = useRef(null);
   const tempMarkerRef = useRef(null);
 
-  const [mapStyle, setMapStyle] = useState('carto-voyager');
+  const [mapStyle, setMapStyle] = useState('osm');
   const [geoQuery, setGeoQuery] = useState('');
   const [geoResults, setGeoResults] = useState([]);
   const [isSearchingGeo, setIsSearchingGeo] = useState(false);

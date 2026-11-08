@@ -1,9 +1,10 @@
 // src/services/cloudSyncService.js
-// Granular, secure, row-level Cloud Synchronization Service for Keşif Atlasım.
-// Syncs per-place user overrides (visited, notes, rating, favorite) and custom-added places.
-// Secured with Supabase PostgreSQL Row Level Security (RLS) and Master PIN verification.
+// Secure, row-level Cloud Synchronization Service for Keşif Atlasım.
+// Supports both Supabase Native Auth (Session-based, zero secret leaks)
+// and User-defined Private Passphrase.
 
 const SYNC_CONFIG_KEY = 'kesif_atlasim_cloud_config';
+const AUTH_SESSION_KEY = 'kesif_atlasim_auth_session';
 
 export function getCloudConfig() {
   try {
@@ -25,14 +26,98 @@ export function saveCloudConfig(config) {
 export function clearCloudConfig() {
   try {
     localStorage.removeItem(SYNC_CONFIG_KEY);
+    localStorage.removeItem(AUTH_SESSION_KEY);
   } catch (e) {
     console.error('Cloud config silme hatası:', e);
   }
 }
 
+export function getAuthSession() {
+  try {
+    const raw = localStorage.getItem(AUTH_SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+export function saveAuthSession(session) {
+  try {
+    localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
+  } catch (e) {
+    console.error('Auth session kaydetme hatası:', e);
+  }
+}
+
 /**
- * Pushes only user-modified states (visited, notes, rating, favorite) and custom places.
- * Payload is tiny (< 10 KB) instead of 2.6 MB monolithic blob, preventing cross-device overwrites!
+ * Supabase Auth: Sign in with Email and Password
+ */
+export async function signInWithEmail(supabaseUrl, supabaseKey, email, password) {
+  const baseUrl = supabaseUrl.replace(/\/$/, '');
+  const res = await fetch(`${baseUrl}/auth/v1/token?grant_type=password`, {
+    method: 'POST',
+    headers: {
+      'apikey': supabaseKey,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error_description || data.msg || data.message || 'Giriş başarısız.');
+  }
+
+  saveAuthSession(data);
+  return data;
+}
+
+/**
+ * Supabase Auth: Send Magic Link / OTP to email
+ */
+export async function sendMagicLink(supabaseUrl, supabaseKey, email) {
+  const baseUrl = supabaseUrl.replace(/\/$/, '');
+  const res = await fetch(`${baseUrl}/auth/v1/otp`, {
+    method: 'POST',
+    headers: {
+      'apikey': supabaseKey,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email })
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.error_description || data.msg || data.message || 'Sihirli bağlantı gönderilemedi.');
+  }
+
+  return true;
+}
+
+/**
+ * Build request headers with session token or private pass
+ */
+function buildHeaders(config) {
+  const session = getAuthSession();
+  const token = session?.access_token || config.supabaseKey;
+
+  const headers = {
+    'apikey': config.supabaseKey,
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    'Prefer': 'resolution=merge-duplicates'
+  };
+
+  // If user configured a private passphrase, send it as custom header
+  if (config.privatePassphrase) {
+    headers['x-sync-pass'] = config.privatePassphrase;
+  }
+
+  return headers;
+}
+
+/**
+ * Pushes only user-modified states and custom places.
  */
 export async function pushPlacesToCloud(places, config) {
   if (!config || !config.supabaseUrl || !config.supabaseKey) {
@@ -40,19 +125,18 @@ export async function pushPlacesToCloud(places, config) {
   }
 
   const baseUrl = config.supabaseUrl.replace(/\/$/, '');
-  const pin = config.pin || '1965';
+  const headers = buildHeaders(config);
 
-  const headers = {
-    'apikey': config.supabaseKey,
-    'Authorization': `Bearer ${config.supabaseKey}`,
-    'Content-Type': 'application/json',
-    'x-sync-pin': pin,
-    'Prefer': 'resolution=merge-duplicates'
-  };
-
-  // 1. Filter user state overrides (only places user actually touched)
+  // 1. Filter user state overrides
   const modifiedStates = places
-    .filter((p) => p.visited || p.favorite || (p.userNotes && p.userNotes.trim().length > 0) || p.userRating > 0 || p.rating > 0)
+    .filter(
+      (p) =>
+        p.visited ||
+        p.favorite ||
+        (p.userNotes && p.userNotes.trim().length > 0) ||
+        p.userRating > 0 ||
+        p.rating > 0
+    )
     .map((p) => ({
       place_id: p.id,
       visited: !!p.visited,
@@ -72,7 +156,6 @@ export async function pushPlacesToCloud(places, config) {
       updated_at: new Date().toISOString()
     }));
 
-  // Upload user_place_state
   if (modifiedStates.length > 0) {
     const resState = await fetch(`${baseUrl}/rest/v1/user_place_state`, {
       method: 'POST',
@@ -86,7 +169,6 @@ export async function pushPlacesToCloud(places, config) {
     }
   }
 
-  // Upload user_custom_places
   if (customPlaces.length > 0) {
     const resCustom = await fetch(`${baseUrl}/rest/v1/user_custom_places`, {
       method: 'POST',
@@ -101,13 +183,14 @@ export async function pushPlacesToCloud(places, config) {
   }
 
   return {
+    success: true,
     syncedStatesCount: modifiedStates.length,
     syncedCustomCount: customPlaces.length
   };
 }
 
 /**
- * Pulls row-level user states from Supabase and merges them safely into local places
+ * Pulls row-level changes from Supabase and merges them safely.
  */
 export async function pullPlacesFromCloud(localPlaces, config) {
   if (!config || !config.supabaseUrl || !config.supabaseKey) {
@@ -115,15 +198,8 @@ export async function pullPlacesFromCloud(localPlaces, config) {
   }
 
   const baseUrl = config.supabaseUrl.replace(/\/$/, '');
-  const pin = config.pin || '1965';
+  const headers = buildHeaders(config);
 
-  const headers = {
-    'apikey': config.supabaseKey,
-    'Authorization': `Bearer ${config.supabaseKey}`,
-    'x-sync-pin': pin
-  };
-
-  // 1. Fetch user_place_state
   const resState = await fetch(`${baseUrl}/rest/v1/user_place_state?select=*`, {
     method: 'GET',
     headers
@@ -131,63 +207,61 @@ export async function pullPlacesFromCloud(localPlaces, config) {
 
   if (!resState.ok) {
     const err = await resState.text();
-    throw new Error(`Bulut durumlarını çekme hatası (${resState.status}): ${err}`);
+    throw new Error(`Buluttan çekme hatası (${resState.status}): ${err}`);
   }
 
-  const states = await resState.json();
+  const cloudStates = await resState.json();
 
-  // 2. Fetch user_custom_places
-  let customPlaces = [];
+  let cloudCustom = [];
   try {
     const resCustom = await fetch(`${baseUrl}/rest/v1/user_custom_places?select=*`, {
       method: 'GET',
       headers
     });
     if (resCustom.ok) {
-      const rows = await resCustom.json();
-      customPlaces = rows.map((r) => r.data).filter(Boolean);
+      cloudCustom = await resCustom.json();
     }
-  } catch (e) {
-    console.warn('Custom places fetch error:', e);
-  }
+  } catch (e) {}
 
-  // 3. Merge granularly: Map state by place_id
   const stateMap = new Map();
-  if (Array.isArray(states)) {
-    states.forEach((s) => {
-      if (s && s.place_id) stateMap.set(s.place_id, s);
+  if (Array.isArray(cloudStates)) {
+    cloudStates.forEach((st) => {
+      stateMap.set(st.place_id, st);
     });
   }
 
-  // Apply to existing localPlaces
-  const updatedPlaces = localPlaces.map((p) => {
-    const cloudState = stateMap.get(p.id);
-    if (!cloudState) return p;
+  const mergedPlaces = localPlaces.map((pl) => {
+    const cState = stateMap.get(pl.id);
+    if (!cState) return pl;
 
     return {
-      ...p,
-      visited: cloudState.visited !== undefined ? cloudState.visited : p.visited,
-      visitedDate: cloudState.visited_date || p.visitedDate || '',
-      favorite: cloudState.favorite !== undefined ? cloudState.favorite : p.favorite,
-      userRating: cloudState.user_rating || p.userRating || 0,
-      rating: cloudState.user_rating || p.rating || 0,
-      userNotes: cloudState.user_notes !== undefined && cloudState.user_notes !== '' ? cloudState.user_notes : p.userNotes
+      ...pl,
+      visited: cState.visited !== undefined ? cState.visited : pl.visited,
+      visitedDate: cState.visited_date || pl.visitedDate || '',
+      favorite: cState.favorite !== undefined ? cState.favorite : pl.favorite,
+      userRating: cState.user_rating || pl.userRating || 0,
+      userNotes: cState.user_notes !== undefined ? cState.user_notes : pl.userNotes || ''
     };
   });
 
-  // Also include any custom places from cloud not present locally
-  const existingIds = new Set(updatedPlaces.map((p) => p.id));
-  customPlaces.forEach((cp) => {
-    if (!existingIds.has(cp.id)) {
-      updatedPlaces.push(cp);
-      existingIds.add(cp.id);
-    }
-  });
+  if (Array.isArray(cloudCustom) && cloudCustom.length > 0) {
+    const existingIds = new Set(mergedPlaces.map((p) => p.id));
+    cloudCustom.forEach((c) => {
+      if (c.data && !existingIds.has(c.id)) {
+        mergedPlaces.push({
+          ...c.data,
+          id: c.id,
+          isCustom: true
+        });
+        existingIds.add(c.id);
+      }
+    });
+  }
 
   return {
-    places: updatedPlaces,
-    statesCount: states.length,
-    customCount: customPlaces.length,
-    updatedAt: new Date().toISOString()
+    success: true,
+    places: mergedPlaces,
+    statesCount: cloudStates.length,
+    customCount: cloudCustom.length
   };
 }

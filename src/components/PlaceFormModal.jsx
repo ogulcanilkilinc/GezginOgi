@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CATEGORIES, REGIONS, SEASONS } from '../data/initialPlaces';
+import { CATEGORIES, REGIONS, SEASONS } from '../data/metadata';
 import { X, Crosshair, Sparkles, Save, MapPin } from 'lucide-react';
 
 const DEFAULT_FORM = {
