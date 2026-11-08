@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { CATEGORIES, SEASONS, REGIONS } from '../data/metadata';
 import { getPhrasebookForCountry } from '../data/phrasebookData';
 import { getOptimizedImageUrl } from '../data/curatedPhotoResolver';
+import { getCloudConfig, uploadPhotoToSupabase } from '../services/cloudSyncService';
 import {
   X,
   Clock,
@@ -230,14 +231,30 @@ export default function PlaceDetailPanel({
     try {
       setPhotoCompressing(true);
       setPhotoError('');
-      // Downscale to max 1200px and JPEG quality 0.82 to prevent localStorage overflow
+      // 1. Downscale to max 1200px and JPEG quality 0.82 to prevent storage overflow
       const compressedDataUrl = await resizeImageToMax(file, 1200, 0.82);
-      const updated = [...userPhotos, compressedDataUrl];
+
+      let finalPhotoUrl = compressedDataUrl;
+      // 2. If Supabase is connected, upload to Supabase Storage bucket
+      const cloudConfig = getCloudConfig();
+      if (cloudConfig && cloudConfig.supabaseUrl && cloudConfig.supabaseKey) {
+        const cloudUrl = await uploadPhotoToSupabase(compressedDataUrl, place.id, cloudConfig);
+        if (cloudUrl) {
+          finalPhotoUrl = cloudUrl;
+        }
+      }
+
+      const updated = [...userPhotos, finalPhotoUrl];
       setUserPhotos(updated);
       onUpdateNotes(place.id, { userPhotos: updated });
     } catch (err) {
       console.error('Fotoğraf küçültme/kaydetme hatası:', err);
-      setPhotoError('Fotoğraf kaydedilemedi. Depolama alanı dolu olabilir.');
+      const isQuota = err?.name === 'QuotaExceededError' || err?.code === 22;
+      const msg = isQuota
+        ? 'Yer kalmadı, fotoğraf kaydedilmedi! Lütfen bazı fotoğrafları silin veya Bulut Eşleme kullanın.'
+        : 'Yer kalmadı, fotoğraf kaydedilmedi. Depolama alanı dolu olabilir.';
+      setPhotoError(msg);
+      alert(`⚠️ ${msg}`);
     } finally {
       setPhotoCompressing(false);
       if (photoInputRef.current) photoInputRef.current.value = '';

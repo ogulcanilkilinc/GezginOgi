@@ -134,6 +134,8 @@ export async function pushPlacesToCloud(places, config) {
         p.visited ||
         p.favorite ||
         (p.userNotes && p.userNotes.trim().length > 0) ||
+        (p.userPhotos && p.userPhotos.length > 0) ||
+        (p.checklist && p.checklist.some((c) => c.done)) ||
         p.userRating > 0 ||
         p.rating > 0
     )
@@ -144,6 +146,8 @@ export async function pushPlacesToCloud(places, config) {
       favorite: !!p.favorite,
       user_rating: p.userRating || p.rating || 0,
       user_notes: p.userNotes || '',
+      user_photos: p.userPhotos || [],
+      checklist: p.checklist || [],
       updated_at: new Date().toISOString()
     }));
 
@@ -240,7 +244,9 @@ export async function pullPlacesFromCloud(localPlaces, config) {
       visitedDate: cState.visited_date || pl.visitedDate || '',
       favorite: cState.favorite !== undefined ? cState.favorite : pl.favorite,
       userRating: cState.user_rating || pl.userRating || 0,
-      userNotes: cState.user_notes !== undefined ? cState.user_notes : pl.userNotes || ''
+      userNotes: cState.user_notes !== undefined ? cState.user_notes : pl.userNotes || '',
+      userPhotos: Array.isArray(cState.user_photos) && cState.user_photos.length > 0 ? cState.user_photos : pl.userPhotos || [],
+      checklist: Array.isArray(cState.checklist) && cState.checklist.length > 0 ? cState.checklist : pl.checklist || []
     };
   });
 
@@ -264,4 +270,36 @@ export async function pullPlacesFromCloud(localPlaces, config) {
     statesCount: cloudStates.length,
     customCount: cloudCustom.length
   };
+}
+
+/**
+ * Uploads a photo to Supabase Storage ('user_photos' bucket) if configured.
+ * Returns public URL if uploaded, or null on fallback.
+ */
+export async function uploadPhotoToSupabase(dataUrl, placeId, config) {
+  if (!config || !config.supabaseUrl || !config.supabaseKey) return null;
+  try {
+    const baseUrl = config.supabaseUrl.replace(/\/$/, '');
+    const headers = buildHeaders(config);
+
+    const blobRes = await fetch(dataUrl);
+    const blob = await blobRes.blob();
+
+    const fileName = `${placeId}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}.jpg`;
+    const res = await fetch(`${baseUrl}/storage/v1/object/user_photos/${fileName}`, {
+      method: 'POST',
+      headers: {
+        ...headers,
+        'Content-Type': 'image/jpeg'
+      },
+      body: blob
+    });
+
+    if (res.ok) {
+      return `${baseUrl}/storage/v1/object/public/user_photos/${fileName}`;
+    }
+  } catch (err) {
+    console.warn('Supabase Storage yükleme atlandı (yerel saklama kullanılacak):', err);
+  }
+  return null;
 }

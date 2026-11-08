@@ -157,7 +157,7 @@ export default function CloudSyncModal({
 
   const activePass = config.privatePassphrase || 'BURAYA_12_16_HANELI_GIZLI_PAROLANIZI_YAZIN';
 
-  const sqlSnippet = `-- 1. Kullanıcı Durumları Tablosu (Gittim, Notlar, Favori, Puan)
+  const sqlSnippet = `-- 1. Kullanıcı Durumları Tablosu (Gittim, Notlar, Favori, Puan, Fotoğraflar & Çanta)
 create table if not exists user_place_state (
   place_id text primary key,
   visited boolean default false,
@@ -165,8 +165,14 @@ create table if not exists user_place_state (
   favorite boolean default false,
   user_rating int default 0,
   user_notes text,
+  user_photos jsonb default '[]'::jsonb,
+  checklist jsonb default '[]'::jsonb,
   updated_at timestamptz default now()
 );
+
+-- Var olan tablonuz varsa bu iki sütunu ekler (hata vermez):
+alter table user_place_state add column if not exists user_photos jsonb default '[]'::jsonb;
+alter table user_place_state add column if not exists checklist jsonb default '[]'::jsonb;
 
 -- 2. Özel Eklenen Mekanlar Tablosu
 create table if not exists user_custom_places (

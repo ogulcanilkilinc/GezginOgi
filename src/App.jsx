@@ -57,6 +57,38 @@ const USER_OVERRIDES_KEY = 'kesif_atlasim_user_overrides_v1';
 export default function App() {
   const [places, setPlaces] = useState([]);
   const [isLoadingPlaces, setIsLoadingPlaces] = useState(true);
+  const [updateNotification, setUpdateNotification] = useState(null);
+
+  const handleApplyUpdate = (freshRaw) => {
+    let merged = freshRaw;
+    try {
+      const rawOverrides = localStorage.getItem(USER_OVERRIDES_KEY);
+      if (rawOverrides) {
+        const overrides = JSON.parse(rawOverrides);
+        merged = freshRaw.map((p) => {
+          const ov = overrides[p.id];
+          if (!ov) return p;
+          return {
+            ...p,
+            visited: ov.visited !== undefined ? ov.visited : p.visited,
+            visitedDate: ov.visitedDate || p.visitedDate || '',
+            favorite: ov.favorite !== undefined ? ov.favorite : p.favorite,
+            userRating: ov.userRating !== undefined ? ov.userRating : (p.userRating || 0),
+            userNotes: ov.userNotes !== undefined ? ov.userNotes : (p.userNotes || ''),
+            userPhotos: ov.userPhotos !== undefined ? ov.userPhotos : (p.userPhotos || []),
+            checklist: ov.checklist !== undefined ? ov.checklist : (p.checklist || [])
+          };
+        });
+        Object.values(overrides).forEach((ov) => {
+          if (ov.isCustom && !merged.some((p) => p.id === ov.isCustom.id)) {
+            merged.push(ov.isCustom);
+          }
+        });
+      }
+    } catch (e) {}
+    setPlaces(merged);
+    setUpdateNotification(null);
+  };
 
   // Fast async data loading + granular overrides merge (< 2 KB in localStorage)
   // Prevents mobile browser freezes and eliminates 2.5 MB localStorage bottlenecks!
@@ -96,7 +128,9 @@ export default function App() {
                 visitedDate: ov.visitedDate || p.visitedDate || '',
                 favorite: ov.favorite !== undefined ? ov.favorite : p.favorite,
                 userRating: ov.userRating !== undefined ? ov.userRating : (p.userRating || 0),
-                userNotes: ov.userNotes !== undefined ? ov.userNotes : (p.userNotes || '')
+                userNotes: ov.userNotes !== undefined ? ov.userNotes : (p.userNotes || ''),
+                userPhotos: ov.userPhotos !== undefined ? ov.userPhotos : (p.userPhotos || []),
+                checklist: ov.checklist !== undefined ? ov.checklist : (p.checklist || [])
               };
             });
 
@@ -113,6 +147,20 @@ export default function App() {
 
         setPlaces(merged);
         setIsLoadingPlaces(false);
+
+        // Background Freshness Check: Detect if fresh network data has new/updated count
+        fetch(`${cleanBase}data/places.json?_t=${Date.now()}`, { cache: 'no-store' })
+          .then((r) => (r.ok ? r.json() : null))
+          .then((freshRaw) => {
+            if (freshRaw && Array.isArray(freshRaw) && freshRaw.length !== rawPlaces.length) {
+              setUpdateNotification({
+                oldLen: rawPlaces.length,
+                newLen: freshRaw.length,
+                freshRaw
+              });
+            }
+          })
+          .catch(() => {});
       })
       .catch((err) => {
         console.error('Veri yükleme hatası:', err);
@@ -204,29 +252,38 @@ export default function App() {
 
   const fileInputRef = useRef(null);
 
-  // Save ONLY modified user states (< 2 KB) to LocalStorage
-  // Prevents saving 2.5 MB on every render, keeping mobile phones super fast (60 FPS)
+  // Save user overrides to LocalStorage with quota overflow detection
   useEffect(() => {
-    if (!places || places.length === 0) return;
+    if (!places || places.length === 0 || isLoadingPlaces) return;
     try {
       const overrides = {};
       places.forEach((p) => {
-        if (p.visited || p.favorite || (p.userNotes && p.userNotes.trim()) || p.userRating > 0 || p.isCustom) {
+        const hasNotes = p.userNotes && p.userNotes.trim();
+        const hasPhotos = p.userPhotos && p.userPhotos.length > 0;
+        const hasChecklist = p.checklist && p.checklist.some((c) => c.done);
+        if (p.visited || p.favorite || hasNotes || hasPhotos || hasChecklist || p.userRating > 0 || p.isCustom) {
           overrides[p.id] = {
             visited: p.visited,
             visitedDate: p.visitedDate,
             favorite: p.favorite,
             userNotes: p.userNotes,
             userRating: p.userRating,
+            userPhotos: p.userPhotos,
+            checklist: p.checklist,
             isCustom: p.isCustom ? p : undefined
           };
         }
       });
       localStorage.setItem(USER_OVERRIDES_KEY, JSON.stringify(overrides));
     } catch (e) {
-      console.error('Overrides save error:', e);
+      if (e.name === 'QuotaExceededError' || e.code === 22) {
+        console.error('Tarayıcı depolama alanı doldu:', e);
+        alert('⚠️ Tarayıcı yerel hafızası (~5 MB) doldu! Yeni eklediğiniz fotoğraflar veya notlar kaydedilemedi. Lütfen bazı fotoğrafları kaldırın veya Bulut Eşleme (Supabase) kullanın.');
+      } else {
+        console.error('Overrides save error:', e);
+      }
     }
-  }, [places]);
+  }, [places, isLoadingPlaces]);
 
   const matchesRegionScope = (p, regId) => {
     if (regId === 'all') return true;
@@ -2213,6 +2270,22 @@ export default function App() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Floating Fresh Data Update Notification */}
+      {updateNotification && (
+        <div className="fixed bottom-16 lg:bottom-6 left-1/2 -translate-x-1/2 z-[1100] bg-slate-900/95 text-white border border-amber-400 px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-md animate-bounce">
+          <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+          <span className="text-xs font-semibold">
+            Yeni yerler güncellendi ({updateNotification.newLen} yer)
+          </span>
+          <button
+            onClick={() => handleApplyUpdate(updateNotification.freshRaw)}
+            className="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold px-3 py-1 rounded-xl transition shadow-xs"
+          >
+            Şimdi Yenile
+          </button>
         </div>
       )}
       </Suspense>

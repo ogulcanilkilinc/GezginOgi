@@ -2,7 +2,7 @@
 // Service Worker for Keşif Atlasım - Robust Offline PWA Support
 // Automatically precaches all compiled JS chunks, CSS, fonts, and data for seamless offline usage.
 
-const CACHE_NAME = 'kesif-atlasim-cache-v2';
+const CACHE_NAME = 'kesif-atlasim-build-mw7nztvt';
 
 // Precache list - dynamically populated with all build chunks by inject-sw-assets.mjs
 const PRECACHE_URLS = [
@@ -12,25 +12,25 @@ const PRECACHE_URLS = [
   "./manifest.json",
   "./data/places.json",
   "./data/photos.json",
-  "./assets/BorderCrossingsModal-BbVccx4V.js",
-  "./assets/CloudSyncModal-igpopOeZ.js",
-  "./assets/CountryIntelModal-Bx-POMaX.js",
-  "./assets/CurrencyBudgetModal-DgEp2MnM.js",
-  "./assets/EmergencyConsulateModal-BCv3vESs.js",
+  "./assets/BorderCrossingsModal-D1NVJcXr.js",
+  "./assets/CloudSyncModal-CglMXPyT.js",
+  "./assets/CountryIntelModal-Cabz46hg.js",
+  "./assets/CurrencyBudgetModal-NlfjDVH_.js",
+  "./assets/EmergencyConsulateModal-BhQ_tacL.js",
   "./assets/icons-vendor-dXrqPX5M.js",
-  "./assets/index-Dbcho-mn.css",
-  "./assets/index-DUlj7DQm.js",
-  "./assets/ItineraryModal-MqXn0x6g.js",
+  "./assets/index-C90xQoP3.css",
+  "./assets/index-D-5avNwu.js",
+  "./assets/ItineraryModal-CaBbKsLr.js",
   "./assets/leaflet-vendor-jaox9G8N.js",
-  "./assets/NearbyRadarModal-C_x_AVyF.js",
-  "./assets/PackingChecklistModal-CEDvQODI.js",
-  "./assets/PassportModal-Bry9jVBs.js",
-  "./assets/PlaceFormModal-CM7yiC4V.js",
-  "./assets/RouteSimulatorModal-CR2ApV-Q.js",
-  "./assets/ScratchMapModal-DWBax4LI.js",
-  "./assets/SearchableLocationModal-CQD6Km0q.js",
-  "./assets/SeasonalCalendarModal-quTcgRWL.js",
-  "./assets/TravelSoundtrackModal-C2ijpGLI.js"
+  "./assets/NearbyRadarModal-1nkC0Nei.js",
+  "./assets/PackingChecklistModal-bpKYFjJm.js",
+  "./assets/PassportModal-D-PnmxXX.js",
+  "./assets/PlaceFormModal-Dtk2TrFE.js",
+  "./assets/RouteSimulatorModal-D5UfPt--.js",
+  "./assets/ScratchMapModal-DMteUCmA.js",
+  "./assets/SearchableLocationModal-ZxpoJXDt.js",
+  "./assets/SeasonalCalendarModal-COaEAbsd.js",
+  "./assets/TravelSoundtrackModal-EmY9PbfN.js"
 ];
 
 self.addEventListener('install', (event) => {
@@ -80,29 +80,51 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 1. Places & Photos JSON: Stale-While-Revalidate with search query normalization (?v= stripped)
-  if (url.pathname.includes('/data/places.json') || url.pathname.includes('/data/photos.json')) {
+  // 1a. Places JSON: Stale-While-Revalidate with search query normalization (?v= stripped)
+  if (url.pathname.includes('/data/places.json')) {
     event.respondWith(
       caches.open(CACHE_NAME).then(async (cache) => {
         const cleanUrl = getNormalizedUrl(req.url);
-        const isPhotos = url.pathname.includes('/data/photos.json');
-
-        // Look up using normalized URL or with ignoreSearch; never cross-fallback photos to places!
         const cachedResponse =
           (await cache.match(cleanUrl)) ||
-          (await cache.match(req, { ignoreSearch: true })) ||
-          (isPhotos ? (await cache.match('./data/photos.json')) : (await cache.match('./data/places.json'))) ||
-          (isPhotos ? new Response('[]', { headers: { 'Content-Type': 'application/json' } }) : null);
+          (await cache.match('./data/places.json')) ||
+          (await cache.match(req, { ignoreSearch: true }));
 
         const networkFetch = fetch(req)
           .then((networkResponse) => {
             if (networkResponse && networkResponse.status === 200) {
-              // Store normalized so duplicates with ?v= are never stored
               cache.put(cleanUrl, networkResponse.clone());
+              cache.put('./data/places.json', networkResponse.clone());
             }
             return networkResponse;
           })
           .catch(() => cachedResponse);
+
+        return cachedResponse || networkFetch;
+      })
+    );
+    return;
+  }
+
+  // 1b. Photos JSON: Stale-While-Revalidate strictly isolated (never fallbacks to places.json!)
+  if (url.pathname.includes('/data/photos.json')) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(async (cache) => {
+        const cleanUrl = getNormalizedUrl(req.url);
+        const cachedResponse =
+          (await cache.match(cleanUrl)) ||
+          (await cache.match('./data/photos.json')) ||
+          (await cache.match(req, { ignoreSearch: true }));
+
+        const networkFetch = fetch(req)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              cache.put(cleanUrl, networkResponse.clone());
+              cache.put('./data/photos.json', networkResponse.clone());
+            }
+            return networkResponse;
+          })
+          .catch(() => cachedResponse || new Response('{}', { headers: { 'Content-Type': 'application/json' } }));
 
         return cachedResponse || networkFetch;
       })

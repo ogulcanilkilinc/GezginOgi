@@ -32,18 +32,25 @@ const basePrecache = [
 ];
 
 const fullPrecache = [...basePrecache, ...assetUrls];
+const buildId = Date.now().toString(36);
+const cacheName = `kesif-atlasim-build-${buildId}`;
+
 console.log(`[SW Injection] Found ${assetUrls.length} build chunks. Total precache assets: ${fullPrecache.length}`);
+console.log(`[SW Injection] Generating new Cache ID: ${cacheName}`);
 
 function updateSwFile(targetPath) {
   if (!fs.existsSync(targetPath)) return;
   let content = fs.readFileSync(targetPath, 'utf8');
 
-  // Replace PRECACHE_URLS array
+  // 1. Replace CACHE_NAME with new build ID so stale chunk caches are automatically purged on activate
+  content = content.replace(/const CACHE_NAME = ['"][^'"]+['"];/, `const CACHE_NAME = '${cacheName}';`);
+
+  // 2. Replace PRECACHE_URLS array
   const precacheStr = `const PRECACHE_URLS = ${JSON.stringify(fullPrecache, null, 2)};`;
   content = content.replace(/const PRECACHE_URLS = \[[\s\S]*?\];/, precacheStr);
 
   fs.writeFileSync(targetPath, content, 'utf8');
-  console.log(`[SW Injection] Updated precache list in: ${path.basename(targetPath)}`);
+  console.log(`[SW Injection] Injected ${fullPrecache.length} assets & ${cacheName} into: ${path.basename(targetPath)}`);
 }
 
 updateSwFile(distSwPath);

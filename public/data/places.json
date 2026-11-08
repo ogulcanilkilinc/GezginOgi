@@ -23412,72 +23412,6 @@
     }
   },
   {
-    "id": "wld-lizbon-sintra-porto",
-    "name": "Portekiz: Lizbon (Alfama & Tramvay 28), Sintra Pena Sarayı & Porto",
-    "region": "dunya",
-    "subRegion": "Avrupa",
-    "city": "Lizbon & Porto",
-    "category": "kultur",
-    "coords": [
-      38.7117,
-      -9.1303
-    ],
-    "duration": "4 - 5 Gün",
-    "durationCategory": "tam",
-    "seasons": [
-      "ilkbahar",
-      "yaz",
-      "sonbahar"
-    ],
-    "bestTimeText": "Nisan-Haziran ve Eylül-Kasım aylarında Avrupa’nın en güneşli ve ılıman kıyısıdır.",
-    "whatAwaits": "Yedi tepe üzerine kurulu, dış cepheleri mavi-beyaz **Azulejo** çinileriyle kaplı binaları ve dar yokuşlarından geçen ikonik sarı **28 Numaralı Nostaljik Tramvayı** ile **Lizbon**! Tejo Nehri kıyısında Kaşifler Anıtı ve Belém Kulesi, 40 dakika mesafedeki bulutların üzerindeki renkli masal şatosu **Sintra Pena Sarayı ( ve Quinta da Regaleira Kuyusu)** ve kuzeyde Douro Nehri üzerindeki demir köprüsüyle **Porto**!",
-    "highlights": [
-      "Alfama ve Bairro Alto’nun daracık yokuşları, Fado müziği evleri ve Miradouro (Santa Luzia / Graça) seyir terasları",
-      "Belém Kulesi, Jerónimos Manastırı ve 1837’den beri gizli tarifle yapılan Pastéis de Belém fırını",
-      "Sintra’da yeraltına döner merdivenle inen gizemli İnisiyasyon Kuyusu (Quinta da Regaleira) ve Pena Sarayı",
-      "Avrupa kıtasının en batı ucu Cabo da Roca (\"Karanın bittiği ve denizin başladığı yer\") ve Porto Ribeira kıyısı"
-    ],
-    "howToVisit": "Lizbon Rossio İstasyonu’ndan 40 dakikalık trenle Sintra’ya, Santa Apolónia’dan 2.5 saatlik hızlı trenle Porto’ya geçebilirsin.",
-    "localSpecialties": "Üzerine tarçın serpilerek sıcak yenen çıtır **Pastel de Nata (Pastéis de Belém)**, **Bacalhau à Brás** (morina balığı), ızgara sardalya, **Bifana** sandviçi ve vişne likörü **Ginjinha**.",
-    "blogArticle": "Lizbon'da Santa Luzia terasında begonvillerin ve mavi çinilerin arasından kırmızı kiremitli Alfama çatılarına ve Tejo Nehri'ne bakarken, arka planda bir sokak müzisyeninin Fado gitarını dinlemek insanın ruhuna işleyen bir melankoli ve mutluluk verir.",
-    "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Lisboa837.png/960px-Lisboa837.png",
-    "visited": false,
-    "visitedDate": "",
-    "favorite": false,
-    "userNotes": "",
-    "userRating": 0,
-    "budget": "Orta (₺₺)",
-    "rating": 0,
-    "country": "Portekiz",
-    "isBalkan": false,
-    "photoCredit": {
-      "artist": "Lacobrigo",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "page": "https://commons.wikimedia.org/wiki/File:Lisboa837.png"
-    },
-    "ankaraDistance": {
-      "distKm": 3581,
-      "roadKm": 4476,
-      "driveMinutes": 0,
-      "driveText": "",
-      "flightText": "~3 - 4.5 sa (direkt / 1 aktarma)",
-      "trainText": null,
-      "isWeekendEscape": false,
-      "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
-    },
-    "visaStatus": {
-      "category": "schengen",
-      "label": "Schengen Şart",
-      "badgeClass": "bg-blue-100 text-blue-900 border-blue-300",
-      "icon": "🇪🇺",
-      "isVisaFree": false,
-      "duration": "90 gün",
-      "notes": "Schengen zorunludur.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
-    }
-  },
-  {
     "id": "wld-balkan-saraybosna-mostar-ohrid",
     "name": "Vizesiz Balkanlar: Saraybosna Başçarşı, Mostar Köprüsü & Ohrid Gölü",
     "region": "dunya",
@@ -23612,72 +23546,6 @@
       "isVisaFree": false,
       "duration": "6 ay",
       "notes": "UK Standard Visitor vizesi şarttır; Schengen geçmez.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
-    }
-  },
-  {
-    "id": "wld-fas-marakes-safsavan",
-    "name": "Fas: Marakeş (Majorelle Bahçesi & Jemaa el-Fnaa) & Mavi Şehir Şafşavan (Vizesiz)",
-    "region": "dunya",
-    "subRegion": "Orta Doğu & Afrika",
-    "city": "Marakeş & Şafşavan (Chefchaouen)",
-    "category": "kultur",
-    "coords": [
-      31.6295,
-      -7.9811
-    ],
-    "duration": "4 - 5 Gün",
-    "durationCategory": "tam",
-    "seasons": [
-      "ilkbahar",
-      "sonbahar",
-      "kis"
-    ],
-    "bestTimeText": "Mart-Mayıs ve Ekim-Kasım ayları Fas sokakları ve Sahra Çölü için en ideal dönemdir (Türk vatandaşlarına vizesizdir!).",
-    "whatAwaits": "Türk vatandaşlarının **vizesiz** gidebildiği renkler ve baharatlar ülkesi! Yves Saint Laurent’in kobalt mavisi villası ve dev kaktüsleriyle **Majorelle Bahçesi**, çini işçiliğiyle **Bahia Sarayı**, akşam dumanları ve hikaye anlatıcılarıyla canlanan **Jemaa el-Fnaa Meydanı**, avlulu geleneksel **Riad** otelleri ve kuzeyde tüm duvarları ile merdivenleri gökyüzü mavisine boyanmış **Şafşavan (Chefchaouen)**!",
-    "highlights": [
-      "Jardin Majorelle (Yves Saint Laurent Bahçesi), Ben Youssef Medresesi ve Bahia Sarayı",
-      "Jemaa el-Fnaa Meydanı’na tepeden bakan teras kafelerde gün batımı ve labirent Medina çarşıları (Souk)",
-      "Rif Dağları yamacındaki her sokağı çivit mavisine boyalı masal kasabası Şafşavan (Chefchaouen)",
-      "Merzouga (Erg Chebbi) kızıl Sahra Çölü kumullarında deve kervanı ve yıldızlar altında Bedevi kampı"
-    ],
-    "howToVisit": "Vizesiz uçuşla Marakeş veya Kazablanka’ya inip, Marakeş’te geleneksel avlulu bir **Riad**’da konaklamak deneyimin en önemli parçasıdır!",
-    "localSpecialties": "Konik toprak güveçte erik/kayısı ve bademle ağır ateşte pişen **Kuzu Tajine (Tagine)**, **Kuskus**, **Pastilla** (bademli-tarçınlı çıtır börek), **Harira** çorbası ve yüksekten köpürtülerek doldurulan taze **Fas Nane Çayı (Atay)**.",
-    "blogArticle": "Marakeş'in kalabalık ve gürültülü toprak rengi bir sokağından küçük ahşap bir kapıyı itip bir Riad'ın iç avlusuna girdiğiniz an tüm ses kesilir; karşınıza portakal ağaçları, turkuaz çinili bir havuz ve kuş sesleri çıkar. Vizesiz gidilebilecek en egzotik ve fotojenik ülkelerin başında gelir.",
-    "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/MoroccoMarrakech_townfromhill.jpg/960px-MoroccoMarrakech_townfromhill.jpg",
-    "visited": false,
-    "visitedDate": "",
-    "favorite": false,
-    "userNotes": "",
-    "userRating": 0,
-    "budget": "Ekonomik (₺)",
-    "rating": 0,
-    "country": "Fas",
-    "isBalkan": false,
-    "photoCredit": {
-      "artist": "CS.D.",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
-      "page": "https://commons.wikimedia.org/wiki/File:MoroccoMarrakech_townfromhill.jpg"
-    },
-    "ankaraDistance": {
-      "distKm": 3763,
-      "roadKm": 4704,
-      "driveMinutes": 0,
-      "driveText": "",
-      "flightText": "~2.5 - 5 sa (direkt / 1 aktarma)",
-      "trainText": null,
-      "isWeekendEscape": false,
-      "summaryText": "Ankara’dan ~2.5 - 5 sa (direkt / 1 aktarma)"
-    },
-    "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "90 gün vizesiz.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
@@ -23888,132 +23756,6 @@
       "isVisaFree": true,
       "duration": "90 gün",
       "notes": "Çipli kimlikle veya bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
-    }
-  },
-  {
-    "id": "wld-arnavutluk-ksamil-berat",
-    "name": "Arnavutluk: Ksamil Adaları, Mavi Göz (Syri i Kaltër), Berat & Gjirokastër (Vizesiz!)",
-    "region": "dunya",
-    "subRegion": "Avrupa",
-    "city": "Ksamil",
-    "category": "doga",
-    "coords": [
-      39.7686,
-      19.9997
-    ],
-    "duration": "3 - 4 Gün",
-    "durationCategory": "tam",
-    "seasons": [
-      "ilkbahar",
-      "yaz",
-      "sonbahar"
-    ],
-    "bestTimeText": "Haziran ve Eylül ayları İyon Denizi’nin Maldivler’i andıran turkuaz sularında kalabalıksız yüzmek için en kusursuz zamandır!",
-    "whatAwaits": "Türk vatandaşlarına **vizesiz** olan \"Avrupa’nın Maldivleri\"! Yunanistan’ın Korfu Adası’nın tam karşısında bembeyaz kumlu ve turkuaz sularıyla **Ksamil Adaları & Arnavutluk Rivierası (Himarë, Dhërmi)**, yerin derinliklerinden buz gibi fışkıran hipnotize edici doğal su kaynağı **Mavi Göz (The Blue Eye / Syri i Kaltër)** ve UNESCO Dünya Mirası olan iki Osmanlı taş şehri: **\"Bin Pencereli Şehir\" Berat** ile **\"Taş Şehir\" Ergiri (Gjirokastër)**!",
-    "highlights": [
-      "Yüzerek veya deniz bisikletiyle ulaşılan turkuaz Ksamil 4 Adalar ve UNESCO listesindeki Butrint Antik Kenti",
-      "Suyun ortası koyu lacivert (göz bebeği), kenarları neon turkuaz (iris) olan doğa harikası Mavi Göz (Blue Eye)",
-      "Osum Nehri kıyısında üst üste dizilmiş beyaz cumbalı evleriyle UNESCO mirası Berat (Mangalem & Gorica)",
-      "Arnavut kaldırımlı taş çatılı Gjirokastër Kalesi ve Pazarı"
-    ],
-    "howToVisit": "Tiran Havalimanı’na vizesiz uçup araç kiralayarak Tiran -> Berat -> Gjirokastër -> Mavi Göz -> Ksamil / Saranda rotasını yapmak çok keyifli ve ekonomiktir.",
-    "localSpecialties": "Kuzu eti ve yoğurtla fırında pişen milli yemek **Tavë Kosi**, mısır unlu pırasalı **Byrek (Arnavut Böreği)**, **Fergese**, **Trileçe** tatlısı ve İyon Denizi kıyısında çok uygun fiyatlı taze deniz ürünleri.",
-    "blogArticle": "Arnavutluk, hem Safranbolu ve Beypazarı'nı hatırlatan UNESCO koruması altındaki Berat ve Gjirokastër taş şehirleriyle hem de Maldivler'i aratmayan Ksamil kıyılarıyla vizesiz gidilebilecek en büyük sürprizlerden biridir.",
-    "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Ksamil-ksamil_islands.jpg/960px-Ksamil-ksamil_islands.jpg",
-    "visited": false,
-    "visitedDate": "",
-    "favorite": false,
-    "userNotes": "",
-    "userRating": 0,
-    "budget": "Ekonomik (₺)",
-    "rating": 0,
-    "country": "Arnavutluk",
-    "isBalkan": true,
-    "photoCredit": {
-      "artist": "Artur Malinowski - @Flickr: https://www.flickr.com/photos/am1974/",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-      "page": "https://commons.wikimedia.org/wiki/File:Ksamil-ksamil_islands.jpg"
-    },
-    "ankaraDistance": {
-      "distKm": 1097,
-      "roadKm": 1371,
-      "driveMinutes": 934,
-      "driveText": "15 sa 34 dk araçla",
-      "flightText": "~1.5 - 2.5 sa (direkt / 1 aktarma)",
-      "trainText": null,
-      "isWeekendEscape": false,
-      "summaryText": "Ankara’dan 15 sa 34 dk araçla · ~1.5 - 2.5 sa (direkt / 1 aktarma)"
-    },
-    "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "Bordo pasaportla 90 gün vizesiz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
-    }
-  },
-  {
-    "id": "wld-gurcistan-tiflis-kazbegi",
-    "name": "Gürcistan: Tiflis Eski Şehir, Sülfür Hamamları & Kazbegi Dağları (Kimlikle / Vizesiz!)",
-    "region": "dunya",
-    "subRegion": "Asya",
-    "city": "Tiflis & Stepantsminda (Kazbegi)",
-    "category": "kultur",
-    "coords": [
-      41.6938,
-      44.8015
-    ],
-    "duration": "3 - 4 Gün",
-    "durationCategory": "tam",
-    "seasons": [
-      "ilkbahar",
-      "yaz",
-      "sonbahar"
-    ],
-    "bestTimeText": "Mayıs-Haziran ve Eylül-Ekim (Bağbozumu / Rtveli zamanı) hem Tiflis sokakları hem de 2.170 metredeki Kazbegi Dağları için harikadır.",
-    "whatAwaits": "Sadece **çipli T.C. Kimlik Kartı ile (pasaportsuz ve vizesiz)** gidilebilen Kafkasların kültür ve gastronomi başkenti! Kura Nehri üzerindeki uçurum evleri, dantel gibi ahşap oyma balkonlarıyla **Tiflis Eski Şehir (Old Tbilisi)**, Puşkin ve Dumas’nın yıkandığı kubbeli **Abanotubani Sülfür Hamamları**, eski bir dikiş fabrikasından dönüştürülen alternatif kültür merkezi **Fabrika** ve Gürcü Askeri Yolu’ndan çıkılan 5.054 metrelik Kazbek Dağı eteklerindeki bulutlar üstü **Gergeti Trinity Kilisesi**!",
-    "highlights": [
-      "Abanotubani kubbeli sıcak sülfür hamamları, Leghvtakhevi Kanyon Şelalesi ve Narikala Kalesi teleferiği",
-      "Eğik Saat Kulesi (Rezo Gabriadze Kukla Tiyatrosu), Barış Köprüsü ve Dry Bridge Antika Pazarı",
-      "Sovyet tekstil fabrikasından dönüştürülen sanat, hostel, kafe ve bar avlusu: Fabrika Tbilisi",
-      "Kafkas Dağları’nda 2.170 metre yükseklikte bulutların üzerindeki 14. yüzyıl Gergeti Trinity Kilisesi (Kazbegi)"
-    ],
-    "howToVisit": "Tiflis’e direkt uçuşla 2 saatte ulaşılır. 2 günü Tiflis’e, 1 tam günü ise Ananuri Kalesi ve Gudauri Panorama Terası üzerinden çıkılan **Kazbegi (Stepantsminda)** dağ rotasına ayır!",
-    "localSpecialties": "İçi sulu Gürcü mantısı **Khinkali (Hinkali)**, ortası eritilmiş peynir ve tereyağlı yumurta dolgulu kayık pide **Adjaruli Khachapuri (Acaruli Haçapuri)**, ceviz soslu patlıcan **Badrijani**, **Şkmeruli** ve 8.000 yıllık toprak küp (Qvevri) şarap kültürü.",
-    "blogArticle": "Tiflis, ahşap oymalı pastel renkli balkonları, her köşe başından yükselen sıcak Haçapuri kokusu ve Fabrika gibi yaratıcı gençlik mekanlarıyla insanı ilk saatte kendine bağlayan çok karakteristik bir şehir. Kuzeydeki Kazbegi Dağları ise İsviçre Alplerini aratmayan dev bir doğa şölenidir.",
-    "coverImage": "",
-    "visited": false,
-    "visitedDate": "",
-    "favorite": false,
-    "userNotes": "",
-    "userRating": 0,
-    "budget": "Ekonomik (₺)",
-    "rating": 0,
-    "country": "Gürcistan",
-    "isBalkan": false,
-    "ankaraDistance": {
-      "distKm": 1024,
-      "roadKm": 1280,
-      "driveMinutes": 873,
-      "driveText": "14 sa 33 dk araçla",
-      "flightText": "~1.5 - 2.5 sa (direkt / 1 aktarma)",
-      "trainText": null,
-      "isWeekendEscape": false,
-      "summaryText": "Ankara’dan 14 sa 33 dk araçla · ~1.5 - 2.5 sa (direkt / 1 aktarma)"
-    },
-    "visaStatus": {
-      "category": "kimlikle",
-      "label": "Kimlikle (1 Yıl)",
-      "badgeClass": "bg-teal-100 text-teal-800 border-teal-300",
-      "icon": "🪪",
-      "isVisaFree": true,
-      "duration": "365 gün",
-      "notes": "Yeni çipli T.C. Kimlik Kartı ile vizesiz 1 yıl.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
@@ -24350,66 +24092,6 @@
       "isVisaFree": true,
       "duration": "90 gün",
       "notes": "90 gün vizesiz; K-ETA formu tavsiye edilir.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
-    }
-  },
-  {
-    "id": "wld-kolombiya-cartagena-cocora",
-    "name": "Kolombiya: Cartagena Kolonyal Sokakları, Medellín & Cocora Vadisi (Vizesiz!)",
-    "region": "dunya",
-    "subRegion": "Amerika",
-    "city": "Cartagena",
-    "category": "kultur",
-    "coords": [
-      10.4236,
-      -75.5516
-    ],
-    "duration": "5 - 6 Gün",
-    "durationCategory": "tam",
-    "seasons": [
-      "kis",
-      "ilkbahar",
-      "yaz"
-    ],
-    "bestTimeText": "Aralık-Nisan arası Karayip kıyıları için en güneşli dönemdir; Medellín ise \"Ebedi İlkbahar Şehri\" olduğu için yıl boyu 24°C’dir (Türk vatandaşlarına vizesizdir!).",
-    "whatAwaits": "Gabriel García Márquez’in *\"Yüzyıllık Yalnızlık\"* ve *\"Kolera Günlerinde Aşk\"* romanlarının büyülü gerçekçilik dünyası! Begonvillerin sarktığı sarı-turuncu-mavi kolonyal konakları ve Karayip surlarıyla **Cartagena (Ciudad Amurallada & Getsemaní)**, dünyanın en yüksek (60 metre!) balmumu palmiye ağaçlarının sisli dağlarda yükseldiği **Cocora Vadisi (Salento)** ve teleferik ağlarıyla dünyaya örnek olan yemyeşil **Medellín (Comuna 13 & Guatapé)**!",
-    "highlights": [
-      "UNESCO mirası Cartagena Surlarıçi (Walled City) ve rengarenk duvar resimleriyle dolu bohem Getsemaní mahallesi",
-      "Kahve Üçgeni’ndeki (Eje Cafetero) Salento kasabası ve 60 metrelik dev palmiyelerle dolu Cocora Vadisi yürüyüşü",
-      "Medellín’de açık hava yürüyen merdivenleri ve sokak sanatıyla ünlü Comuna 13 ile Botero Meydanı",
-      "740 basamakla çıkılan dev monolit kaya El Peñón de Guatapé’den yüzlerce adacıklı göl manzarası"
-    ],
-    "howToVisit": "İstanbul’dan Bogotá’ya direkt uçuş (vizesiz!) vardır. Kolombiya içinde iç hat uçuşları (Bogotá -> Pereira/Salento -> Medellín -> Cartagena) çok sık ve oldukça ucuzdur.",
-    "localSpecialties": "Dünyanın en kaliteli **Kolombiya Kahvesi** (çiftlikte dalından fincana tadım turu!), mısır ekmeği **Arepa con Queso**, **Bandeja Paisa**, **Empanadas**, Karayip usulü hindistancevizli pilav & taze ceviche ve tropikal meyveler (**Lulo, Maracuyá, Guanábana**).",
-    "blogArticle": "Cartagena'nın surları içinde gün batımında yürürken her balkondan taşan begonviller, sokak köşelerinde salsa yapan insanlar ve Karayip esintisi size hayatın ne kadar renkli olabileceğini hatırlatır. Salento'daki Cocora Vadisi'nde bulutların arasına uzanan 60 metrelik incecik palmiyelerin altında yürümek ise gerçeküstüdür.",
-    "coverImage": "",
-    "visited": false,
-    "visitedDate": "",
-    "favorite": false,
-    "userNotes": "",
-    "userRating": 0,
-    "budget": "Orta (₺₺)",
-    "rating": 0,
-    "country": "Kolombiya",
-    "isBalkan": false,
-    "ankaraDistance": {
-      "distKm": 10787,
-      "roadKm": 13484,
-      "driveMinutes": 0,
-      "driveText": "",
-      "flightText": "~18 - 24 sa (1-2 aktarma)",
-      "trainText": null,
-      "isWeekendEscape": false,
-      "summaryText": "Ankara’dan ~18 - 24 sa (1-2 aktarma)"
-    },
-    "visaStatus": {
-      "category": "vizesiz",
-      "label": "Vizesiz (90 Gün)",
-      "badgeClass": "bg-emerald-100 text-emerald-800 border-emerald-300",
-      "icon": "✈️",
-      "isVisaFree": true,
-      "duration": "90 gün",
-      "notes": "90 gün vizesiz.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
@@ -45856,7 +45538,7 @@
     "howToVisit": "Balkan şehirleri arasında manzaralı karayolları, trenler ve nehir-fiyort tekneleriyle kolayca seyahat edilir.",
     "localSpecialties": "Boşnak Böreği, Ćevapi (Köfte), Kajmak, Karadağ Deniz Ürünleri, Çek Trdelník, Macar Gulaşı ve Polonya Pierogi mantısı.",
     "blogArticle": "Sarandë, Arnavutluk seyahatinin en özel duraklarından biri olan Arnavutluk — Ksamil Adaları, Butrint Antik Kenti ve Mavi Göz (Syri i Kaltër), bölgenin ruhunu, tarihini ve coğrafi çeşitliliğini yerinde hissetmek isteyen gezginler için unutulmaz bir deneyim sunuyor. İyon Denizi’nin Maldivleri sayılan turkuaz Ksamil koyları, UNESCO mirası Butrint lagün kenti ve dibi görünmeyen buz gibi Mavi Göz su kaynağı.",
-    "coverImage": "",
+    "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Ksamil-ksamil_islands.jpg/960px-Ksamil-ksamil_islands.jpg",
     "visited": false,
     "visitedDate": "",
     "favorite": false,
@@ -74906,67 +74588,6 @@
       "isVisaFree": false,
       "duration": "10 yıl",
       "notes": "Konsolosluk mülakatı ile B1/B2 vizesi.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
-    }
-  },
-  {
-    "id": "go-lizbon-yemek",
-    "name": "Lizbon: Pastel de Nata ve Bacalhau",
-    "region": "dunya",
-    "subRegion": "Avrupa",
-    "city": "Lizbon",
-    "category": "restoran",
-    "coords": [
-      38.7223,
-      -9.1393
-    ],
-    "duration": "1–2 günlük yemek turu",
-    "durationCategory": "tam",
-    "seasons": [
-      "ilkbahar",
-      "yaz",
-      "sonbahar",
-      "kis"
-    ],
-    "bestTimeText": "Yıl boyu",
-    "whatAwaits": "Belém'in sıcak pastel de nata'sı, ahtapot ve bacalhau; Portekiz mutfağı TasteAtlas'ta dünya 4.sü. (TasteAtlas 2025/26 En İyi Yemek Şehirleri: 30. sıra)",
-    "highlights": [
-      "Mutlaka dene: Pastel de nata",
-      "Mutlaka dene: Bacalhau à brás",
-      "Mutlaka dene: Polvo à lagareiro",
-      "Mutlaka dene: Bifana"
-    ],
-    "howToVisit": "TasteAtlas'ın bu şehir için önerdiği ikonik geleneksel mekânlardan başla; konum şehir merkezini gösterir, mekânları Google Maps'te ara.",
-    "localSpecialties": "Pastéis de Belém, Manteigaria, Cervejaria Ramiro, O Velho Eurico",
-    "blogArticle": "Belém'in sıcak pastel de nata'sı, ahtapot ve bacalhau; Portekiz mutfağı TasteAtlas'ta dünya 4.sü. (TasteAtlas 2025/26 En İyi Yemek Şehirleri: 30. sıra)\n\nBurada seni bekleyenler: Mutlaka dene: Pastel de nata; Mutlaka dene: Bacalhau à brás; Mutlaka dene: Polvo à lagareiro; Mutlaka dene: Bifana.\n\nEn iyi zaman: Yıl boyu\n\nTasteAtlas'ın bu şehir için önerdiği ikonik geleneksel mekânlardan başla; konum şehir merkezini gösterir, mekânları Google Maps'te ara.\n\nYöresel lezzetler ve yakındaki yerler: Pastéis de Belém, Manteigaria, Cervejaria Ramiro, O Velho Eurico.\n\nİpuçları: Pastéis de Belém'de içeride otur, kuyruk paket servis için.",
-    "coverImage": "",
-    "visited": false,
-    "visitedDate": "",
-    "favorite": false,
-    "userNotes": "",
-    "userRating": 0,
-    "budget": "Orta (₺₺)",
-    "country": "Portekiz",
-    "isBalkan": false,
-    "rating": 0,
-    "ankaraDistance": {
-      "distKm": 3581,
-      "roadKm": 4476,
-      "driveMinutes": 0,
-      "driveText": "",
-      "flightText": "~3 - 4.5 sa (direkt / 1 aktarma)",
-      "trainText": null,
-      "isWeekendEscape": false,
-      "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
-    },
-    "visaStatus": {
-      "category": "schengen",
-      "label": "Schengen Şart",
-      "badgeClass": "bg-blue-100 text-blue-900 border-blue-300",
-      "icon": "🇪🇺",
-      "isVisaFree": false,
-      "duration": "90 gün",
-      "notes": "Schengen zorunludur.",
       "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
     }
   },
