@@ -155,10 +155,12 @@ export function useAutoSync({ places, setPlaces, isLoadingPlaces, disabled }) {
     const onFocus = () => {
       if (document.visibilityState !== 'visible') return;
       if (Date.now() - lastPullRef.current < FOCUS_PULL_MIN_INTERVAL_MS) return;
-      if (readPending().size > 0) push();
+      // The first pull failed (offline, bad settings): start over instead of staying idle
+      if (!baselineRef.current) pull().then(() => push());
+      else if (readPending().size > 0) push();
       else pull();
     };
-    const onOnline = () => push();
+    const onOnline = () => (baselineRef.current ? push() : pull().then(() => push()));
     document.addEventListener('visibilitychange', onFocus);
     window.addEventListener('online', onOnline);
     return () => {
