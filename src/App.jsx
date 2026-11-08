@@ -2109,6 +2109,33 @@ export default function App() {
               </div>
             </div>
 
+            {/* Quick Smart Filters: Hafta Sonu & Vizesiz */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">Hızlı Filtreler</label>
+              <div className="grid grid-cols-2 gap-2 text-xs font-bold">
+                <button
+                  onClick={() => setWeekendEscapeFilter(!weekendEscapeFilter)}
+                  className={`py-2 rounded-xl border flex items-center justify-center gap-1.5 transition ${
+                    weekendEscapeFilter
+                      ? 'bg-emerald-600 text-white border-emerald-500 shadow-xs'
+                      : 'bg-slate-50 text-slate-700 border-slate-200'
+                  }`}
+                >
+                  <span>🚗</span> Hafta Sonu ({stats.weekendCount})
+                </button>
+                <button
+                  onClick={() => setVisaFreeFilter(!visaFreeFilter)}
+                  className={`py-2 rounded-xl border flex items-center justify-center gap-1.5 transition ${
+                    visaFreeFilter
+                      ? 'bg-sky-600 text-white border-sky-500 shadow-xs'
+                      : 'bg-slate-50 text-slate-700 border-slate-200'
+                  }`}
+                >
+                  <span>🛂</span> Vizesiz ({stats.visaFreeCount})
+                </button>
+              </div>
+            </div>
+
             {/* Categories */}
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">Kategoriler</label>

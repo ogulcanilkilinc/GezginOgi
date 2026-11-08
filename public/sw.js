@@ -8,6 +8,7 @@ const CACHE_NAME = 'kesif-atlasim-cache-v1';
 const PRECACHE_URLS = [
   './',
   './index.html',
+  './favicon.svg',
   './manifest.json',
   './data/places.json',
   './data/photos.json'
