@@ -127,7 +127,7 @@ export function syncPassHeader(pass) {
 }
 
 export function isCustomPlace(p) {
-  return !!(p.isCustom || p.id.startsWith('custom_') || p.id.startsWith('user_'));
+  return !!(p.isCustom || p.id.startsWith('custom_') || p.id.startsWith('custom-') || p.id.startsWith('user_'));
 }
 
 // The user-editable part of a place, as stored in user_place_state.

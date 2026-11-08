@@ -85,6 +85,10 @@ export default function PlaceFormModal({
       .filter(Boolean);
 
     const payload = {
+      // Keep fields the form doesn't show (photos, checklist, country…) when editing
+      ...(editingPlace || {}),
+      // New places are the user's own: saved locally and synced as custom places
+      isCustom: editingPlace ? !!editingPlace.isCustom : true,
       id: editingPlace?.id || `custom-${Date.now()}`,
       name: form.name.trim(),
       region: form.region,
