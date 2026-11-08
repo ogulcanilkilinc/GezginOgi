@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { CATEGORIES, SEASONS, REGIONS } from '../data/metadata';
 import { getPhrasebookForCountry } from '../data/phrasebookData';
 import { getOptimizedImageUrl } from '../data/curatedPhotoResolver';
-import { getCloudConfig, uploadPhotoToSupabase } from '../services/cloudSyncService';
+import { getCloudConfig, uploadPhotoToSupabase, deletePhotoFromSupabase } from '../services/cloudSyncService';
+import MobileSection from './MobileSection';
+import ClimateTable from './ClimateTable';
 import {
   X,
   Clock,
@@ -244,17 +246,26 @@ export default function PlaceDetailPanel({
         }
       }
 
+      // 3. A photo kept in the browser must fit in local storage: check before adding it,
+      // so it is not shown now and lost after a reload
+      if (finalPhotoUrl.startsWith('data:')) {
+        localStorage.setItem('__kesif_photo_probe', finalPhotoUrl);
+        localStorage.removeItem('__kesif_photo_probe');
+      }
+
       const updated = [...userPhotos, finalPhotoUrl];
       setUserPhotos(updated);
       onUpdateNotes(place.id, { userPhotos: updated });
     } catch (err) {
       console.error('Fotoğraf küçültme/kaydetme hatası:', err);
       const isQuota = err?.name === 'QuotaExceededError' || err?.code === 22;
+      try {
+        localStorage.removeItem('__kesif_photo_probe');
+      } catch (_) {}
       const msg = isQuota
-        ? 'Yer kalmadı, fotoğraf kaydedilmedi! Lütfen bazı fotoğrafları silin veya Bulut Eşleme kullanın.'
-        : 'Yer kalmadı, fotoğraf kaydedilmedi. Depolama alanı dolu olabilir.';
+        ? 'Yer kalmadı, fotoğraf kaydedilmedi! Tarayıcı hafızası (~5 MB) dolu. Bazı fotoğrafları sil ya da Bulut Eşleme kur; o zaman fotoğraflar buluta yüklenir.'
+        : 'Fotoğraf işlenemedi. Farklı bir fotoğraf dene.';
       setPhotoError(msg);
-      alert(`⚠️ ${msg}`);
     } finally {
       setPhotoCompressing(false);
       if (photoInputRef.current) photoInputRef.current.value = '';
@@ -262,6 +273,7 @@ export default function PlaceDetailPanel({
   };
 
   const handleRemoveUserPhoto = (idx) => {
+    deletePhotoFromSupabase(userPhotos[idx], getCloudConfig());
     const updated = userPhotos.filter((_, i) => i !== idx);
     setUserPhotos(updated);
     onUpdateNotes(place.id, { userPhotos: updated });
@@ -656,37 +668,52 @@ export default function PlaceDetailPanel({
         </div>
 
         {/* 2. Hangi Mevsimde & Ne Zaman Gidilir + Nasıl Gezilir? */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-2 shadow-xs">
-            <h4 className="text-sm font-bold text-emerald-800 flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-emerald-600" />
-              <span>Ne Zaman & Hangi Saatte Gidilir?</span>
-            </h4>
+        <div key={`sections-${place.id}`} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <MobileSection
+            className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs"
+            titleClassName="text-emerald-800"
+            icon={<Calendar className="w-4 h-4 text-emerald-600" />}
+            title="Ne Zaman & Hangi Saatte Gidilir?"
+          >
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
               {place.bestTimeText ||
                 'İlkbahar ve sonbahar aylarında sabah saatleri en keyifli zaman dilimidir.'}
             </p>
-          </div>
+          </MobileSection>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-2 shadow-xs">
-            <h4 className="text-sm font-bold text-cyan-800 flex items-center gap-2">
-              <Compass className="w-4 h-4 text-cyan-600" />
-              <span>Nasıl Gezilir & Ulaşım İpuçları</span>
-            </h4>
+          <MobileSection
+            className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs"
+            titleClassName="text-cyan-800"
+            icon={<Compass className="w-4 h-4 text-cyan-600" />}
+            title="Nasıl Gezilir & Ulaşım İpuçları"
+          >
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{place.howToVisit}</p>
-          </div>
+          </MobileSection>
         </div>
 
+        {/* 2.1 Aylık İklim Tablosu (Open-Meteo arşivi) */}
+        <MobileSection
+          key={`climate-${place.id}`}
+          className="bg-sky-50/50 border border-sky-200/80 rounded-2xl p-4 sm:p-5 shadow-xs"
+          titleClassName="text-sky-900"
+          icon={<CloudSun className="w-4 h-4 text-sky-600" />}
+          title="Aylık İklim: Hangi Ay Nasıl?"
+        >
+          <ClimateTable coords={place.coords} />
+        </MobileSection>
+
         {/* 3. Yöresel Lezzetler & Yakında Neler Var? */}
-        <div className="bg-orange-50/60 border border-orange-200/80 rounded-2xl p-4 sm:p-5 space-y-2 shadow-xs">
-          <h4 className="text-sm font-bold text-orange-900 flex items-center gap-2">
-            <Utensils className="w-4 h-4 text-orange-600" />
-            <span>Yöresel Ne Yenir & Yakın Çevrede Neler Var?</span>
-          </h4>
+        <MobileSection
+          key={`food-${place.id}`}
+          className="bg-orange-50/60 border border-orange-200/80 rounded-2xl p-4 sm:p-5 shadow-xs"
+          titleClassName="text-orange-900"
+          icon={<Utensils className="w-4 h-4 text-orange-600" />}
+          title="Yöresel Ne Yenir & Yakın Çevrede Neler Var?"
+        >
           <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
             {place.localSpecialties}
           </p>
-        </div>
+        </MobileSection>
 
         {/* 3.1 Fotoğraf Rehberi (Yalnızca özgün/özel ipucu varsa gösterilir) */}
         {place.practicalTips && !place.practicalTips.includes('Geniş açı ile mekanı çevreleyen') ? (
@@ -966,7 +993,7 @@ export default function PlaceDetailPanel({
                     <button
                       type="button"
                       onClick={() => handleRemoveUserPhoto(idx)}
-                      className="absolute top-1 right-1 bg-slate-900/80 text-rose-300 p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
+                      className="absolute top-1 right-1 bg-slate-900/80 text-rose-300 p-1.5 rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition"
                       title="Fotoğrafı kaldır"
                     >
                       <X className="w-3 h-3" />

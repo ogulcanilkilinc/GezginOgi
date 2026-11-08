@@ -94,34 +94,24 @@ export const TURKEY_PROVINCES = [
   { plate: 81, name: 'Düzce', region: 'karadeniz' }
 ];
 
-function normalizeTr(str) {
-  if (!str) return '';
-  return str
-    .toLowerCase()
-    .replace(/i̇/g, 'i')
-    .replace(/ı/g, 'i')
-    .replace(/ş/g, 's')
-    .replace(/ğ/g, 'g')
-    .replace(/ü/g, 'u')
-    .replace(/ö/g, 'o')
-    .replace(/ç/g, 'c')
-    .trim();
-}
-
 export function getProvinceVisitStats(places) {
   const trPlaces = places.filter(
     (p) => p.country === 'Türkiye' || p.region === 'turkiye' || p.region === 'ankara'
   );
 
+  // Resolve each place's province(s) once
+  const placesByProvince = new Map();
+  trPlaces.forEach((p) => {
+    provincesOfPlace(p).forEach((name) => {
+      if (!placesByProvince.has(name)) placesByProvince.set(name, []);
+      placesByProvince.get(name).push(p);
+    });
+  });
+
   // Map each province to its places
   const provinceMap = {};
   TURKEY_PROVINCES.forEach((prov) => {
-    const normProv = normalizeTr(prov.name);
-    const matchedPlaces = trPlaces.filter((p) => {
-      const normCity = normalizeTr(p.city);
-      const normName = normalizeTr(p.name);
-      return normCity.includes(normProv) || normName.includes(normProv);
-    });
+    const matchedPlaces = placesByProvince.get(prov.name) || [];
 
     const visitedPlaces = matchedPlaces.filter((p) => p.visited);
 
@@ -162,4 +152,60 @@ export function getProvinceVisitStats(places) {
     visitedProvinces,
     regionalBreakdown
   };
+}
+
+// Districts / regions used as "city" in the guide data, mapped to their province
+const DISTRICT_TO_PROVINCE = {
+  kapadokya: 'Nevşehir',
+  goreme: 'Nevşehir',
+  urgup: 'Nevşehir',
+  kas: 'Antalya',
+  kemer: 'Antalya',
+  alanya: 'Antalya',
+  fethiye: 'Muğla',
+  bodrum: 'Muğla',
+  marmaris: 'Muğla',
+  persembe: 'Ordu',
+  uzundere: 'Erzurum',
+  midyat: 'Mardin',
+  harput: 'Elazığ',
+  afyon: 'Afyonkarahisar',
+  maras: 'Kahramanmaraş',
+  urfa: 'Şanlıurfa',
+  antep: 'Gaziantep',
+  cesme: 'İzmir',
+  ayvalik: 'Balıkesir',
+  safranbolu: 'Karabük',
+  pamukkale: 'Denizli',
+  efes: 'İzmir',
+  sirince: 'İzmir'
+};
+
+const normWord = (s) =>
+  (s || '')
+    .toLocaleLowerCase('tr')
+    .replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+
+const PROVINCE_WORDS = TURKEY_PROVINCES.map((p) => ({ name: p.name, word: normWord(p.name) }));
+
+function provincesInText(text) {
+  // "Ankara'dan 4 saat" is a distance note, and "Van Gölü" a lake, not the provinces
+  const t = ` ${normWord(text).replace(/\bankara ?dan\b/g, ' ').replace(/\bvan golu\b/g, ' ')} `;
+  const found = PROVINCE_WORDS.filter((p) => t.includes(` ${p.word} `)).map((p) => p.name);
+  Object.entries(DISTRICT_TO_PROVINCE).forEach(([district, province]) => {
+    if (t.includes(` ${district} `) && !found.includes(province)) found.push(province);
+  });
+  return found;
+}
+
+// Which of the 81 provinces a place belongs to (a few multi-stop places span two)
+export function provincesOfPlace(place) {
+  if (!place) return [];
+  if (place.region === 'ankara') return ['Ankara'];
+  if (place.region !== 'turkiye' && place.country !== 'Türkiye') return [];
+  const fromCity = provincesInText(place.city);
+  return fromCity.length > 0 ? fromCity : provincesInText(place.name);
 }

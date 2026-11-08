@@ -30,3 +30,6 @@ dist-ssr
 
 # Cache
 scripts/.cache/
+
+# Claude Code local settings
+.claude/

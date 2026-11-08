@@ -116,6 +116,67 @@ function buildHeaders(config) {
   return headers;
 }
 
+export function isCustomPlace(p) {
+  return !!(p.isCustom || p.id.startsWith('custom_') || p.id.startsWith('user_'));
+}
+
+// The user-editable part of a place, as stored in user_place_state.
+// Note: p.rating is the guide's rating, never the user's.
+function toStateRow(p) {
+  return {
+    place_id: p.id,
+    visited: !!p.visited,
+    visited_date: p.visitedDate || '',
+    favorite: !!p.favorite,
+    user_rating: p.userRating || 0,
+    user_notes: p.userNotes || '',
+    user_photos: p.userPhotos || [],
+    checklist: p.checklist || [],
+    updated_at: new Date().toISOString()
+  };
+}
+
+// Comparable signature of a place's user state (and full data for custom places).
+export function userStateSignature(p) {
+  const state = toStateRow(p);
+  delete state.updated_at;
+  return JSON.stringify(isCustomPlace(p) ? [state, p] : state);
+}
+
+const quoteIds = (ids) => `(${ids.map((id) => `"${String(id).replace(/"/g, '')}"`).join(',')})`;
+
+/**
+ * Pushes exactly the given changed places (including cleared states such as
+ * "not visited anymore" or "all photos removed") and deletes removed custom places.
+ */
+export async function pushChanges(changedPlaces, deletedIds, config) {
+  const baseUrl = config.supabaseUrl.replace(/\/$/, '');
+  const headers = buildHeaders(config);
+
+  const send = async (url, method, body) => {
+    const res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
+    if (!res.ok) throw new Error(`Bulut eşleme hatası (${res.status}): ${await res.text()}`);
+  };
+
+  if (changedPlaces.length > 0) {
+    await send(`${baseUrl}/rest/v1/user_place_state`, 'POST', changedPlaces.map(toStateRow));
+    const custom = changedPlaces.filter(isCustomPlace);
+    if (custom.length > 0) {
+      const now = new Date().toISOString();
+      await send(
+        `${baseUrl}/rest/v1/user_custom_places`,
+        'POST',
+        custom.map((p) => ({ id: p.id, data: p, updated_at: now }))
+      );
+    }
+  }
+
+  if (deletedIds.length > 0) {
+    await send(`${baseUrl}/rest/v1/user_place_state?place_id=in.${encodeURIComponent(quoteIds(deletedIds))}`, 'DELETE');
+    await send(`${baseUrl}/rest/v1/user_custom_places?id=in.${encodeURIComponent(quoteIds(deletedIds))}`, 'DELETE');
+  }
+}
+
 /**
  * Pushes only user-modified states and custom places.
  */
@@ -136,24 +197,13 @@ export async function pushPlacesToCloud(places, config) {
         (p.userNotes && p.userNotes.trim().length > 0) ||
         (p.userPhotos && p.userPhotos.length > 0) ||
         (p.checklist && p.checklist.some((c) => c.done)) ||
-        p.userRating > 0 ||
-        p.rating > 0
+        p.userRating > 0
     )
-    .map((p) => ({
-      place_id: p.id,
-      visited: !!p.visited,
-      visited_date: p.visitedDate || (p.visited ? new Date().toISOString() : ''),
-      favorite: !!p.favorite,
-      user_rating: p.userRating || p.rating || 0,
-      user_notes: p.userNotes || '',
-      user_photos: p.userPhotos || [],
-      checklist: p.checklist || [],
-      updated_at: new Date().toISOString()
-    }));
+    .map(toStateRow);
 
   // 2. Filter user-created custom places
   const customPlaces = places
-    .filter((p) => p.isCustom || p.id.startsWith('custom_') || p.id.startsWith('user_'))
+    .filter(isCustomPlace)
     .map((p) => ({
       id: p.id,
       data: p,
@@ -196,7 +246,7 @@ export async function pushPlacesToCloud(places, config) {
 /**
  * Pulls row-level changes from Supabase and merges them safely.
  */
-export async function pullPlacesFromCloud(localPlaces, config) {
+export async function pullPlacesFromCloud(localPlaces, config, keepLocalIds = new Set()) {
   if (!config || !config.supabaseUrl || !config.supabaseKey) {
     throw new Error('Supabase URL ve Anon Key tanımlı değil.');
   }
@@ -234,26 +284,34 @@ export async function pullPlacesFromCloud(localPlaces, config) {
     });
   }
 
-  const mergedPlaces = localPlaces.map((pl) => {
+  // The cloud row is the truth for every place, including cleared values
+  // (unvisited, empty notes, all photos removed) — except places with local
+  // changes that have not been pushed yet (keepLocalIds).
+  const customMap = new Map((Array.isArray(cloudCustom) ? cloudCustom : []).filter((c) => c.data).map((c) => [c.id, c]));
+  const mergedPlaces = localPlaces.map((local) => {
+    if (keepLocalIds.has(local.id)) return local;
+    // A custom place edited on another device: take the cloud's copy
+    const cloudCustomRow = customMap.get(local.id);
+    const pl = cloudCustomRow ? { ...cloudCustomRow.data, id: local.id, isCustom: true } : local;
     const cState = stateMap.get(pl.id);
     if (!cState) return pl;
 
     return {
       ...pl,
-      visited: cState.visited !== undefined ? cState.visited : pl.visited,
-      visitedDate: cState.visited_date || pl.visitedDate || '',
-      favorite: cState.favorite !== undefined ? cState.favorite : pl.favorite,
-      userRating: cState.user_rating || pl.userRating || 0,
-      userNotes: cState.user_notes !== undefined ? cState.user_notes : pl.userNotes || '',
-      userPhotos: Array.isArray(cState.user_photos) && cState.user_photos.length > 0 ? cState.user_photos : pl.userPhotos || [],
-      checklist: Array.isArray(cState.checklist) && cState.checklist.length > 0 ? cState.checklist : pl.checklist || []
+      visited: !!cState.visited,
+      visitedDate: cState.visited_date || '',
+      favorite: !!cState.favorite,
+      userRating: cState.user_rating || 0,
+      userNotes: cState.user_notes || '',
+      userPhotos: Array.isArray(cState.user_photos) ? cState.user_photos : [],
+      checklist: Array.isArray(cState.checklist) ? cState.checklist : []
     };
   });
 
   if (Array.isArray(cloudCustom) && cloudCustom.length > 0) {
     const existingIds = new Set(mergedPlaces.map((p) => p.id));
     cloudCustom.forEach((c) => {
-      if (c.data && !existingIds.has(c.id)) {
+      if (c.data && !existingIds.has(c.id) && !keepLocalIds.has(c.id)) {
         mergedPlaces.push({
           ...c.data,
           id: c.id,
@@ -268,7 +326,8 @@ export async function pullPlacesFromCloud(localPlaces, config) {
     success: true,
     places: mergedPlaces,
     statesCount: cloudStates.length,
-    customCount: cloudCustom.length
+    customCount: cloudCustom.length,
+    cloudIds: new Set([...stateMap.keys(), ...customMap.keys()])
   };
 }
 
@@ -303,4 +362,27 @@ export async function uploadPhotoToSupabase(dataUrl, placeId, config) {
     console.warn('Supabase Storage yükleme atlandı (yerel saklama kullanılacak):', err);
   }
   return null;
+}
+
+/**
+ * Deletes a photo from the Supabase Storage bucket when the user removes it.
+ * Only acts on URLs that point to this project's user_photos bucket.
+ */
+export async function deletePhotoFromSupabase(photoUrl, config) {
+  if (!config || !config.supabaseUrl || !config.supabaseKey || typeof photoUrl !== 'string') return;
+  const baseUrl = config.supabaseUrl.replace(/\/$/, '');
+  const prefix = `${baseUrl}/storage/v1/object/public/user_photos/`;
+  if (!photoUrl.startsWith(prefix)) return;
+  try {
+    await fetch(`${baseUrl}/storage/v1/object/user_photos/${photoUrl.slice(prefix.length)}`, {
+      method: 'DELETE',
+      headers: buildHeaders(config)
+    });
+  } catch (err) {
+    console.warn('Supabase Storage silme atlandı:', err);
+  }
+}
+
+export function isCloudConfigured(config = getCloudConfig()) {
+  return !!(config && config.supabaseUrl && config.supabaseKey && config.privatePassphrase);
 }

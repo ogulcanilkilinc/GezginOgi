@@ -203,15 +203,20 @@ create policy "Guvenli Parola - user_custom_places"
   with check (coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}');
 
 -- 5. Fotoğraf Deposu (Storage): fotoğraflar tarayıcı hafızasını doldurmasın diye buluta yüklenir.
--- Dosya adları tahmin edilemez rastgele kodlardır; yükleme yalnızca parolayla yapılabilir.
+-- Dosya adları tahmin edilemez rastgele kodlardır; yükleme ve silme yalnızca parolayla yapılabilir.
 insert into storage.buckets (id, name, public)
 values ('user_photos', 'user_photos', true)
 on conflict (id) do nothing;
 
 drop policy if exists "Guvenli Parola - user_photos yukleme" on storage.objects;
-create policy "Guvenli Parola - user_photos yukleme"
+drop policy if exists "Guvenli Parola - user_photos" on storage.objects;
+create policy "Guvenli Parola - user_photos"
   on storage.objects
-  for insert
+  for all
+  using (
+    bucket_id = 'user_photos'
+    and coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}'
+  )
   with check (
     bucket_id = 'user_photos'
     and coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}'

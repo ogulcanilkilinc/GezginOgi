@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import L from 'leaflet';
-import { TURKEY_PROVINCES } from '../data/turkeyProvinces';
+import { TURKEY_PROVINCES, provincesOfPlace } from '../data/turkeyProvinces';
 import { getCountryInfo } from '../data/countryNameMapping';
 import { Globe, MapPin, CheckCircle2, RotateCcw, ZoomIn, ZoomOut, Sparkles } from 'lucide-react';
 
@@ -31,18 +31,11 @@ export default function ChoroplethMap({
     const visitedSet = new Set();
     places.forEach((p) => {
       if (p.visited && (p.region === 'turkiye' || p.region === 'ankara')) {
-        if (p.city) {
-          // Normalize city to province
-          const match = TURKEY_PROVINCES.find(
-            (tp) => tp.name.toLowerCase() === p.city.toLowerCase()
-          );
-          if (match) {
-            visitedSet.add(match.name);
-            visitedSet.add(match.plate);
-          } else {
-            visitedSet.add(p.city);
-          }
-        }
+        provincesOfPlace(p).forEach((name) => {
+          const match = TURKEY_PROVINCES.find((tp) => tp.name === name);
+          visitedSet.add(name);
+          if (match) visitedSet.add(match.plate);
+        });
       }
     });
     return visitedSet;
@@ -260,7 +253,7 @@ export default function ChoroplethMap({
       <div ref={mapContainerRef} className="w-full h-full z-0 cursor-grab active:cursor-grabbing" />
 
       {/* Mode Switcher Overlay */}
-      <div className="absolute top-4 left-4 z-10 flex items-center bg-white/95 backdrop-blur-md rounded-2xl p-1.5 shadow-md border border-slate-200 gap-1">
+      <div className="absolute top-4 left-4 right-16 sm:right-auto z-10 flex items-center bg-white/95 backdrop-blur-md rounded-2xl p-1.5 shadow-md border border-slate-200 gap-1">
         <button
           onClick={() => setActiveMode('turkey')}
           className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${

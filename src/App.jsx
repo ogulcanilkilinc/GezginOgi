@@ -2,6 +2,10 @@ import React, { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'rea
 import confetti from 'canvas-confetti';
 import { CATEGORIES, REGIONS, SEASONS, DURATIONS } from './data/metadata';
 import { getOptimizedImageUrl } from './data/curatedPhotoResolver';
+import { useAutoSync } from './services/useAutoSync';
+import { getSearchIndex, matchesSearch } from './services/searchUtils';
+import { createShareLink, readShareFromHash, leaveShareView } from './services/shareLink';
+import { routeKm, formatKm, ROAD_FACTOR } from './services/geo';
 import TravelMap from './components/TravelMap';
 import PlaceDetailPanel from './components/PlaceDetailPanel';
 
@@ -56,6 +60,38 @@ const USER_OVERRIDES_KEY = 'kesif_atlasim_user_overrides_v1';
 // User photos are kept under their own key so a full photo store never blocks saving visits and notes
 const USER_PHOTOS_KEY = 'kesif_atlasim_user_photos_v1';
 
+const TRIP_KEY = 'kesif_atlasim_trip_v1';
+
+function readStoredTrip() {
+  try {
+    const t = JSON.parse(localStorage.getItem(TRIP_KEY) || 'null');
+    if (t && Array.isArray(t.ids)) return t;
+  } catch (e) {}
+  return { ids: [], days: {}, name: '', startDate: '' };
+}
+
+// Season that contains today's date (Northern Hemisphere, like the guide data)
+function currentSeasonId() {
+  const m = new Date().getMonth() + 1;
+  if (m >= 3 && m <= 5) return 'ilkbahar';
+  if (m >= 6 && m <= 8) return 'yaz';
+  if (m >= 9 && m <= 11) return 'sonbahar';
+  return 'kis';
+}
+
+// Small status light on the cloud button
+function SyncDot({ status, message }) {
+  if (status === 'off') return null;
+  const styles = {
+    ok: ['bg-emerald-500', 'Bulut ile eşit'],
+    syncing: ['bg-amber-400 animate-pulse', 'Eşitleniyor…'],
+    pending: ['bg-amber-400', 'Gönderilmeyi bekleyen değişiklik var'],
+    error: ['bg-rose-500', message || 'Eşitleme hatası']
+  };
+  const [cls, label] = styles[status] || styles.ok;
+  return <span className={`inline-block w-2 h-2 rounded-full ${cls}`} title={label} aria-label={label} />;
+}
+
 function readStoredPhotos() {
   try {
     return JSON.parse(localStorage.getItem(USER_PHOTOS_KEY) || '{}');
@@ -68,6 +104,8 @@ export default function App() {
   const [places, setPlaces] = useState([]);
   const [isLoadingPlaces, setIsLoadingPlaces] = useState(true);
   const [updateNotification, setUpdateNotification] = useState(null);
+  // Read-only view of someone's shared map (#paylas=...): nothing is saved or synced
+  const [shareView, setShareView] = useState(null);
 
   const handleApplyUpdate = (freshRaw) => {
     let merged = freshRaw;
@@ -124,7 +162,18 @@ export default function App() {
         if (!res.ok) throw new Error('places.json yüklenemedi');
         return res.json();
       })
-      .then((rawPlaces) => {
+      .then(async (rawPlaces) => {
+        const share = await readShareFromHash();
+        if (share) {
+          setShareView(share);
+          setPlaces(
+            rawPlaces.map((p) => ({ ...p, visited: share.visited.has(p.id), favorite: share.favorite.has(p.id) }))
+          );
+          setStatusFilter('visited');
+          setIsLoadingPlaces(false);
+          return;
+        }
+
         let merged = rawPlaces;
         try {
           const rawOverrides = localStorage.getItem(USER_OVERRIDES_KEY);
@@ -224,7 +273,21 @@ export default function App() {
   const [showRoute, setShowRoute] = useState(false);
 
   // Numbered Trip Route Planner Basket
-  const [tripPlanIds, setTripPlanIds] = useState([]);
+  const [tripPlanIds, setTripPlanIds] = useState(() => readStoredTrip().ids);
+  // Trip details: day per stop, trip name and start date (saved with the route)
+  const [tripMeta, setTripMeta] = useState(() => {
+    const { days, name, startDate } = readStoredTrip();
+    return { days: days || {}, name: name || '', startDate: startDate || '' };
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem(TRIP_KEY, JSON.stringify({ ids: tripPlanIds, ...tripMeta }));
+    } catch (e) {}
+  }, [tripPlanIds, tripMeta]);
+  const tripTotalKm = useMemo(() => {
+    const stops = tripPlanIds.map((id) => places.find((p) => p.id === id)).filter((p) => p && p.coords);
+    return routeKm(stops) * ROAD_FACTOR;
+  }, [tripPlanIds, places]);
 
   // Add / Edit Modal & Map Coordinate Picker
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -267,7 +330,7 @@ export default function App() {
 
   // Save user overrides to LocalStorage with quota overflow detection
   useEffect(() => {
-    if (!places || places.length === 0 || isLoadingPlaces) return;
+    if (!places || places.length === 0 || isLoadingPlaces || shareView) return;
     try {
       const overrides = {};
       places.forEach((p) => {
@@ -305,7 +368,23 @@ export default function App() {
         console.error('Overrides save error:', e);
       }
     }
-  }, [places, isLoadingPlaces]);
+  }, [places, isLoadingPlaces, shareView]);
+
+  const autoSync = useAutoSync({ places, setPlaces, isLoadingPlaces, disabled: !!shareView });
+
+  const handleShareMap = async () => {
+    try {
+      const link = await createShareLink(places);
+      try {
+        await navigator.clipboard.writeText(link);
+        alert('🔗 Salt okunur paylaşım linkin kopyalandı! Gittiğin ve favori yerlerini gösterir; notların, puanların ve fotoğrafların paylaşılmaz.');
+      } catch (e) {
+        window.prompt('Paylaşım linkin (kopyala):', link);
+      }
+    } catch (e) {
+      alert('Paylaşım linki oluşturulamadı: ' + e.message);
+    }
+  };
 
   const matchesRegionScope = (p, regId) => {
     if (regId === 'all') return true;
@@ -353,15 +432,7 @@ export default function App() {
       if (visaFreeFilter && !p.visaStatus?.isVisaFree) return false;
 
       if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        const matchName = p.name?.toLowerCase().includes(q);
-        const matchCity = p.city?.toLowerCase().includes(q);
-        const matchCountry = p.country?.toLowerCase().includes(q);
-        const matchSub = p.subRegion?.toLowerCase().includes(q);
-        const matchAwaits = p.whatAwaits?.toLowerCase().includes(q);
-        const matchFood = p.localSpecialties?.toLowerCase().includes(q);
-        const matchBlog = p.blogArticle?.toLowerCase().includes(q);
-        return matchName || matchCity || matchCountry || matchSub || matchAwaits || matchFood || matchBlog;
+        return matchesSearch(getSearchIndex(p), searchQuery);
       }
       return true;
     });
@@ -603,6 +674,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-amber-100 selection:text-amber-900">
+      {shareView && (
+        <div className="bg-indigo-600 text-white text-xs sm:text-sm px-4 py-2 flex flex-wrap items-center justify-center gap-2 text-center">
+          <span>👀 Paylaşılan bir gezi haritasına bakıyorsun ({shareView.visited.size} gidilen yer). Salt okunur: burada yaptığın değişiklikler kaydedilmez.</span>
+          <button onClick={leaveShareView} className="bg-white text-indigo-700 font-bold px-3 py-1 rounded-lg">
+            Kendi haritama dön
+          </button>
+        </div>
+      )}
       {/* ================= TOP NAVIGATION HEADER (LIGHT THEME) ================= */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/90 px-4 lg:px-6 py-2.5 shadow-xs">
         <div className="max-w-[1800px] mx-auto flex flex-wrap items-center justify-between gap-3">
@@ -763,6 +842,17 @@ export default function App() {
                     onClick={() => setIsToolsDropdownOpen(false)}
                   >
                   <button
+                    onClick={handleShareMap}
+                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+                  >
+                    <span className="text-base">🔗</span>
+                    <div>
+                      <strong className="block text-slate-900">Haritamı Paylaş (Salt Okunur)</strong>
+                      <span className="text-[10px] text-slate-500">Gittiğin yerleri link ile göster; notlar paylaşılmaz</span>
+                    </div>
+                  </button>
+
+                  <button
                     onClick={() => setIsCloudSyncOpen(true)}
                     className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
                   >
@@ -892,6 +982,7 @@ export default function App() {
             >
               <Cloud className="w-3.5 h-3.5 text-sky-600" />
               <span className="hidden lg:inline">Bulut Eşleme</span>
+              <SyncDot status={autoSync.status} message={autoSync.message} />
             </button>
 
             {/* Export / Import Backup */}
@@ -956,7 +1047,7 @@ export default function App() {
           <div className="lg:hidden flex items-center gap-1.5 shrink-0">
             <button
               onClick={() => setIsCloudSyncOpen(true)}
-              className={`p-1.5 rounded-xl border transition ${
+              className={`relative p-1.5 rounded-xl border transition ${
                 isAdmin
                   ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
                   : 'text-slate-500 border-slate-200'
@@ -964,6 +1055,7 @@ export default function App() {
               title={isAdmin ? 'Yönetici Açık' : 'Giriş Yap'}
             >
               {isAdmin ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+              <span className="absolute -top-0.5 -right-0.5"><SyncDot status={autoSync.status} message={autoSync.message} /></span>
             </button>
             <button
               onClick={() => {
@@ -1169,6 +1261,29 @@ export default function App() {
               <span>({stats.weekendCount})</span>
             </button>
 
+            {/* Quick Toggle: Bu mevsim hafta sonu kaçamakları (Hafta Sonu + bu mevsim) */}
+            {(() => {
+              const season = currentSeasonId();
+              const active = weekendEscapeFilter && seasonFilter === season;
+              return (
+                <button
+                  onClick={() => {
+                    setWeekendEscapeFilter(!active);
+                    setSeasonFilter(active ? 'all' : season);
+                  }}
+                  className={`px-2.5 py-1 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition shrink-0 ${
+                    active
+                      ? 'bg-teal-600 text-white border-teal-500 shadow-xs font-bold'
+                      : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                  }`}
+                  title="Ankara'dan hafta sonuna sığan ve tam bu mevsimde gidilecek yerler"
+                >
+                  <span>🗓️</span>
+                  <span>Bu Mevsim Hafta Sonu</span>
+                </button>
+              );
+            })()}
+
             {/* Quick Toggle: Sadece Vizesiz Ülkeler */}
             <button
               onClick={() => setVisaFreeFilter(!visaFreeFilter)}
@@ -1299,12 +1414,12 @@ export default function App() {
 
             {/* Active Trip Route Quick Bar */}
             {tripPlanIds.length > 0 && (
-              <div className="flex items-center gap-2 bg-rose-50 border border-rose-200 rounded-xl px-3 py-1 text-xs">
+              <div className="flex flex-wrap items-center gap-2 bg-rose-50 border border-rose-200 rounded-xl px-3 py-1 text-xs max-w-full">
                 <Route className="w-3.5 h-3.5 text-rose-600" />
                 <span className="text-rose-800 font-semibold">
-                  Gezi Rotam ({tripPlanIds.length} Durak):
+                  Gezi Rotam ({tripPlanIds.length} Durak{tripTotalKm > 0 ? `, ~${formatKm(tripTotalKm)}` : ''}):
                 </span>
-                <div className="flex items-center gap-1 overflow-x-auto max-w-xs sm:max-w-md">
+                <div className="flex items-center gap-1 overflow-x-auto min-w-0 max-w-full sm:max-w-md">
                   {tripPlanIds.map((id, i) => {
                     const pl = places.find((p) => p.id === id);
                     if (!pl) return null;
@@ -1319,6 +1434,12 @@ export default function App() {
                     );
                   })}
                 </div>
+                <button
+                  onClick={() => setIsItineraryOpen(true)}
+                  className="text-rose-700 hover:text-rose-900 font-semibold underline whitespace-nowrap"
+                >
+                  Günlere ayır
+                </button>
                 <button
                   onClick={() => setTripPlanIds([])}
                   className="text-rose-600 hover:text-rose-900 ml-1"
@@ -2060,6 +2181,10 @@ export default function App() {
         tripPlanIds={tripPlanIds}
         onSelectPlace={handleSelectPlace}
         onSetTripPlanIds={setTripPlanIds}
+        tripMeta={tripMeta}
+        onSetTripMeta={setTripMeta}
+        onOpenBudget={() => setIsBudgetOpen(true)}
+        onOpenPacking={() => setIsPackingOpen(true)}
       />
 
       {/* ================= PACKING CHECKLIST MODAL ================= */}
@@ -2133,7 +2258,10 @@ export default function App() {
       {/* ================= CLOUD SYNC & PIN SECURITY MODAL ================= */}
       <CloudSyncModal
         isOpen={isCloudSyncOpen}
-        onClose={() => setIsCloudSyncOpen(false)}
+        onClose={() => {
+          setIsCloudSyncOpen(false);
+          if (!shareView) autoSync.syncNow();
+        }}
         places={places}
         onUpdatePlaces={(updatedPlaces) => {
           setPlaces(updatedPlaces);
@@ -2214,6 +2342,25 @@ export default function App() {
                 >
                   <span>🛂</span> Vizesiz ({stats.visaFreeCount})
                 </button>
+                {(() => {
+                  const season = currentSeasonId();
+                  const active = weekendEscapeFilter && seasonFilter === season;
+                  return (
+                    <button
+                      onClick={() => {
+                        setWeekendEscapeFilter(!active);
+                        setSeasonFilter(active ? 'all' : season);
+                      }}
+                      className={`col-span-2 py-2 rounded-xl border flex items-center justify-center gap-1.5 transition ${
+                        active
+                          ? 'bg-teal-600 text-white border-teal-500 shadow-xs'
+                          : 'bg-slate-50 text-slate-700 border-slate-200'
+                      }`}
+                    >
+                      <span>🗓️</span> Bu Mevsim Hafta Sonu Kaçamakları
+                    </button>
+                  );
+                })()}
               </div>
             </div>
 

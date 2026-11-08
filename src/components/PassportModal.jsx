@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { CATEGORIES, REGIONS } from '../data/metadata';
 import { getProvinceVisitStats, TURKEY_REGIONS } from '../data/turkeyProvinces';
 import { getOptimizedImageUrl } from '../data/curatedPhotoResolver';
@@ -65,16 +65,16 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
   const provinceStats = getProvinceVisitStats(places);
 
   // Visited places sorted by visitedDate descending (most recent first)
-  const sortedVisited = useMemo(() => {
+  const sortedVisited = (() => {
     return [...visitedPlaces].sort((a, b) => {
       const dateA = a.visitedDate || '0000-00-00';
       const dateB = b.visitedDate || '0000-00-00';
       return dateB.localeCompare(dateA);
     });
-  }, [visitedPlaces]);
+  })();
 
   // Extract available years for the journal filter
-  const availableYears = useMemo(() => {
+  const availableYears = (() => {
     const years = new Set();
     visitedPlaces.forEach((p) => {
       if (p.visitedDate && p.visitedDate.length >= 4) {
@@ -83,10 +83,10 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
       }
     });
     return Array.from(years).sort().reverse();
-  }, [visitedPlaces]);
+  })();
 
   // Filtered places for travel journal
-  const filteredJournalPlaces = useMemo(() => {
+  const filteredJournalPlaces = (() => {
     return sortedVisited.filter((p) => {
       if (selectedYearFilter !== 'all') {
         const pYear = p.visitedDate ? p.visitedDate.slice(0, 4) : 'Tarihsiz';
@@ -102,10 +102,10 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
       }
       return true;
     });
-  }, [sortedVisited, selectedYearFilter, journalSearch]);
+  })();
 
   // Group filtered journal places by Year
-  const timelineByYear = useMemo(() => {
+  const timelineByYear = (() => {
     const groups = {};
     filteredJournalPlaces.forEach((p) => {
       const year = p.visitedDate && /^\d{4}/.test(p.visitedDate)
@@ -115,7 +115,7 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
       groups[year].push(p);
     });
     return groups;
-  }, [filteredJournalPlaces]);
+  })();
 
   const badges = [
     {

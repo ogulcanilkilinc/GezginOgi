@@ -166,7 +166,16 @@ export default function TravelMap({
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !mapFocus) return;
+    const [lat, lng] = mapFocus.center || [];
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
     map.invalidateSize();
+    // A hidden map (phone "Liste" tab) has zero size: an animated flight would compute
+    // NaN coordinates and crash, so just move the view; it shows when the map is opened
+    const size = map.getSize();
+    if (size.x === 0 || size.y === 0) {
+      map.setView(mapFocus.center, mapFocus.zoom, { animate: false });
+      return;
+    }
     map.flyTo(mapFocus.center, mapFocus.zoom, {
       duration: 1.2,
       easeLinearity: 0.25

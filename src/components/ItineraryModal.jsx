@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { routeKm, formatKm, ROAD_FACTOR } from '../services/geo';
 import {
   X,
   Calendar,
@@ -91,10 +92,25 @@ export default function ItineraryModal({
   places,
   tripPlanIds,
   onSelectPlace,
-  onSetTripPlanIds
+  onSetTripPlanIds,
+  tripMeta = { days: {}, name: '', startDate: '' },
+  onSetTripMeta = () => {},
+  onOpenBudget,
+  onOpenPacking
 }) {
-  const [dayAssignments, setDayAssignments] = useState({});
+  // Day per stop is saved with the trip, so it survives reloads
+  const dayAssignments = tripMeta.days || {};
+  const setDayAssignments = (days) => onSetTripMeta({ ...tripMeta, days });
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
+
+  // "3. Gün" -> "3. Gün · 14 Mar Cmt" when a start date is set
+  const dayDateLabel = (dayNum) => {
+    if (!tripMeta.startDate) return '';
+    const d = new Date(`${tripMeta.startDate}T12:00:00`);
+    if (isNaN(d)) return '';
+    d.setDate(d.getDate() + dayNum - 1);
+    return d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', weekday: 'short' });
+  };
 
   if (!isOpen) return null;
 
@@ -256,6 +272,50 @@ export default function ItineraryModal({
           </p>
         </div>
 
+        {/* Trip name, start date, distance and linked tools */}
+        {tripPlaces.length > 0 && (
+          <div className="px-4 sm:px-6 py-3 border-b border-slate-800 bg-slate-900/80 flex flex-wrap items-end gap-3 print:hidden">
+            <label className="flex flex-col gap-1 text-[11px] text-slate-400 min-w-[160px] flex-1">
+              Gezi adı
+              <input
+                value={tripMeta.name || ''}
+                onChange={(e) => onSetTripMeta({ ...tripMeta, name: e.target.value })}
+                placeholder="ör. Nisan Balkan Turu"
+                className="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
+              />
+            </label>
+            <label className="flex flex-col gap-1 text-[11px] text-slate-400">
+              Başlangıç tarihi
+              <input
+                type="date"
+                value={tripMeta.startDate || ''}
+                onChange={(e) => onSetTripMeta({ ...tripMeta, startDate: e.target.value })}
+                className="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
+              />
+            </label>
+            <div className="text-[11px] text-slate-300 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5">
+              🚗 Toplam yol ~<strong className="text-amber-300">{formatKm(routeKm(tripPlaces) * ROAD_FACTOR)}</strong>
+              <span className="text-slate-500"> ({dayNumbers.length} gün)</span>
+            </div>
+            {onOpenBudget && (
+              <button
+                onClick={() => { onClose(); onOpenBudget(); }}
+                className="bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold"
+              >
+                💰 Gezi Bütçesi
+              </button>
+            )}
+            {onOpenPacking && (
+              <button
+                onClick={() => { onClose(); onOpenPacking(); }}
+                className="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold"
+              >
+                🎒 Bavul Listesi
+              </button>
+            )}
+          </div>
+        )}
+
         {/* Content Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 print:overflow-visible print:p-0">
           {tripPlaces.length === 0 ? (
@@ -300,11 +360,15 @@ export default function ItineraryModal({
                         </span>
                         <h3 className="text-sm font-bold text-white print:text-black">
                           {dayNum}. Gün Rotası ({dayPlaces.length} Durak)
+                          {dayDateLabel(dayNum) && (
+                            <span className="ml-1.5 text-amber-300 font-semibold print:text-black">· {dayDateLabel(dayNum)}</span>
+                          )}
                         </h3>
                       </div>
 
                       <div className="flex items-center gap-3">
                         <span className="text-[11px] text-slate-400 print:text-slate-600">
+                          {dayPlaces.length > 1 && <>~{formatKm(routeKm(dayPlaces) * ROAD_FACTOR)} yol · </>}
                           Tahmini Süre: {dayPlaces.length * 2} - {dayPlaces.length * 3} Saat
                         </span>
                         <a
