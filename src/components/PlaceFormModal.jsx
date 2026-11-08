@@ -106,9 +106,7 @@ export default function PlaceFormModal({
         form.localSpecialties ||
         'Çevredeki yerel lezzet duraklarını ve kahvecileri mutlaka dene.',
       blogArticle: form.blogArticle,
-      coverImage:
-        form.coverImage ||
-        'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=80',
+      coverImage: form.coverImage || '',
       visited: form.visited,
       visitedDate: form.visited ? editingPlace?.visitedDate || new Date().toISOString().slice(0, 10) : '',
       favorite: form.favorite,
@@ -384,7 +382,7 @@ export default function PlaceFormModal({
                   type="url"
                   value={form.coverImage}
                   onChange={(e) => setForm({ ...form, coverImage: e.target.value })}
-                  placeholder="https://images.unsplash.com/..."
+                  placeholder="https://... (boş bırakılabilir)"
                   className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-400"
                 />
               </div>

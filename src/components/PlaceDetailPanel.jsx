@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CATEGORIES, SEASONS, REGIONS } from '../data/metadata';
 import { getPhrasebookForCountry } from '../data/phrasebookData';
+import { getOptimizedImageUrl } from '../data/curatedPhotoResolver';
 import {
   X,
   Clock,
@@ -78,10 +79,12 @@ export default function PlaceDetailPanel({
 
   // User Photos State
   const [userPhotos, setUserPhotos] = useState([]);
+  const [imgError, setImgError] = useState(false);
   const photoInputRef = useRef(null);
 
   useEffect(() => {
     if (!place) return;
+    setImgError(false);
     setNoteText(place.userNotes || '');
     setRating(place.userRating || 5);
     setVisitedDate(place.visitedDate || new Date().toISOString().slice(0, 10));
@@ -209,22 +212,20 @@ export default function PlaceDetailPanel({
   return (
     <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-full text-slate-800">
       {/* Hero Image Header */}
-      <div className="relative h-56 sm:h-64 w-full shrink-0 overflow-hidden bg-gradient-to-br from-slate-800 via-amber-950/40 to-slate-900 flex items-center justify-center">
-        {place.coverImage ? (
+      <div className="relative h-56 sm:h-64 w-full shrink-0 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950/60 flex items-center justify-center">
+        {place.coverImage && !imgError ? (
           <img
-            src={place.coverImage}
+            src={getOptimizedImageUrl(place.coverImage, 960)}
             alt={place.name}
             className={`w-full h-full object-cover transition duration-700 ${
               place.visited ? 'saturate-90' : ''
             }`}
-            onError={(e) => {
-              e.target.style.display = 'none';
-            }}
+            onError={() => setImgError(true)}
           />
         ) : (
-          <div className="text-center p-6 space-y-2">
-            <span className="text-5xl block animate-pulse">{catObj.icon}</span>
-            <span className="text-xs uppercase tracking-widest text-amber-300/80 font-bold">
+          <div className="text-center p-6 space-y-2 opacity-90">
+            <span className="text-6xl block transform hover:scale-110 transition duration-300">{catObj.icon}</span>
+            <span className="text-xs uppercase tracking-widest text-amber-300 font-bold">
               {catObj.label} • {place.city}
             </span>
           </div>

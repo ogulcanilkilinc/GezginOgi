@@ -356,19 +356,19 @@ export default function SeasonalCalendarModal({
                     className="group bg-slate-950/70 hover:bg-slate-850 border border-slate-800 hover:border-amber-400/50 rounded-2xl p-3 cursor-pointer transition flex flex-col justify-between overflow-hidden shadow"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-slate-800 relative">
-                        <img
-                          src={
-                            pl.coverImage ||
-                            'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=400&q=80'
-                          }
-                          alt={pl.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-                          onError={(e) => {
-                            e.target.src =
-                              'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=400&q=80';
-                          }}
-                        />
+                      <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-slate-800 relative flex items-center justify-center">
+                        {pl.coverImage ? (
+                          <img
+                            src={pl.coverImage}
+                            alt={pl.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <span className="text-2xl">📍</span>
+                        )}
                         {pl.visited && (
                           <div className="absolute top-1 left-1 bg-emerald-500 text-slate-950 text-[9px] font-bold px-1 rounded">
                             ✓

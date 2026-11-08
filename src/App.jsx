@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react';
 import confetti from 'canvas-confetti';
 import { CATEGORIES, REGIONS, SEASONS, DURATIONS } from './data/metadata';
+import { getOptimizedImageUrl } from './data/curatedPhotoResolver';
 import TravelMap from './components/TravelMap';
 import PlaceDetailPanel from './components/PlaceDetailPanel';
 
@@ -73,7 +74,7 @@ export default function App() {
     const basePath = import.meta.env.BASE_URL || '/';
     const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
 
-    fetch(`${cleanBase}data/places.json`)
+    fetch(`${cleanBase}data/places.json?v=960px_clean`)
       .then((res) => {
         if (!res.ok) throw new Error('places.json yüklenemedi');
         return res.json();
@@ -487,7 +488,7 @@ export default function App() {
       localStorage.removeItem(USER_OVERRIDES_KEY);
       const basePath = import.meta.env.BASE_URL || '/';
       const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
-      fetch(`${cleanBase}data/places.json`)
+      fetch(`${cleanBase}data/places.json?v=960px_clean`)
         .then((res) => res.json())
         .then((resetList) => {
           setPlaces(resetList);
@@ -1291,18 +1292,23 @@ export default function App() {
                           <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-gradient-to-br from-slate-100 to-amber-50 border border-slate-200/90 flex items-center justify-center">
                             {place.coverImage ? (
                               <img
-                                src={place.coverImage}
+                                src={getOptimizedImageUrl(place.coverImage, 500)}
                                 alt={place.name}
                                 className={`w-full h-full object-cover ${
                                   place.visited ? 'opacity-65 saturate-50' : ''
                                 }`}
                                 onError={(e) => {
                                   e.target.style.display = 'none';
+                                  if (e.target.nextElementSibling) e.target.nextElementSibling.style.display = 'block';
                                 }}
                               />
-                            ) : (
-                              <span className="text-xl">{catObj.icon}</span>
-                            )}
+                            ) : null}
+                            <span
+                              className="text-xl"
+                              style={{ display: place.coverImage ? 'none' : 'block' }}
+                            >
+                              {catObj.icon}
+                            </span>
                             <span className="absolute bottom-1 right-1 text-xs bg-white/90 text-slate-800 border border-slate-200 rounded px-1 shadow-2xs">
                               {catObj.icon}
                             </span>
@@ -1594,21 +1600,24 @@ export default function App() {
                     className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs hover:shadow-md flex flex-col hover:border-slate-300 transition"
                   >
                     {/* Card Image */}
-                    <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-800 via-amber-950/40 to-slate-900 flex items-center justify-center">
+                    <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950/60 flex items-center justify-center">
                       {place.coverImage ? (
                         <img
-                          src={place.coverImage}
+                          src={getOptimizedImageUrl(place.coverImage, 960)}
                           alt={place.name}
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             e.target.style.display = 'none';
+                            if (e.target.nextElementSibling) e.target.nextElementSibling.style.display = 'block';
                           }}
                         />
-                      ) : (
-                        <div className="text-center p-4">
-                          <span className="text-5xl block">{catObj.icon}</span>
-                        </div>
-                      )}
+                      ) : null}
+                      <div
+                        className="text-center p-4"
+                        style={{ display: place.coverImage ? 'none' : 'block' }}
+                      >
+                        <span className="text-5xl block">{catObj.icon}</span>
+                      </div>
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none" />
 
                       <div className="absolute top-3 left-3 flex items-center gap-2">
