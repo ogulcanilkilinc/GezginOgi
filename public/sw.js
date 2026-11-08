@@ -2,7 +2,7 @@
 // Service Worker for GezginOgi - Robust Offline PWA Support
 // Automatically precaches all compiled JS chunks, CSS, fonts, and data for seamless offline usage.
 
-const CACHE_NAME = 'gezginogi-build-mw81i89b';
+const CACHE_NAME = 'gezginogi-build-mw869wfd';
 
 // Precache list - dynamically populated with all build chunks by inject-sw-assets.mjs
 const PRECACHE_URLS = [
