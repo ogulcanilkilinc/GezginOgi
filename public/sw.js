@@ -2,7 +2,7 @@
 // Service Worker for Keşif Atlasım - Robust Offline PWA Support
 // Automatically precaches all compiled JS chunks, CSS, fonts, and data for seamless offline usage.
 
-const CACHE_NAME = 'kesif-atlasim-build-mw7nztvt';
+const CACHE_NAME = 'kesif-atlasim-build-mw7o5jjy';
 
 // Precache list - dynamically populated with all build chunks by inject-sw-assets.mjs
 const PRECACHE_URLS = [
