@@ -23,7 +23,8 @@ import {
   saveCloudConfig,
   clearCloudConfig,
   pushPlacesToCloud,
-  pullPlacesFromCloud
+  pullPlacesFromCloud,
+  syncPassHeader
 } from '../services/cloudSyncService';
 
 export default function CloudSyncModal({
@@ -155,7 +156,10 @@ export default function CloudSyncModal({
     }
   };
 
-  const activePass = config.privatePassphrase || 'BURAYA_12_16_HANELI_GIZLI_PAROLANIZI_YAZIN';
+  // Same value the app sends in the x-sync-pass header; quotes doubled for the SQL literal
+  const activePass = config.privatePassphrase
+    ? syncPassHeader(config.privatePassphrase).replace(/'/g, "''")
+    : 'BURAYA_12_16_HANELI_GIZLI_PAROLANIZI_YAZIN';
 
   const sqlSnippet = `-- 1. Kullanıcı Durumları Tablosu (Gittim, Notlar, Favori, Puan, Fotoğraflar & Çanta)
 create table if not exists user_place_state (

@@ -110,10 +110,17 @@ function buildHeaders(config) {
 
   // If user configured a private passphrase, send it as custom header
   if (config.privatePassphrase) {
-    headers['x-sync-pass'] = config.privatePassphrase;
+    headers['x-sync-pass'] = syncPassHeader(config.privatePassphrase);
   }
 
   return headers;
+}
+
+// HTTP headers only carry Latin-1, so a passphrase with Turkish letters (ğ, ş, ı…)
+// is sent percent-encoded. Plain ASCII passphrases stay as they are, so existing
+// SQL policies keep matching. The SQL snippet uses the same value.
+export function syncPassHeader(pass) {
+  return /^[\x20-\x7e]*$/.test(pass) ? pass : encodeURIComponent(pass);
 }
 
 export function isCustomPlace(p) {
