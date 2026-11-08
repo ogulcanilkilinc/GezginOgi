@@ -1,5 +1,5 @@
 // src/services/cloudSyncService.js
-// Secure, row-level Cloud Synchronization Service for Keşif Atlasım.
+// Secure, row-level Cloud Synchronization Service for GezginOgi.
 // Supports both Supabase Native Auth (Session-based, zero secret leaks)
 // and User-defined Private Passphrase.
 
@@ -185,6 +185,30 @@ export async function pushChanges(changedPlaces, deletedIds, config) {
     await send(`${baseUrl}/rest/v1/user_place_state?place_id=in.${encodeURIComponent(quoteIds(deletedIds))}`, 'DELETE');
     await send(`${baseUrl}/rest/v1/user_custom_places?id=in.${encodeURIComponent(quoteIds(deletedIds))}`, 'DELETE');
   }
+}
+
+/**
+ * One JSON document per id in user_documents (e.g. 'trip').
+ * Returns { data, updatedAt } or null when the cloud has no such document.
+ */
+export async function fetchCloudDocument(id, config) {
+  const baseUrl = config.supabaseUrl.replace(/\/$/, '');
+  const res = await fetch(`${baseUrl}/rest/v1/user_documents?id=eq.${encodeURIComponent(id)}&select=data,updated_at`, {
+    headers: buildHeaders(config)
+  });
+  if (!res.ok) throw new Error(`Bulut belge hatası (${res.status}): ${await res.text()}`);
+  const rows = await res.json();
+  return rows.length > 0 ? { data: rows[0].data, updatedAt: Date.parse(rows[0].updated_at) } : null;
+}
+
+export async function pushCloudDocument(id, data, updatedAt, config) {
+  const baseUrl = config.supabaseUrl.replace(/\/$/, '');
+  const res = await fetch(`${baseUrl}/rest/v1/user_documents`, {
+    method: 'POST',
+    headers: buildHeaders(config),
+    body: JSON.stringify([{ id, data, updated_at: new Date(updatedAt).toISOString() }])
+  });
+  if (!res.ok) throw new Error(`Bulut belge hatası (${res.status}): ${await res.text()}`);
 }
 
 /**

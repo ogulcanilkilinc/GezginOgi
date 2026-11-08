@@ -213,6 +213,20 @@ create policy "Guvenli Parola - user_custom_places"
   using (coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}')
   with check (coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}');
 
+-- 4b. Cihazlar arası belgeler (gezi rotası gibi)
+create table if not exists user_documents (
+  id text primary key,
+  data jsonb not null,
+  updated_at timestamptz default now()
+);
+alter table user_documents enable row level security;
+drop policy if exists "Guvenli Parola - user_documents" on user_documents;
+create policy "Guvenli Parola - user_documents"
+  on user_documents
+  for all
+  using (coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}')
+  with check (coalesce(current_setting('request.headers', true)::json->>'x-sync-pass', '') = '${activePass}');
+
 -- 5. Fotoğraf Deposu (Storage): fotoğraflar tarayıcı hafızasını doldurmasın diye buluta yüklenir.
 -- Dosya adları tahmin edilemez rastgele kodlardır; yükleme ve silme yalnızca parolayla yapılabilir.
 insert into storage.buckets (id, name, public)

@@ -3,6 +3,7 @@ import confetti from 'canvas-confetti';
 import { CATEGORIES, REGIONS, SEASONS, DURATIONS } from './data/metadata';
 import { getOptimizedImageUrl } from './data/curatedPhotoResolver';
 import { useAutoSync } from './services/useAutoSync';
+import { useDocSync } from './services/useDocSync';
 import { getSearchIndex, matchesSearch } from './services/searchUtils';
 import { createShareLink, readShareFromHash, leaveShareView } from './services/shareLink';
 import { routeKm, formatKm, ROAD_FACTOR } from './services/geo';
@@ -279,11 +280,12 @@ export default function App() {
     const { days, name, startDate } = readStoredTrip();
     return { days: days || {}, name: name || '', startDate: startDate || '' };
   });
+  const tripDoc = useMemo(() => ({ ids: tripPlanIds, ...tripMeta }), [tripPlanIds, tripMeta]);
   useEffect(() => {
     try {
-      localStorage.setItem(TRIP_KEY, JSON.stringify({ ids: tripPlanIds, ...tripMeta }));
+      localStorage.setItem(TRIP_KEY, JSON.stringify(tripDoc));
     } catch (e) {}
-  }, [tripPlanIds, tripMeta]);
+  }, [tripDoc]);
   const tripTotalKm = useMemo(() => {
     const stops = tripPlanIds.map((id) => places.find((p) => p.id === id)).filter((p) => p && p.coords);
     return routeKm(stops) * ROAD_FACTOR;
@@ -371,6 +373,17 @@ export default function App() {
   }, [places, isLoadingPlaces, shareView]);
 
   const autoSync = useAutoSync({ places, setPlaces, isLoadingPlaces, disabled: !!shareView });
+  // The trip plan follows the user across devices too
+  const tripSync = useDocSync({
+    id: 'trip',
+    value: tripDoc,
+    setValue: (t) => {
+      setTripPlanIds(Array.isArray(t?.ids) ? t.ids : []);
+      setTripMeta({ days: t?.days || {}, name: t?.name || '', startDate: t?.startDate || '' });
+    },
+    isEmpty: (t) => t.ids.length === 0 && !t.name && !t.startDate,
+    disabled: !!shareView
+  });
 
   const handleShareMap = async () => {
     try {
@@ -610,7 +623,7 @@ export default function App() {
     dlAnchor.setAttribute('href', dataStr);
     dlAnchor.setAttribute(
       'download',
-      `kesif-atlasim-yedek-${new Date().toISOString().slice(0, 10)}.json`
+      `gezginogi-yedek-${new Date().toISOString().slice(0, 10)}.json`
     );
     document.body.appendChild(dlAnchor);
     dlAnchor.click();
@@ -693,7 +706,7 @@ export default function App() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-lg sm:text-xl font-bold font-serif tracking-tight text-slate-900">
-                  Keşif Atlasım
+                  GezginOgi
                 </h1>
                 <span className="hidden md:inline-block px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300 rounded-full">
                   {places.length} Özel Rehber Noktası
@@ -1303,7 +1316,7 @@ export default function App() {
             {!isOnline && (
               <div
                 className="px-2.5 py-1 rounded-xl bg-slate-900 border border-amber-400 text-amber-300 text-xs font-bold flex items-center gap-1.5 shadow-xs shrink-0 animate-pulse"
-                title="İnternet bağlantısı kesildi. Keşif Atlası yerel önbellekten (Service Worker) internetsiz çalışıyor."
+                title="İnternet bağlantısı kesildi. GezginOgi yerel önbellekten (Service Worker) internetsiz çalışıyor."
               >
                 <WifiOff className="w-3.5 h-3.5 text-amber-400" />
                 <span>Çevrimdışı Mod</span>
@@ -2260,7 +2273,10 @@ export default function App() {
         isOpen={isCloudSyncOpen}
         onClose={() => {
           setIsCloudSyncOpen(false);
-          if (!shareView) autoSync.syncNow();
+          if (!shareView) {
+            autoSync.syncNow();
+            tripSync.syncNow();
+          }
         }}
         places={places}
         onUpdatePlaces={(updatedPlaces) => {
