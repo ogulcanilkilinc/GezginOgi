@@ -1,4 +1,4 @@
-import { buildDeepCountryPack } from './placeBuilder';
+import { buildDeepCountryPack } from './placeBuilder.js';
 
 // ============================================================================
 // DÜNYA 195 ÜLKE EKSİKSİZ ATLAS PAKETİ (BM Üyesi + Gözlemci Tüm Ülkeler)

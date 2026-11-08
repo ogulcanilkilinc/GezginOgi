@@ -209,22 +209,27 @@ export default function PlaceDetailPanel({
   return (
     <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-full text-slate-800">
       {/* Hero Image Header */}
-      <div className="relative h-56 sm:h-64 w-full shrink-0 overflow-hidden bg-slate-800">
-        <img
-          src={
-            place.coverImage ||
-            'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=80'
-          }
-          alt={place.name}
-          className={`w-full h-full object-cover transition duration-700 ${
-            place.visited ? 'saturate-90' : ''
-          }`}
-          onError={(e) => {
-            e.target.src =
-              'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=80';
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent" />
+      <div className="relative h-56 sm:h-64 w-full shrink-0 overflow-hidden bg-gradient-to-br from-slate-800 via-amber-950/40 to-slate-900 flex items-center justify-center">
+        {place.coverImage ? (
+          <img
+            src={place.coverImage}
+            alt={place.name}
+            className={`w-full h-full object-cover transition duration-700 ${
+              place.visited ? 'saturate-90' : ''
+            }`}
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+        ) : (
+          <div className="text-center p-6 space-y-2">
+            <span className="text-5xl block animate-pulse">{catObj.icon}</span>
+            <span className="text-xs uppercase tracking-widest text-amber-300/80 font-bold">
+              {catObj.label} • {place.city}
+            </span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent pointer-events-none" />
 
         {/* Top Bar Actions */}
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">

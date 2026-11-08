@@ -1,4 +1,4 @@
-import { buildDeepCountryPack } from './placeBuilder';
+import { buildDeepCountryPack } from './placeBuilder.js';
 
 // ============================================================================
 // TÜRKİYE 81 İL EKSİKSİZ TAMAMLAMA PAKETİ — BÖLÜM 1

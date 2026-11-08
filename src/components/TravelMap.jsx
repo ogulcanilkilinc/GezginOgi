@@ -13,22 +13,30 @@ import {
 
 const MAP_STYLES = [
   {
-    id: 'google-streets',
-    name: 'Detaylı Sokak',
-    url: 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=tr',
-    attr: '&copy; Google Maps'
-  },
-  {
-    id: 'google-hybrid',
-    name: 'Uydu & Hibrit',
-    url: 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&hl=tr',
-    attr: '&copy; Google Maps'
+    id: 'carto-voyager',
+    name: 'Keşif (Açık & Net)',
+    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    subdomains: 'abcd',
+    attr: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
   },
   {
     id: 'osm',
     name: 'OpenStreetMap',
     url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
     attr: '&copy; OpenStreetMap contributors'
+  },
+  {
+    id: 'carto-positron',
+    name: 'Minimal Açık',
+    url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    subdomains: 'abcd',
+    attr: '&copy; OpenStreetMap &copy; CARTO'
+  },
+  {
+    id: 'google-hybrid',
+    name: 'Uydu Görünümü',
+    url: 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&hl=tr',
+    attr: '&copy; Google Maps'
   }
 ];
 
@@ -52,7 +60,7 @@ export default function TravelMap({
   const routeLayerRef = useRef(null);
   const tempMarkerRef = useRef(null);
 
-  const [mapStyle, setMapStyle] = useState('google-streets');
+  const [mapStyle, setMapStyle] = useState('carto-voyager');
   const [geoQuery, setGeoQuery] = useState('');
   const [geoResults, setGeoResults] = useState([]);
   const [isSearchingGeo, setIsSearchingGeo] = useState(false);
@@ -74,6 +82,7 @@ export default function TravelMap({
     const styleObj = MAP_STYLES[0];
     const tileLayer = L.tileLayer(styleObj.url, {
       attribution: styleObj.attr,
+      subdomains: styleObj.subdomains || 'abc',
       maxZoom: 20
     }).addTo(map);
 
@@ -161,6 +170,9 @@ export default function TravelMap({
     const map = mapInstanceRef.current;
     if (!map || !tileLayerRef.current) return;
     const styleObj = MAP_STYLES.find((s) => s.id === mapStyle) || MAP_STYLES[0];
+    if (styleObj.subdomains) {
+      tileLayerRef.current.options.subdomains = styleObj.subdomains;
+    }
     tileLayerRef.current.setUrl(styleObj.url);
   }, [mapStyle]);
 

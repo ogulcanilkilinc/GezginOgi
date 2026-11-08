@@ -1,4 +1,4 @@
-import { buildCountryPlaces } from './placeBuilder';
+import { buildCountryPlaces } from './placeBuilder.js';
 
 // ============================================================================
 // NİSAN AYI BALKANLAR ÖZEL REHBERİ & DERİN KEŞİF PAKETİ (108 Granular Places)

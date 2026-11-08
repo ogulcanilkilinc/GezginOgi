@@ -1,4 +1,4 @@
-import { buildDeepCountryPack } from './placeBuilder';
+import { buildDeepCountryPack } from './placeBuilder.js';
 
 // ============================================================================
 // RUSYA (24 Granular Places)

@@ -1,4 +1,4 @@
-import { buildDeepCountryPack } from './placeBuilder';
+import { buildDeepCountryPack } from './placeBuilder.js';
 
 // ALMANYA (25 Ayrı Nokta)
 const GERMANY_DEEP = buildDeepCountryPack({

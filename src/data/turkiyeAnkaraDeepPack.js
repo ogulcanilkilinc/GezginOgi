@@ -1,4 +1,4 @@
-import { buildDeepCountryPack } from './placeBuilder';
+import { buildDeepCountryPack } from './placeBuilder.js';
 
 // ============================================================================
 // ANKARA DETAYLI KEŞİF PAKETİ (45 Granular Places Across Districts & Neighborhoods)

@@ -4,8 +4,8 @@
 
 export const ICONIC_LANDMARK_PHOTOS = {
   // === ANKARA ÖZEL İKONİK YERLER ===
-  'anitkabir': 'https://images.unsplash.com/photo-1589883661923-6476cb0ae9f2?auto=format&fit=crop&w=1200&q=80',
-  'anadolu medeniyetleri': 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80',
+  'anitkabir': 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Ataturk%27s_Mausoleum_%286225341313%29.jpg',
+  'anadolu medeniyetleri': 'https://upload.wikimedia.org/wikipedia/commons/4/49/Museum_of_Anatolian_Civilizations001.jpg',
   'ankara kalesi': 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=1200&q=80',
   'hamamönü': 'https://images.unsplash.com/photo-1572979241483-84196163faea?auto=format&fit=crop&w=1200&q=80',
   'eymir gölü': 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
@@ -20,8 +20,8 @@ export const ICONIC_LANDMARK_PHOTOS = {
   'cermodern': 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=80',
   'cso ada': 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=1200&q=80',
   'ulucanlar': 'https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=1200&q=80',
-  'kurtuluş savaşı müzesi': 'https://images.unsplash.com/photo-1575224300306-1b8da36134ec?auto=format&fit=crop&w=1200&q=80',
-  'cumhuriyet müzesi': 'https://images.unsplash.com/photo-1575224300306-1b8da36134ec?auto=format&fit=crop&w=1200&q=80',
+  'kurtuluş savaşı müzesi': 'https://upload.wikimedia.org/wikipedia/commons/4/49/Ankara_asv2021-10_img45_Cumhuriyet_Street_on_29Oct.jpg',
+  'cumhuriyet müzesi': 'https://upload.wikimedia.org/wikipedia/commons/4/49/Ankara_asv2021-10_img71_Republic_Museum.jpg',
   'altınköy': 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80',
   'rahmi m. koç': 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?auto=format&fit=crop&w=1200&q=80',
   'erimtan': 'https://images.unsplash.com/photo-1544967082-d9d25d867d66?auto=format&fit=crop&w=1200&q=80',
@@ -250,11 +250,6 @@ export function resolveCuratedPhoto(place) {
     return place.coverImage;
   }
 
-  // 3. Category & Scene Pool with deterministic ID distribution
-  const category = place.category || 'kultur';
-  const pool = DIVERSE_SCENE_POOLS[category] || DIVERSE_SCENE_POOLS.kultur;
-  const hash = getHashCode(place.id || place.name);
-  const index = hash % pool.length;
-
-  return pool[index];
+  // 3. If no authentic photo exists, return empty string so UI renders an honest, clean placeholder
+  return '';
 }

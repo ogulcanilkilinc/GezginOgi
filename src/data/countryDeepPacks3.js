@@ -1,4 +1,4 @@
-import { buildDeepCountryPack } from './placeBuilder';
+import { buildDeepCountryPack } from './placeBuilder.js';
 
 // ============================================================================
 // İSPANYA, PORTEKİZ, YUNANİSTAN, HOLLANDA, BELÇİKA, AVUSTURYA, İSVİÇRE,

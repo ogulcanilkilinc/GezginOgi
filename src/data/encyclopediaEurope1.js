@@ -1,4 +1,4 @@
-import { buildCountryPlaces } from './placeBuilder';
+import { buildCountryPlaces } from './placeBuilder.js';
 
 // İTALYA (30 Ayrı Nokta)
 const ITALY_PLACES = buildCountryPlaces('dunya', 'Avrupa', 'İtalya', ['ilkbahar', 'sonbahar', 'yaz'], 'Orta (₺₺)', [

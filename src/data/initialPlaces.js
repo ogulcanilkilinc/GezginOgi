@@ -257,10 +257,20 @@ rawPlaces.forEach((p) => {
     // 1. If both match the same curated landmark slug
     if (pSlug && iSlug && pSlug === iSlug) return true;
 
-    // 2. Exact coordinates match (< 100 meters) AND titles match
-    if (dLat < 0.001 && dLng < 0.001) {
+    // 2. Exact GPS match (identical geocoded coordinates, < 15 meters)
+    if (dLat < 0.00015 && dLng < 0.00015) {
+      return true;
+    }
+
+    // 3. Proximity (< 150m) and overlapping title/keywords
+    if (dLat < 0.0015 && dLng < 0.0015) {
       const iTitle = cleanTitle(item.name);
       if (pTitle === iTitle || pTitle.includes(iTitle) || iTitle.includes(pTitle)) {
+        return true;
+      }
+      const pWords = pTitle.split(/\s+/).filter((w) => w.length > 3);
+      const iWords = iTitle.split(/\s+/).filter((w) => w.length > 3);
+      if (pWords.some((w) => iWords.includes(w))) {
         return true;
       }
     }
@@ -269,18 +279,24 @@ rawPlaces.forEach((p) => {
   });
 
   if (matchIdx !== -1) {
-    // Keep the version with more detailed text and blog content
     const existing = dedupedList[matchIdx];
+    const isPUser = p.id.startsWith('go-');
+    const isEUser = existing.id.startsWith('go-');
+
     const pScore = (p.blogArticle?.length || 0) + (p.highlights?.length || 0) * 60 + (p.whatAwaits?.length || 0);
     const eScore = (existing.blogArticle?.length || 0) + (existing.highlights?.length || 0) * 60 + (existing.whatAwaits?.length || 0);
 
-    if (pScore > eScore) {
-      dedupedList[matchIdx] = {
-        ...existing,
-        ...p,
-        checklist: existing.checklist?.length ? existing.checklist : p.checklist
-      };
-    }
+    const base = (isPUser || (!isEUser && pScore > eScore)) ? p : existing;
+    const secondary = base === p ? existing : p;
+
+    dedupedList[matchIdx] = {
+      ...secondary,
+      ...base,
+      whatAwaits: (base.whatAwaits?.length > (secondary.whatAwaits?.length || 0)) ? base.whatAwaits : secondary.whatAwaits,
+      localSpecialties: (base.localSpecialties?.length > (secondary.localSpecialties?.length || 0)) ? base.localSpecialties : secondary.localSpecialties,
+      blogArticle: (base.blogArticle?.length > (secondary.blogArticle?.length || 0)) ? base.blogArticle : secondary.blogArticle,
+      highlights: Array.from(new Set([...(base.highlights || []), ...(secondary.highlights || [])])),
+    };
   } else {
     dedupedList.push(p);
   }
@@ -295,9 +311,12 @@ export const INITIAL_PLACES = dedupedList.map((p) => {
     visited: false,
     visitedDate: '',
     favorite: false,
+    userNotes: '',
+    rating: 0,
+    userRating: 0,
     country,
     city,
-    coverImage: curatedImage,
+    coverImage: curatedImage || '',
     isBalkan: BALKAN_COUNTRIES_SET.has(country) || p.subRegion === 'Balkanlar (Nisan Özel)',
   };
 });
