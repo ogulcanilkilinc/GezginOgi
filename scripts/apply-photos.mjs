@@ -5,7 +5,7 @@
 // Also fetches license/author metadata for the 15 previously resolved landmarks.
 import fs from 'fs';
 
-const UA = 'KesifAtlasim/1.0 (https://github.com/ogulcanilkilinc/kesif-atlasim; photo verifier)';
+const UA = 'GezginOgi/1.0 (https://github.com/ogulcanilkilinc/GezginOgi; photo verifier)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const matches = JSON.parse(fs.readFileSync('scripts/photo-matches.json', 'utf8'));
 const review = JSON.parse(fs.readFileSync('scripts/photo-review.json', 'utf8'));

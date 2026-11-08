@@ -1,9 +1,9 @@
-# 🧭 Keşif Atlasım (Gezgin Ogi & Dünya Seyahat Rehberi)
+# 🧭 GezginOgi (Kişisel Gezi Haritası & Dünya Seyahat Rehberi)
 
-**Keşif Atlasım**, kişisel seyahat rotaları, 1.211 doğrulanmış keşif noktası, 12 ay mevsimsel seyahat önerileri, Türk vatandaşları için güncel vize rehberi, Ankara çıkışlı gerçekçi mesafe/ulaşım süreleri, offline (internetsiz) PWA çalışma kabiliyeti ve uçtan uca cihazlar arası bulut eşleme sunan modern, hızlı bir interaktif web uygulamasıdır.
+**GezginOgi**, kişisel seyahat rotaları, 1.211 doğrulanmış keşif noktası, 12 ay mevsimsel seyahat önerileri, Türk vatandaşları için güncel vize rehberi, Ankara çıkışlı gerçekçi mesafe/ulaşım süreleri, offline (internetsiz) PWA çalışma kabiliyeti ve uçtan uca cihazlar arası bulut eşleme sunan modern, hızlı bir interaktif web uygulamasıdır.
 
-- **Canlı Site:** [https://ogulcanilkilinc.github.io/kesif-atlasim/](https://ogulcanilkilinc.github.io/kesif-atlasim/)
-- **GitHub Deposu:** [https://github.com/ogulcanilkilinc/kesif-atlasim](https://github.com/ogulcanilkilinc/kesif-atlasim)
+- **Canlı Site:** [https://ogulcanilkilinc.github.io/GezginOgi/](https://ogulcanilkilinc.github.io/GezginOgi/)
+- **GitHub Deposu:** [https://github.com/ogulcanilkilinc/GezginOgi](https://github.com/ogulcanilkilinc/GezginOgi)
 
 ---
 

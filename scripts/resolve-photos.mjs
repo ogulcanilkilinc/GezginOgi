@@ -3,7 +3,7 @@
 // Usage: node scripts/resolve-photos.mjs  (writes public/data/places.json + src/data/curatedPhotoResolver map)
 import fs from 'fs';
 
-const UA = 'KesifAtlasim/1.0 (https://github.com/ogulcanilkilinc/kesif-atlasim)';
+const UA = 'GezginOgi/1.0 (https://github.com/ogulcanilkilinc/GezginOgi)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Either a known Commons file (user-verified working) or an enwiki title -> Wikidata P18

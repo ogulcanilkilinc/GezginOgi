@@ -1,8 +1,8 @@
 // public/sw.js
-// Service Worker for Keşif Atlasım - Robust Offline PWA Support
+// Service Worker for GezginOgi - Robust Offline PWA Support
 // Automatically precaches all compiled JS chunks, CSS, fonts, and data for seamless offline usage.
 
-const CACHE_NAME = 'kesif-atlasim-build-mw7q19ud';
+const CACHE_NAME = 'gezginogi-build-mw7w0ag1';
 
 // Precache list - dynamically populated with all build chunks by inject-sw-assets.mjs
 const PRECACHE_URLS = [
@@ -12,25 +12,25 @@ const PRECACHE_URLS = [
   "./manifest.json",
   "./data/places.json",
   "./data/photos.json",
-  "./assets/BorderCrossingsModal-B_V644bN.js",
-  "./assets/CloudSyncModal-DlpYojNy.js",
-  "./assets/CountryIntelModal-3eRroQwP.js",
-  "./assets/CurrencyBudgetModal-UKq1T7rX.js",
-  "./assets/EmergencyConsulateModal-dHPCo1h9.js",
+  "./assets/BorderCrossingsModal-BrZ31kK4.js",
+  "./assets/CloudSyncModal-Bb3qslZy.js",
+  "./assets/CountryIntelModal-CP0a7VX8.js",
+  "./assets/CurrencyBudgetModal-BMmErji2.js",
+  "./assets/EmergencyConsulateModal-CGg4ITvU.js",
   "./assets/icons-vendor-DrESObBc.js",
+  "./assets/index-BB5oYbjv.js",
   "./assets/index-BvE17Q8o.css",
-  "./assets/index-Dfy7kckN.js",
-  "./assets/ItineraryModal-CgXGwdYi.js",
+  "./assets/ItineraryModal-tzWuxro7.js",
   "./assets/leaflet-vendor-Dy36dnF4.js",
-  "./assets/NearbyRadarModal-D1ImKMDr.js",
-  "./assets/PackingChecklistModal-Ay4NQ3Hw.js",
-  "./assets/PassportModal-DkDc0uCU.js",
-  "./assets/PlaceFormModal-uNLg9P6i.js",
-  "./assets/RouteSimulatorModal-CcP3ChbB.js",
-  "./assets/ScratchMapModal-DaKHByuj.js",
-  "./assets/SearchableLocationModal-o2xbNizl.js",
-  "./assets/SeasonalCalendarModal-QE5Jbesa.js",
-  "./assets/TravelSoundtrackModal-Dg9uVcol.js"
+  "./assets/NearbyRadarModal-CvFHysrV.js",
+  "./assets/PackingChecklistModal-DaWsbhoO.js",
+  "./assets/PassportModal-z1BGLwgr.js",
+  "./assets/PlaceFormModal-C0dk_YII.js",
+  "./assets/RouteSimulatorModal-CEmYhuDZ.js",
+  "./assets/ScratchMapModal-C08OiGqa.js",
+  "./assets/SearchableLocationModal-DYx-qQNw.js",
+  "./assets/SeasonalCalendarModal-BVG1x5SM.js",
+  "./assets/TravelSoundtrackModal-Bkb1e4fM.js"
 ];
 
 self.addEventListener('install', (event) => {

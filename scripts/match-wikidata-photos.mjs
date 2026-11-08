@@ -8,7 +8,7 @@
 // Resumable: caches in scripts/.cache/
 import fs from 'fs';
 
-const UA = 'KesifAtlasim/1.0 (https://github.com/ogulcanilkilinc/kesif-atlasim; photo matcher)';
+const UA = 'GezginOgi/1.0 (https://github.com/ogulcanilkilinc/GezginOgi; photo matcher)';
 const CACHE_DIR = 'scripts/.cache';
 fs.mkdirSync(CACHE_DIR, { recursive: true });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

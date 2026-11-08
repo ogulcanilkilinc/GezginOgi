@@ -33,7 +33,7 @@ const basePrecache = [
 
 const fullPrecache = [...basePrecache, ...assetUrls];
 const buildId = Date.now().toString(36);
-const cacheName = `kesif-atlasim-build-${buildId}`;
+const cacheName = `gezginogi-build-${buildId}`;
 
 console.log(`[SW Injection] Found ${assetUrls.length} build chunks. Total precache assets: ${fullPrecache.length}`);
 console.log(`[SW Injection] Generating new Cache ID: ${cacheName}`);

@@ -1,4 +1,4 @@
-name: Deploy Keşif Atlasım to GitHub Pages
+name: Deploy GezginOgi to GitHub Pages
 
 on:
   push:

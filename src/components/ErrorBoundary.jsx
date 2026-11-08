@@ -11,7 +11,7 @@ export default class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('Keşif Atlasım Yakalanan Hata:', error, errorInfo);
+    console.error('GezginOgi Yakalanan Hata:', error, errorInfo);
     this.setState({ errorInfo });
   }
 
@@ -41,7 +41,7 @@ export default class ErrorBoundary extends React.Component {
             </div>
             
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold text-slate-100">Keşif Atlasım Yenileniyor</h1>
+              <h1 className="text-2xl font-bold text-slate-100">GezginOgi Yenileniyor</h1>
               <p className="text-sm text-slate-400">
                 Uygulama yüklenirken beklenmedik bir arayüz durumu oluştu. Seyahat rotalarınız ve verileriniz güvende!
               </p>

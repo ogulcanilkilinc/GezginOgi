@@ -265,7 +265,7 @@ export default function ItineraryModal({
         {/* Print Header (Only visible when printing) */}
         <div className="hidden print:block p-8 border-b-2 border-slate-900 mb-6">
           <h1 className="text-2xl font-black uppercase tracking-wider text-slate-900">
-            🧭 Keşif Atlasım — Kişisel Seyahat Yol Haritası
+            🧭 GezginOgi — Kişisel Seyahat Yol Haritası
           </h1>
           <p className="text-sm text-slate-600 mt-1">
             Özel Rota Planı • Tarih: {new Date().toLocaleDateString('tr-TR')}
