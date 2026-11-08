@@ -63,7 +63,8 @@ export default function PlaceDetailPanel({
   onEditPlace,
   onDeletePlace,
   inTripPlan = false,
-  onToggleTripPlan
+  onToggleTripPlan,
+  onOpenCountryIntel
 }) {
   const [noteText, setNoteText] = useState('');
   const [rating, setRating] = useState(5);
@@ -426,6 +427,69 @@ export default function PlaceDetailPanel({
               <span>Google Haritalar</span>
               <ExternalLink className="w-3 h-3 text-amber-700/70" />
             </a>
+          </div>
+        </div>
+
+        {/* Ankara'dan Mesafe & Vize Durumu Kartları */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* Ankara Distance Card */}
+          <div className="bg-gradient-to-br from-amber-500/10 via-white to-amber-500/5 border border-amber-200/90 rounded-2xl p-4 shadow-xs space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
+                <span>🚗</span>
+                <span>Ankara’dan Ne Kadar Uzak?</span>
+              </span>
+              {place.ankaraDistance?.isWeekendEscape && (
+                <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-bold text-[10px] shadow-xs">
+                  🌿 Hafta Sonu Kaçamağı
+                </span>
+              )}
+            </div>
+
+            <div className="text-base sm:text-lg font-bold text-slate-900">
+              {place.ankaraDistance?.summaryText || (place.country === 'Türkiye' ? 'Ankara’ya Yakın' : 'Uluslararası Uçuş')}
+            </div>
+
+            <div className="text-[11px] text-slate-600 flex flex-wrap items-center gap-2 pt-1 border-t border-amber-200/50">
+              {place.ankaraDistance?.distKm > 0 && (
+                <span>📍 Kuş uçuşu: <strong>{place.ankaraDistance.distKm} km</strong></span>
+              )}
+              {place.ankaraDistance?.roadKm > 0 && place.ankaraDistance?.driveMinutes > 0 && (
+                <span>· Karayolu: <strong>~{place.ankaraDistance.roadKm} km</strong></span>
+              )}
+              {place.ankaraDistance?.trainText && (
+                <span className="text-sky-700 font-bold bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
+                  🚄 {place.ankaraDistance.trainText}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Visa Status & Country Intel Card */}
+          <div className="bg-gradient-to-br from-sky-500/10 via-white to-blue-500/5 border border-sky-200/90 rounded-2xl p-4 shadow-xs flex flex-col justify-between space-y-2">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-1.5 text-sky-950 font-bold text-xs">
+                  <span>🛂</span>
+                  <span>Türk Pasaportu Vize Durumu</span>
+                </span>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${place.visaStatus?.badgeClass || 'bg-slate-100 text-slate-700'}`}>
+                  {place.visaStatus?.icon} {place.visaStatus?.label || 'Belirtilmedi'}
+                </span>
+              </div>
+
+              <p className="text-[11px] text-slate-600 mt-2 leading-relaxed line-clamp-2">
+                {place.visaStatus?.notes || `${place.country || 'Türkiye'} seyahat detayları.`}
+              </p>
+            </div>
+
+            <button
+              onClick={() => onOpenCountryIntel && onOpenCountryIntel(place.country || 'Türkiye')}
+              className="mt-2 w-full py-1.5 px-3 rounded-xl bg-white hover:bg-sky-50 border border-sky-200 text-sky-900 font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs transition cursor-pointer"
+            >
+              <span>🌍</span>
+              <span>{place.country || 'Türkiye'} Pratik Rehberi (Priz, Bahşiş, Kur)</span>
+            </button>
           </div>
         </div>
 

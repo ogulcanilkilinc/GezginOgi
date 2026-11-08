@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { CATEGORIES, REGIONS } from '../data/metadata';
 import { getProvinceVisitStats, TURKEY_REGIONS } from '../data/turkeyProvinces';
+import { getOptimizedImageUrl } from '../data/curatedPhotoResolver';
 import ChoroplethMap from './ChoroplethMap';
 import {
   X,
@@ -16,13 +17,19 @@ import {
   Sparkles,
   BookOpen,
   Layers,
-  Map as MapIcon
+  Map as MapIcon,
+  Search,
+  Quote,
+  Camera,
+  Filter
 } from 'lucide-react';
 
 export default function PassportModal({ isOpen, onClose, places, onSelectPlace }) {
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | '81_provinces' | 'countries' | 'log'
   const [selectedRegionFilter, setSelectedRegionFilter] = useState('all');
   const [selectedProvinceModal, setSelectedProvinceModal] = useState(null);
+  const [journalSearch, setJournalSearch] = useState('');
+  const [selectedYearFilter, setSelectedYearFilter] = useState('all');
 
   if (!isOpen) return null;
 
@@ -56,6 +63,59 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
   const allCountries = [...new Set(places.map((p) => p.country).filter(Boolean))];
 
   const provinceStats = getProvinceVisitStats(places);
+
+  // Visited places sorted by visitedDate descending (most recent first)
+  const sortedVisited = useMemo(() => {
+    return [...visitedPlaces].sort((a, b) => {
+      const dateA = a.visitedDate || '0000-00-00';
+      const dateB = b.visitedDate || '0000-00-00';
+      return dateB.localeCompare(dateA);
+    });
+  }, [visitedPlaces]);
+
+  // Extract available years for the journal filter
+  const availableYears = useMemo(() => {
+    const years = new Set();
+    visitedPlaces.forEach((p) => {
+      if (p.visitedDate && p.visitedDate.length >= 4) {
+        const y = p.visitedDate.slice(0, 4);
+        if (/^\d{4}$/.test(y)) years.add(y);
+      }
+    });
+    return Array.from(years).sort().reverse();
+  }, [visitedPlaces]);
+
+  // Filtered places for travel journal
+  const filteredJournalPlaces = useMemo(() => {
+    return sortedVisited.filter((p) => {
+      if (selectedYearFilter !== 'all') {
+        const pYear = p.visitedDate ? p.visitedDate.slice(0, 4) : 'Tarihsiz';
+        if (pYear !== selectedYearFilter) return false;
+      }
+      if (journalSearch.trim()) {
+        const q = journalSearch.toLowerCase();
+        const mName = p.name?.toLowerCase().includes(q);
+        const mCity = p.city?.toLowerCase().includes(q);
+        const mCountry = p.country?.toLowerCase().includes(q);
+        const mNote = p.userNotes?.toLowerCase().includes(q);
+        return mName || mCity || mCountry || mNote;
+      }
+      return true;
+    });
+  }, [sortedVisited, selectedYearFilter, journalSearch]);
+
+  // Group filtered journal places by Year
+  const timelineByYear = useMemo(() => {
+    const groups = {};
+    filteredJournalPlaces.forEach((p) => {
+      const year = p.visitedDate && /^\d{4}/.test(p.visitedDate)
+        ? p.visitedDate.slice(0, 4)
+        : 'Tarihsiz Anılar';
+      if (!groups[year]) groups[year] = [];
+      groups[year].push(p);
+    });
+    return groups;
+  }, [filteredJournalPlaces]);
 
   const badges = [
     {
@@ -659,46 +719,232 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
             </div>
           )}
 
-          {/* TAB 4: VISITED PLACES LOG */}
+          {/* TAB 4: VISITED PLACES LOG & TRAVEL TIMELINE */}
           {activeTab === 'log' && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                  ✓ Gittiğim & Üstünü Çizdiğim Yerler ({visitedPlaces.length})
-                </h3>
-                <span className="text-xs text-emerald-700 font-bold">
-                  Toplam {visitedPlaces.length} Anı
-                </span>
+            <div className="space-y-6">
+              {/* Journal Header & Filters */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-base font-serif font-bold text-slate-900 flex items-center gap-2">
+                      <BookOpen className="w-5 h-5 text-amber-600" />
+                      <span>Kişisel Gezi Günlüğü & Anı Zaman Çizelgesi</span>
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Ziyaret tarihlerine göre kronolojik sıralanmış keşiflerin, kişisel notların ve seyahat anıların
+                    </p>
+                  </div>
+                  <div className="text-xs text-emerald-700 font-bold bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 shrink-0">
+                    Toplam {visitedPlaces.length} Ziyaret Edilmiş Mekan
+                  </div>
+                </div>
+
+                {/* Search & Year Filters Row */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
+                  <div className="relative w-full sm:w-64">
+                    <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
+                    <input
+                      type="text"
+                      value={journalSearch}
+                      onChange={(e) => setJournalSearch(e.target.value)}
+                      placeholder="Anılarda veya mekanlarda ara..."
+                      className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400"
+                    />
+                    {journalSearch && (
+                      <button
+                        onClick={() => setJournalSearch('')}
+                        className="absolute right-2.5 top-2 text-slate-400 hover:text-slate-700"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto no-scrollbar">
+                    <button
+                      onClick={() => setSelectedYearFilter('all')}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition shrink-0 ${
+                        selectedYearFilter === 'all'
+                          ? 'bg-slate-900 text-white'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
+                    >
+                      Tüm Yıllar
+                    </button>
+                    {availableYears.map((yr) => (
+                      <button
+                        key={yr}
+                        onClick={() => setSelectedYearFilter(yr)}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition shrink-0 ${
+                          selectedYearFilter === yr
+                            ? 'bg-amber-500 text-slate-950 font-bold'
+                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        }`}
+                      >
+                        {yr}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               {visitedPlaces.length === 0 ? (
-                <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-xs text-slate-500 shadow-xs">
-                  Henüz bir yeri "Gittim" olarak işaretlemedin. Haritadan veya listeden gittiğin yerlerin yanındaki ○ butonuna tıklayarak pasaportuna ilk damganı vurabilirsin!
+                <div className="bg-white border border-slate-200 rounded-3xl p-10 text-center space-y-3 shadow-xs">
+                  <span className="text-4xl block">📖</span>
+                  <h4 className="text-sm font-bold text-slate-800">Henüz Gezi Günlüğünde Anı Yok</h4>
+                  <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+                    Haritadan veya listeden gittiğin yerlerin yanındaki ○ butonuna basarak ilk mekanını "Gittim" olarak işaretle. Ziyaret tarihi, puanın ve kişisel notların burada kronolojik bir zaman tüneli olarak derlenecektir!
+                  </p>
+                </div>
+              ) : Object.keys(timelineByYear).length === 0 ? (
+                <div className="bg-white border border-slate-200 rounded-2xl p-6 text-center text-xs text-slate-500">
+                  Aradığın kriterlere uygun anı bulunamadı.
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {visitedPlaces.map((pl) => (
-                    <div
-                      key={pl.id}
-                      onClick={() => {
-                        onSelectPlace(pl);
-                        onClose();
-                      }}
-                      className="bg-white border border-emerald-200 hover:border-emerald-400 rounded-2xl p-3.5 flex items-center justify-between cursor-pointer transition shadow-xs group"
-                    >
-                      <div className="min-w-0">
-                        <div className="text-xs font-bold text-emerald-800 group-hover:text-emerald-950 truncate">
-                          ✓ {pl.name}
+                <div className="space-y-8">
+                  {Object.entries(timelineByYear).map(([year, yearPlaces]) => {
+                    const distinctCountries = [
+                      ...new Set(yearPlaces.map((p) => p.country).filter(Boolean))
+                    ];
+
+                    return (
+                      <div key={year} className="space-y-4">
+                        {/* Year Milestone Header */}
+                        <div className="flex items-center gap-3">
+                          <div className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-serif font-bold text-sm shadow-sm flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-slate-950" />
+                            <span>{year} Yılı</span>
+                          </div>
+                          <div className="text-xs text-slate-500 font-medium">
+                            {yearPlaces.length} Mekan Ziyareti · {distinctCountries.length} Farklı Ülke ({distinctCountries.slice(0, 3).join(', ')}{distinctCountries.length > 3 ? '...' : ''})
+                          </div>
+                          <div className="flex-1 h-px bg-slate-200" />
                         </div>
-                        <div className="text-[11px] text-slate-500">{pl.city}, {pl.country}</div>
+
+                        {/* Chronological Cards */}
+                        <div className="grid grid-cols-1 gap-3 pl-2 sm:pl-4 border-l-2 border-amber-200/80 ml-3">
+                          {yearPlaces.map((pl) => {
+                            const catObj =
+                              CATEGORIES.find((c) => c.id === pl.category) || CATEGORIES[0];
+
+                            return (
+                              <div
+                                key={pl.id}
+                                onClick={() => {
+                                  onSelectPlace(pl);
+                                  onClose();
+                                }}
+                                className="bg-white border border-slate-200 hover:border-amber-400 rounded-2xl p-4 flex flex-col sm:flex-row gap-4 cursor-pointer transition shadow-xs hover:shadow-md group relative -ml-[19px] sm:-ml-[27px]"
+                              >
+                                {/* Timeline Dot */}
+                                <div className="hidden sm:flex absolute -left-[11px] top-6 w-5 h-5 rounded-full bg-white border-4 border-amber-500 shadow-xs items-center justify-center" />
+
+                                {/* Thumbnail */}
+                                <div className="relative w-full sm:w-32 h-28 rounded-xl overflow-hidden shrink-0 bg-slate-100 border border-slate-200 flex items-center justify-center">
+                                  {pl.coverImage ? (
+                                    <img
+                                      src={getOptimizedImageUrl(pl.coverImage, 500)}
+                                      loading="lazy"
+                                      alt={pl.name}
+                                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                      onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        if (e.target.nextElementSibling) e.target.nextElementSibling.style.display = 'block';
+                                      }}
+                                    />
+                                  ) : null}
+                                  <span
+                                    className="text-3xl"
+                                    style={{ display: pl.coverImage ? 'none' : 'block' }}
+                                  >
+                                    {catObj.icon}
+                                  </span>
+                                  <span className="absolute bottom-1 right-1 text-[10px] bg-white/95 text-slate-800 border border-slate-200 rounded px-1.5 py-0.5 font-bold shadow-xs">
+                                    {catObj.icon} {catObj.label}
+                                  </span>
+                                </div>
+
+                                {/* Body */}
+                                <div className="flex-1 min-w-0 space-y-2">
+                                  <div className="flex flex-wrap items-center justify-between gap-2">
+                                    <div>
+                                      <h4 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-amber-600 transition truncate">
+                                        ✓ {pl.name}
+                                      </h4>
+                                      <div className="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
+                                        <MapPin className="w-3.5 h-3.5 text-amber-600" />
+                                        <span>{pl.city}, {pl.country}</span>
+                                        {pl.ankaraDistance?.summaryText && (
+                                          <>
+                                            <span>·</span>
+                                            <span className="text-slate-600 font-medium">{pl.ankaraDistance.summaryText}</span>
+                                          </>
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    {pl.visitedDate && (
+                                      <div className="px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-bold shrink-0 flex items-center gap-1">
+                                        <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+                                        <span>{pl.visitedDate}</span>
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* User Rating Stars */}
+                                  {pl.userRating > 0 && (
+                                    <div className="flex items-center gap-1 text-amber-500 text-xs">
+                                      {[...Array(5)].map((_, i) => (
+                                        <Star
+                                          key={i}
+                                          className={`w-3.5 h-3.5 ${
+                                            i < pl.userRating
+                                              ? 'fill-amber-400 text-amber-400'
+                                              : 'text-slate-200'
+                                          }`}
+                                        />
+                                      ))}
+                                      <span className="text-[11px] font-bold text-slate-600 ml-1">
+                                        {pl.userRating}/5 Puan
+                                      </span>
+                                    </div>
+                                  )}
+
+                                  {/* Personal User Note */}
+                                  {pl.userNotes && (
+                                    <div className="bg-amber-50/70 border-l-2 border-amber-400 rounded-r-xl p-2.5 text-xs text-slate-700 italic flex items-start gap-2">
+                                      <Quote className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                                      <span className="line-clamp-2">{pl.userNotes}</span>
+                                    </div>
+                                  )}
+
+                                  {/* User Photos Preview */}
+                                  {pl.userPhotos && pl.userPhotos.length > 0 && (
+                                    <div className="flex items-center gap-1.5 pt-1">
+                                      <span className="text-[10px] text-slate-500 flex items-center gap-1">
+                                        <Camera className="w-3 h-3 text-slate-400" />
+                                        {pl.userPhotos.length} Kişisel Fotoğraf:
+                                      </span>
+                                      <div className="flex items-center gap-1">
+                                        {pl.userPhotos.slice(0, 4).map((imgUrl, idx) => (
+                                          <img
+                                            key={idx}
+                                            src={imgUrl}
+                                            alt="Anı"
+                                            className="w-7 h-7 rounded-md object-cover border border-slate-200"
+                                          />
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
-                      {pl.visitedDate && (
-                        <span className="text-[10px] bg-slate-100 border border-slate-200 px-2 py-1 rounded text-slate-600 shrink-0 ml-2 font-medium">
-                          {pl.visitedDate}
-                        </span>
-                      )}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

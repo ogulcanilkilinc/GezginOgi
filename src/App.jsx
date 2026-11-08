@@ -20,6 +20,7 @@ const ScratchMapModal = lazy(() => import('./components/ScratchMapModal'));
 const EmergencyConsulateModal = lazy(() => import('./components/EmergencyConsulateModal'));
 const SeasonalCalendarModal = lazy(() => import('./components/SeasonalCalendarModal'));
 const CloudSyncModal = lazy(() => import('./components/CloudSyncModal'));
+const CountryIntelModal = lazy(() => import('./components/CountryIntelModal'));
 
 import {
   Compass,
@@ -47,7 +48,8 @@ import {
   Cloud,
   Lock,
   Unlock,
-  ShieldCheck
+  ShieldCheck,
+  WifiOff
 } from 'lucide-react';
 
 const USER_OVERRIDES_KEY = 'kesif_atlasim_user_overrides_v1';
@@ -129,8 +131,24 @@ export default function App() {
   const [statusFilter, setStatusFilter] = useState('todo'); // Default: 'todo' (Ana Harita / Keşfedilecekler)
   const [seasonFilter, setSeasonFilter] = useState('all');
   const [durationFilter, setDurationFilter] = useState('all');
+  const [weekendEscapeFilter, setWeekendEscapeFilter] = useState(false); // Ankara'dan 4.5 saatten yakın
+  const [visaFreeFilter, setVisaFreeFilter] = useState(false); // Sadece Türk pasaportuyla vizesiz/kimlikle
+  const [selectedCountryIntel, setSelectedCountryIntel] = useState(null); // Country Intel modal state
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleLimit, setVisibleLimit] = useState(80);
+
+  // Online / Offline Network Status Listener
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   // Mobile & Compact Filter States
   const [mobileTab, setMobileTab] = useState('map'); // 'map' or 'list'
@@ -252,6 +270,8 @@ export default function App() {
       if (statusFilter === 'favorite' && !p.favorite) return false;
       if (seasonFilter !== 'all' && !(p.seasons || []).includes(seasonFilter)) return false;
       if (durationFilter !== 'all' && p.durationCategory !== durationFilter) return false;
+      if (weekendEscapeFilter && !p.ankaraDistance?.isWeekendEscape) return false;
+      if (visaFreeFilter && !p.visaStatus?.isVisaFree) return false;
 
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
@@ -276,6 +296,8 @@ export default function App() {
     statusFilter,
     seasonFilter,
     durationFilter,
+    weekendEscapeFilter,
+    visaFreeFilter,
     searchQuery
   ]);
 
@@ -291,8 +313,10 @@ export default function App() {
     const visitedCount = scopeList.filter((p) => p.visited).length;
     const todoCount = total - visitedCount;
     const favoriteCount = scopeList.filter((p) => p.favorite).length;
+    const weekendCount = scopeList.filter((p) => p.ankaraDistance?.isWeekendEscape).length;
+    const visaFreeCount = scopeList.filter((p) => p.visaStatus?.isVisaFree).length;
     const percent = total > 0 ? Math.round((visitedCount / total) * 100) : 0;
-    return { total, visitedCount, todoCount, favoriteCount, percent };
+    return { total, visitedCount, todoCount, favoriteCount, weekendCount, visaFreeCount, percent };
   }, [places, activeRegion]);
 
   // Handlers
@@ -1051,6 +1075,47 @@ export default function App() {
               </button>
             </div>
 
+            {/* Quick Toggle: Hafta Sonu Kaçamağı (Ankara < 4.5 saat) */}
+            <button
+              onClick={() => setWeekendEscapeFilter(!weekendEscapeFilter)}
+              className={`px-2.5 py-1 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition shrink-0 ${
+                weekendEscapeFilter
+                  ? 'bg-emerald-600 text-white border-emerald-500 shadow-xs font-bold'
+                  : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+              }`}
+              title="Ankara'dan 4.5 saatten yakın araba ve trenle ulaşılan kaçamak rotaları"
+            >
+              <span>🚗</span>
+              <span className="hidden sm:inline">Hafta Sonu</span>
+              <span>({stats.weekendCount})</span>
+            </button>
+
+            {/* Quick Toggle: Sadece Vizesiz Ülkeler */}
+            <button
+              onClick={() => setVisaFreeFilter(!visaFreeFilter)}
+              className={`px-2.5 py-1 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition shrink-0 ${
+                visaFreeFilter
+                  ? 'bg-sky-600 text-white border-sky-500 shadow-xs font-bold'
+                  : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+              }`}
+              title="Sadece Türk vatandaşlarına vizesiz veya kimlikle girilebilen destinasyonlar"
+            >
+              <span>🛂</span>
+              <span className="hidden sm:inline">Sadece Vizesiz</span>
+              <span>({stats.visaFreeCount})</span>
+            </button>
+
+            {/* Offline PWA Status Badge */}
+            {!isOnline && (
+              <div
+                className="px-2.5 py-1 rounded-xl bg-slate-900 border border-amber-400 text-amber-300 text-xs font-bold flex items-center gap-1.5 shadow-xs shrink-0 animate-pulse"
+                title="İnternet bağlantısı kesildi. Keşif Atlası yerel önbellekten (Service Worker) internetsiz çalışıyor."
+              >
+                <WifiOff className="w-3.5 h-3.5 text-amber-400" />
+                <span>Çevrimdışı Mod</span>
+              </div>
+            )}
+
             {/* Detaylı Filtreler Toggle Button */}
             <button
               onClick={() => setIsExtraFiltersOpen(!isExtraFiltersOpen)}
@@ -1132,7 +1197,7 @@ export default function App() {
               </button>
 
               {/* Clear All Filters */}
-              {(activeSubRegion !== 'all' || seasonFilter !== 'all' || durationFilter !== 'all' || statusFilter !== 'todo' || searchQuery) && (
+              {(activeSubRegion !== 'all' || seasonFilter !== 'all' || durationFilter !== 'all' || weekendEscapeFilter || visaFreeFilter || statusFilter !== 'todo' || searchQuery) && (
                 <button
                   onClick={() => {
                     setActiveSubRegion('all');
@@ -1142,6 +1207,8 @@ export default function App() {
                     setStatusFilter('todo');
                     setSeasonFilter('all');
                     setDurationFilter('all');
+                    setWeekendEscapeFilter(false);
+                    setVisaFreeFilter(false);
                     setSearchQuery('');
                   }}
                   className="text-[11px] text-amber-600 hover:text-amber-800 font-medium hover:underline px-1 py-0.5"
@@ -1376,6 +1443,22 @@ export default function App() {
                             </div>
 
                             <div className="flex items-center gap-1.5 mt-2 text-[10px] text-slate-600 flex-wrap">
+                              {place.ankaraDistance?.summaryText && (
+                                <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-900 border border-amber-200/90 px-1.5 py-0.5 rounded font-medium">
+                                  <span>🚗</span>
+                                  <span>{place.ankaraDistance.summaryText.replace('Ankara’dan ', '')}</span>
+                                </span>
+                              )}
+                              {place.ankaraDistance?.isWeekendEscape && (
+                                <span className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
+                                  🌿 Hafta Sonu
+                                </span>
+                              )}
+                              {place.country !== 'Türkiye' && place.visaStatus && (
+                                <span className={`px-1.5 py-0.5 rounded font-bold border ${place.visaStatus.badgeClass}`}>
+                                  {place.visaStatus.icon} {place.visaStatus.label}
+                                </span>
+                              )}
                               <span className="inline-flex items-center gap-1 bg-slate-100 border border-slate-200/80 px-2 py-0.5 rounded text-slate-700">
                                 <Clock className="w-3 h-3 text-amber-600" />
                                 {place.duration}
@@ -1481,6 +1564,7 @@ export default function App() {
                     onDeletePlace={handleDeletePlace}
                     inTripPlan={tripPlanIds.includes(selectedPlace.id)}
                     onToggleTripPlan={handleToggleTripPlan}
+                    onOpenCountryIntel={(c) => setSelectedCountryIntel(c)}
                   />
                 </div>
               )}
@@ -1508,6 +1592,7 @@ export default function App() {
                 onDeletePlace={handleDeletePlace}
                 inTripPlan={tripPlanIds.includes(selectedPlace.id)}
                 onToggleTripPlan={handleToggleTripPlan}
+                onOpenCountryIntel={(c) => setSelectedCountryIntel(c)}
               />
             </div>
           </div>
@@ -1668,7 +1753,28 @@ export default function App() {
                       <div className="space-y-4">
                         {/* Quick Meta */}
                         <div className="flex flex-wrap items-center gap-2 text-xs">
-                          <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-1 rounded-lg font-semibold">
+                          {place.ankaraDistance?.summaryText && (
+                            <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-1 rounded-lg font-semibold">
+                              <span>🚗</span>
+                              <span>{place.ankaraDistance.summaryText}</span>
+                            </span>
+                          )}
+                          {place.ankaraDistance?.isWeekendEscape && (
+                            <span className="inline-flex items-center gap-1.5 bg-emerald-600 text-white px-2.5 py-1 rounded-lg font-bold shadow-2xs">
+                              🌿 Hafta Sonu Kaçamağı
+                            </span>
+                          )}
+                          {place.country !== 'Türkiye' && place.visaStatus && (
+                            <span
+                              onClick={() => setSelectedCountryIntel(place.country)}
+                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-bold border cursor-pointer hover:opacity-90 ${place.visaStatus.badgeClass}`}
+                              title="Ülke rehberini aç"
+                            >
+                              <span>{place.visaStatus.icon}</span>
+                              <span>{place.visaStatus.label}</span>
+                            </span>
+                          )}
+                          <span className="inline-flex items-center gap-1.5 bg-slate-100 text-slate-800 border border-slate-200 px-2.5 py-1 rounded-lg font-medium">
                             <Clock className="w-3.5 h-3.5 text-amber-600" />
                             Süre: {place.duration}
                           </span>
@@ -1821,6 +1927,7 @@ export default function App() {
                   onDeletePlace={handleDeletePlace}
                   inTripPlan={tripPlanIds.includes(selectedPlace.id)}
                   onToggleTripPlan={handleToggleTripPlan}
+                  onOpenCountryIntel={(c) => setSelectedCountryIntel(c)}
                 />
               </div>
             )}
@@ -1953,6 +2060,13 @@ export default function App() {
         isAdmin={isAdmin}
         adminPin={adminPin}
         onSetAdminPin={handleSetAdminPin}
+      />
+
+      {/* ================= COUNTRY PRACTICAL INTEL MODAL ================= */}
+      <CountryIntelModal
+        isOpen={Boolean(selectedCountryIntel)}
+        onClose={() => setSelectedCountryIntel(null)}
+        countryName={selectedCountryIntel}
       />
 
       {/* ================= MOBILE FILTER DRAWER SHEET ================= */}
