@@ -16,6 +16,7 @@ import NearbyRadarModal from './components/NearbyRadarModal';
 import ScratchMapModal from './components/ScratchMapModal';
 import EmergencyConsulateModal from './components/EmergencyConsulateModal';
 import SeasonalCalendarModal from './components/SeasonalCalendarModal';
+import CloudSyncModal from './components/CloudSyncModal';
 import {
   Compass,
   Plus,
@@ -38,7 +39,8 @@ import {
   X,
   Award,
   Sparkles,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Cloud
 } from 'lucide-react';
 
 const STORAGE_KEY = 'kesif_atlasim_places_v8';
@@ -114,6 +116,17 @@ export default function App() {
   const [isScratchMapOpen, setIsScratchMapOpen] = useState(false);
   const [isEmergencyOpen, setIsEmergencyOpen] = useState(false);
   const [isSeasonalCalendarOpen, setIsSeasonalCalendarOpen] = useState(false);
+  const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [adminPin, setAdminPin] = useState(() => {
+    return localStorage.getItem('kesif_atlasim_admin_pin') || '1923';
+  });
+
+  const handleSetAdminPin = (pin, adminStatus) => {
+    setAdminPin(pin);
+    setIsAdmin(adminStatus);
+    localStorage.setItem('kesif_atlasim_admin_pin', pin);
+  };
   const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
   const [editingPlace, setEditingPlace] = useState(null);
   const [isPickingLocation, setIsPickingLocation] = useState(false);
@@ -578,6 +591,17 @@ export default function App() {
                     onClick={() => setIsToolsDropdownOpen(false)}
                   >
                   <button
+                    onClick={() => setIsCloudSyncOpen(true)}
+                    className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 transition"
+                  >
+                    <span className="text-base">☁️</span>
+                    <div>
+                      <strong className="block text-slate-100">Bulut Senkronizasyon & PIN</strong>
+                      <span className="text-[10px] text-slate-400">Telefon ve bilgisayarı canlı eşitle</span>
+                    </div>
+                  </button>
+
+                  <button
                     onClick={() => setIsSeasonalCalendarOpen(true)}
                     className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 transition"
                   >
@@ -686,6 +710,16 @@ export default function App() {
             >
               <Calendar className="w-3.5 h-3.5" />
               <span className="hidden xl:inline">Bu Ay Nereye Gitsem?</span>
+            </button>
+
+            {/* Cloud Sync Button */}
+            <button
+              onClick={() => setIsCloudSyncOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/30 text-xs font-semibold transition"
+              title="Cihazlar Arası Bulut Eşleme & Güvenlik PIN'i"
+            >
+              <Cloud className="w-3.5 h-3.5" />
+              <span className="hidden lg:inline">Bulut Eşleme</span>
             </button>
 
             {/* Export / Import Backup */}
@@ -1730,6 +1764,19 @@ export default function App() {
             setSearchQuery(keywords[0]);
           }
         }}
+      />
+
+      {/* ================= CLOUD SYNC & PIN SECURITY MODAL ================= */}
+      <CloudSyncModal
+        isOpen={isCloudSyncOpen}
+        onClose={() => setIsCloudSyncOpen(false)}
+        places={places}
+        onUpdatePlaces={(updatedPlaces) => {
+          setPlaces(updatedPlaces);
+        }}
+        isAdmin={isAdmin}
+        adminPin={adminPin}
+        onSetAdminPin={handleSetAdminPin}
       />
     </div>
   );
