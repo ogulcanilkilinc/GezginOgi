@@ -62,6 +62,8 @@ const USER_OVERRIDES_KEY = 'kesif_atlasim_user_overrides_v1';
 const USER_PHOTOS_KEY = 'kesif_atlasim_user_photos_v1';
 
 const TRIP_KEY = 'kesif_atlasim_trip_v1';
+// Content version of the guide data this device has loaded (see places-version.json)
+const DATA_VERSION_KEY = 'kesif_atlasim_data_version_v1';
 
 function readStoredTrip() {
   try {
@@ -108,7 +110,10 @@ export default function App() {
   // Read-only view of someone's shared map (#paylas=...): nothing is saved or synced
   const [shareView, setShareView] = useState(null);
 
-  const handleApplyUpdate = (freshRaw) => {
+  const handleApplyUpdate = (freshRaw, version) => {
+    try {
+      if (version) localStorage.setItem(DATA_VERSION_KEY, version);
+    } catch (e) {}
     let merged = freshRaw;
     try {
       const rawOverrides = localStorage.getItem(USER_OVERRIDES_KEY);
@@ -210,17 +215,25 @@ export default function App() {
         setPlaces(merged);
         setIsLoadingPlaces(false);
 
-        // Background Freshness Check: Detect if fresh network data differs (added, removed or edited places)
-        fetch(`${cleanBase}data/places.json?_t=${Date.now()}`, { cache: 'no-store' })
+        // Background freshness check. The build publishes a tiny places-version.json; the full file is
+        // downloaded again only when that version differs from the one this device last loaded.
+        // A device that has no stored version yet does one full comparison to learn it.
+        const fetchFresh = () =>
+          fetch(`${cleanBase}data/places.json?_t=${Date.now()}`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null));
+        fetch(`${cleanBase}data/places-version.json?_t=${Date.now()}`, { cache: 'no-store' })
           .then((r) => (r.ok ? r.json() : null))
-          .then((freshRaw) => {
-            if (freshRaw && Array.isArray(freshRaw) && JSON.stringify(freshRaw) !== JSON.stringify(rawPlaces)) {
-              setUpdateNotification({
-                oldLen: rawPlaces.length,
-                newLen: freshRaw.length,
-                freshRaw
-              });
+          .then(async (meta) => {
+            const version = meta?.version;
+            if (!version) return;
+            const known = localStorage.getItem(DATA_VERSION_KEY);
+            if (known === version) return;
+            const freshRaw = await fetchFresh();
+            if (!Array.isArray(freshRaw)) return;
+            if (JSON.stringify(freshRaw) === JSON.stringify(rawPlaces)) {
+              localStorage.setItem(DATA_VERSION_KEY, version);
+              return;
             }
+            setUpdateNotification({ oldLen: rawPlaces.length, newLen: freshRaw.length, freshRaw, version });
           })
           .catch(() => {});
       })
@@ -262,6 +275,28 @@ export default function App() {
 
   // Mobile & Compact Filter States
   const [mobileTab, setMobileTab] = useState('map'); // 'map' or 'list'
+
+  // On phones the map/list area fills the screen down to the bottom bar. Its top moves when the
+  // header content changes, so it is measured after every render and on viewport changes.
+  const splitRef = useRef(null);
+  const [mobileSplitHeight, setMobileSplitHeight] = useState(null);
+  useEffect(() => {
+    const update = () => {
+      const el = splitRef.current;
+      if (!el || window.innerWidth >= 1024) {
+        setMobileSplitHeight(null);
+        return;
+      }
+      // innerHeight (the layout viewport) is what the fixed bottom bar is placed against; the visual
+      // viewport shrinks with pinch zoom or the on-screen keyboard, which should not resize the map.
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      // 64 px = the main area's bottom padding that keeps content clear of the bottom bar
+      setMobileSplitHeight(Math.max(380, Math.round(window.innerHeight - top - 64)));
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  });
   const [isExtraFiltersOpen, setIsExtraFiltersOpen] = useState(false);
   const [isMobileDetailOpen, setIsMobileDetailOpen] = useState(false);
 
@@ -1363,40 +1398,20 @@ export default function App() {
 
       {/* ================= MAIN WORKSPACE AREA ================= */}
       <main className="flex-1 max-w-[1800px] w-full mx-auto p-2 sm:p-4 lg:p-5 overflow-hidden pb-16 lg:pb-4">
-        {/* Mobile View Switcher (Harita vs Liste Tab Bar on < lg) */}
-        <div className="lg:hidden flex items-center justify-center p-1 bg-white border border-slate-200 rounded-2xl mb-2.5 shadow-xs">
-          <button
-            onClick={() => setMobileTab('map')}
-            className={`flex-1 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition ${
-              mobileTab === 'map'
-                ? 'bg-amber-500 text-slate-950 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <MapIcon className="w-3.5 h-3.5" />
-            <span>🗺️ Harita</span>
-          </button>
-          <button
-            onClick={() => setMobileTab('list')}
-            className={`flex-1 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition ${
-              mobileTab === 'list'
-                ? 'bg-amber-500 text-slate-950 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <LayoutGrid className="w-3.5 h-3.5" />
-            <span>📋 Liste ({filteredPlaces.length})</span>
-          </button>
-        </div>
+        {/* On phones the bottom bar switches between map and list, so there is no switcher here */}
 
         {/* MODE 1: SPLIT VIEW (Places List + Active Detail + Interactive Map) */}
         {viewMode === 'split' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[calc(100vh-140px)] min-h-[560px]">
+          <div
+            ref={splitRef}
+            style={mobileSplitHeight ? { height: mobileSplitHeight } : undefined}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:h-[calc(100vh-140px)] lg:min-h-[560px]"
+          >
             {/* Left Column: Places List (Visible on desktop OR when mobileTab === 'list') */}
             <div
               className={`${
                 mobileTab === 'list' ? 'flex' : 'hidden lg:flex'
-              } lg:col-span-4 xl:col-span-3 bg-white border border-slate-200/90 rounded-2xl flex-col overflow-hidden h-[calc(100vh-210px)] lg:h-full shadow-xs`}
+              } lg:col-span-4 xl:col-span-3 bg-white border border-slate-200/90 rounded-2xl flex-col overflow-hidden h-full shadow-xs`}
             >
               <div className="px-4 py-2.5 border-b border-slate-200/90 flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
@@ -1608,7 +1623,7 @@ export default function App() {
             <div
               className={`${
                 mobileTab === 'map' ? 'block' : 'hidden lg:grid'
-              } lg:col-span-8 xl:col-span-9 grid grid-cols-1 xl:grid-cols-12 gap-4 h-[calc(100vh-210px)] lg:h-full overflow-hidden relative`}
+              } lg:col-span-8 xl:col-span-9 grid grid-cols-1 xl:grid-cols-12 gap-4 h-full overflow-hidden relative`}
             >
               {/* Interactive Map */}
               <div
@@ -2478,7 +2493,7 @@ export default function App() {
             Yer verileri güncellendi ({updateNotification.newLen} yer)
           </span>
           <button
-            onClick={() => handleApplyUpdate(updateNotification.freshRaw)}
+            onClick={() => handleApplyUpdate(updateNotification.freshRaw, updateNotification.version)}
             className="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold px-3 py-1 rounded-xl transition shadow-xs"
           >
             Şimdi Yenile

@@ -3,6 +3,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -17,6 +18,21 @@ if (!fs.existsSync(assetsDir)) {
   process.exit(0);
 }
 
+// Published data: places.json is minified (the source copy stays pretty-printed for readable diffs),
+// photos.json is a data-pipeline file the app never loads, so it is not published, and
+// places-version.json carries a short content hash so the app can check for new data without
+// downloading the whole file again.
+const dataDir = path.resolve(distDir, 'data');
+const placesPath = path.resolve(dataDir, 'places.json');
+if (fs.existsSync(placesPath)) {
+  const minified = JSON.stringify(JSON.parse(fs.readFileSync(placesPath, 'utf8')));
+  fs.writeFileSync(placesPath, minified);
+  const version = crypto.createHash('sha1').update(minified).digest('hex').slice(0, 12);
+  fs.writeFileSync(path.resolve(dataDir, 'places-version.json'), JSON.stringify({ version }));
+  console.log(`[Data] places.json minified (${Math.round(minified.length / 1024)} KB), version ${version}`);
+}
+fs.rmSync(path.resolve(dataDir, 'photos.json'), { force: true });
+
 const assetFiles = fs.readdirSync(assetsDir);
 const assetUrls = assetFiles
   .filter((f) => f.endsWith('.js') || f.endsWith('.css'))
@@ -27,8 +43,7 @@ const basePrecache = [
   './index.html',
   './favicon.svg',
   './manifest.json',
-  './data/places.json',
-  './data/photos.json'
+  './data/places.json'
 ];
 
 const fullPrecache = [...basePrecache, ...assetUrls];

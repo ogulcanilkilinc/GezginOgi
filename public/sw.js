@@ -2,7 +2,7 @@
 // Service Worker for GezginOgi - Robust Offline PWA Support
 // Automatically precaches all compiled JS chunks, CSS, fonts, and data for seamless offline usage.
 
-const CACHE_NAME = 'gezginogi-build-mw8vam8x';
+const CACHE_NAME = 'gezginogi-build-mwbqg5b4';
 
 // Precache list - dynamically populated with all build chunks by inject-sw-assets.mjs
 const PRECACHE_URLS = [
@@ -11,26 +11,25 @@ const PRECACHE_URLS = [
   "./favicon.svg",
   "./manifest.json",
   "./data/places.json",
-  "./data/photos.json",
-  "./assets/BorderCrossingsModal-D93R-oA1.js",
-  "./assets/CloudSyncModal-Cxtyr5Nj.js",
-  "./assets/CountryIntelModal-C0n2Ld3_.js",
-  "./assets/CurrencyBudgetModal-DdCF7Pc0.js",
-  "./assets/EmergencyConsulateModal-B5W-vaYK.js",
+  "./assets/BorderCrossingsModal-D17dLZfR.js",
+  "./assets/CloudSyncModal-w0fdTdIO.js",
+  "./assets/CountryIntelModal-BJ1CWXVu.js",
+  "./assets/CurrencyBudgetModal-B6lW3cBO.js",
+  "./assets/EmergencyConsulateModal-CHY5EHMz.js",
   "./assets/icons-vendor-DrESObBc.js",
-  "./assets/index-BSs7wqRV.js",
-  "./assets/index-Xy_I74XW.css",
-  "./assets/ItineraryModal-_YHu6iuQ.js",
+  "./assets/index-UazYCioX.js",
+  "./assets/index-w1OatFEJ.css",
+  "./assets/ItineraryModal-BaPhVtMW.js",
   "./assets/leaflet-vendor-Dy36dnF4.js",
-  "./assets/NearbyRadarModal-BiPawuoy.js",
-  "./assets/PackingChecklistModal-CEnsOxdx.js",
-  "./assets/PassportModal-DfRzyneK.js",
-  "./assets/PlaceFormModal-CW7x4_AI.js",
-  "./assets/RouteSimulatorModal-DdDR6jKi.js",
-  "./assets/ScratchMapModal-ClxVBsCw.js",
-  "./assets/SearchableLocationModal-2H-ZuFyE.js",
-  "./assets/SeasonalCalendarModal-rdL51DkN.js",
-  "./assets/TravelSoundtrackModal-DfF_MQfE.js"
+  "./assets/NearbyRadarModal-BceyMuQo.js",
+  "./assets/PackingChecklistModal-CCMBNi27.js",
+  "./assets/PassportModal-CUckXrW_.js",
+  "./assets/PlaceFormModal-DmRDragV.js",
+  "./assets/RouteSimulatorModal-DxfTKvVO.js",
+  "./assets/ScratchMapModal-JRvMIC3E.js",
+  "./assets/SearchableLocationModal-CJpaf-P-.js",
+  "./assets/SeasonalCalendarModal-knA178Fj.js",
+  "./assets/TravelSoundtrackModal-c4i186m6.js"
 ];
 
 self.addEventListener('install', (event) => {
