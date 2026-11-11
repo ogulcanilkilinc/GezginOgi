@@ -29066,14 +29066,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "Değişken",
-      "notes": "Tayvan için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Türkiye, Tayvan’ın online e-vize listesinde (bordo pasaport). Başvuru Tayvan Konsolosluk İşleri Bürosu’nun (boca.gov.tw) resmi sitesinden yapılır; liste karşılıklılık esasına göre değişebildiği için yola çıkmadan teyit et.",
+      "source": "Kaynak: Tayvan Konsolosluk İşleri Bürosu (boca.gov.tw) · Kontrol: 11 Kasım 2026"
     }
   },
   {
@@ -63246,14 +63246,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "Değişken",
-      "notes": "Tayvan için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Türkiye, Tayvan’ın online e-vize listesinde (bordo pasaport). Başvuru Tayvan Konsolosluk İşleri Bürosu’nun (boca.gov.tw) resmi sitesinden yapılır; liste karşılıklılık esasına göre değişebildiği için yola çıkmadan teyit et.",
+      "source": "Kaynak: Tayvan Konsolosluk İşleri Bürosu (boca.gov.tw) · Kontrol: 11 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Wikimedia Commons",
@@ -65710,14 +65710,14 @@
       "summaryText": "Ankara’dan ~16 - 22 sa (1-2 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "Kapıda Vize (30 Gün)",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
-      "duration": "Değişken",
-      "notes": "Dominik Cumhuriyeti için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "duration": "30 gün",
+      "notes": "Bordo pasaportla vizeye tabi; havalimanında 30 gün süreli vize alınır. Giriş ve çıkış için resmi portaldan online E-Ticket formu doldurulur.",
+      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) · Kontrol: 11 Kasım 2026"
     }
   },
   {
@@ -71888,14 +71888,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "Değişken",
-      "notes": "Tayvan için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Türkiye, Tayvan’ın online e-vize listesinde (bordo pasaport). Başvuru Tayvan Konsolosluk İşleri Bürosu’nun (boca.gov.tw) resmi sitesinden yapılır; liste karşılıklılık esasına göre değişebildiği için yola çıkmadan teyit et.",
+      "source": "Kaynak: Tayvan Konsolosluk İşleri Bürosu (boca.gov.tw) · Kontrol: 11 Kasım 2026"
     },
     "photoCredit": {
       "artist": "lumoplank",
@@ -74410,14 +74410,14 @@
       "summaryText": "Ankara’dan ~3 - 4.5 sa (direkt / 1 aktarma)"
     },
     "visaStatus": {
-      "category": "vize_gerekli",
-      "label": "Vize Şart",
-      "badgeClass": "bg-rose-100 text-rose-900 border-rose-300",
-      "icon": "🔒",
+      "category": "kapi_evize",
+      "label": "e-Vize",
+      "badgeClass": "bg-amber-100 text-amber-900 border-amber-300",
+      "icon": "🎫",
       "isVisaFree": false,
       "duration": "Değişken",
-      "notes": "Tayvan için konsolosluk veya e-vize şartlarını kontrol ediniz.",
-      "source": "Kaynak: T.C. Dışişleri Bakanlığı (mfa.gov.tr) & konsolosluk.gov.tr · Kontrol: Kasım 2026"
+      "notes": "Türkiye, Tayvan’ın online e-vize listesinde (bordo pasaport). Başvuru Tayvan Konsolosluk İşleri Bürosu’nun (boca.gov.tw) resmi sitesinden yapılır; liste karşılıklılık esasına göre değişebildiği için yola çıkmadan teyit et.",
+      "source": "Kaynak: Tayvan Konsolosluk İşleri Bürosu (boca.gov.tw) · Kontrol: 11 Kasım 2026"
     },
     "photoCredit": {
       "artist": "Peellden",

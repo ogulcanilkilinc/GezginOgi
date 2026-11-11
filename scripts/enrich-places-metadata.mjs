@@ -459,6 +459,19 @@ const COUNTRY_VISA_INFO = {
     label: "Kapıda Giriş İzni",
     duration: "31-90 gün",
     notes: "Samoa’da kapıda giriş izni (90 gün), Tonga’da kapıda vize (31 gün)."
+  },
+  // Added in the November 2026 visa check
+  'Dominik Cumhuriyeti': {
+    category: 'kapi_evize',
+    label: "Kapıda Vize (30 Gün)",
+    duration: "30 gün",
+    notes: "Bordo pasaportla vizeye tabi; havalimanında 30 gün süreli vize alınır. Giriş ve çıkış için resmi portaldan online E-Ticket formu doldurulur."
+  },
+  'Tayvan': {
+    category: 'kapi_evize',
+    label: "e-Vize",
+    duration: "Değişken",
+    notes: "Türkiye, Tayvan’ın online e-vize listesinde (bordo pasaport). Başvuru Tayvan Konsolosluk İşleri Bürosu’nun (boca.gov.tw) resmi sitesinden yapılır; liste karşılıklılık esasına göre değişebildiği için yola çıkmadan teyit et."
   }
 };
 

@@ -49,6 +49,7 @@ export default function TravelMap({
   const mapInstanceRef = useRef(null);
   const tileLayerRef = useRef(null);
   const markersLayerRef = useRef(null);
+  const selectedLayerRef = useRef(null);
   const routeLayerRef = useRef(null);
   const tempMarkerRef = useRef(null);
   // Latest places for fits started from effects; a fit asked for while the map is hidden waits here
@@ -92,14 +93,15 @@ export default function TravelMap({
       }
     });
 
-    // Nearby pins merge into a numbered bubble when zoomed out, so the map never has to
-    // draw all 1200+ pins at once; from city zoom on, every pin is shown
+    // Nearby pins merge into a numbered bubble, so the map never has to draw all 1200+ pins at
+    // once. From city zoom on only pins that would sit on top of each other merge; tapping such
+    // a bubble when zoomed in fans its pins out instead of zooming further.
     const markersLayer = L.markerClusterGroup({
       chunkedLoading: true,
       showCoverageOnHover: false,
       spiderfyOnMaxZoom: true,
-      disableClusteringAtZoom: 12,
-      maxClusterRadius: 50,
+      zoomToBoundsOnClick: false,
+      maxClusterRadius: (zoom) => (zoom < 12 ? 50 : 32),
       iconCreateFunction: (cluster) => {
         const n = cluster.getChildCount();
         const size = n < 10 ? 34 : n < 100 ? 40 : 46;
@@ -110,11 +112,20 @@ export default function TravelMap({
         });
       }
     }).addTo(map);
+    markersLayer.on('clusterclick', (e) => {
+      const cluster = e.layer;
+      const zoomNeeded = map.getBoundsZoom(cluster.getBounds());
+      if (map.getZoom() >= 15 || zoomNeeded > 17) cluster.spiderfy();
+      else cluster.zoomToBounds({ padding: [40, 40] });
+    });
+    // The selected place's pin lives outside the clusters so it is always visible
+    const selectedLayer = L.layerGroup().addTo(map);
     const routeLayer = L.layerGroup().addTo(map);
 
     mapInstanceRef.current = map;
     tileLayerRef.current = tileLayer;
     markersLayerRef.current = markersLayer;
+    selectedLayerRef.current = selectedLayer;
     routeLayerRef.current = routeLayer;
 
     // Invalidate size shortly after mount and whenever container resizes
@@ -250,7 +261,8 @@ export default function TravelMap({
 
   useEffect(() => {
     const markersLayer = markersLayerRef.current;
-    if (!mapInstanceRef.current || !markersLayer) return;
+    const selectedLayer = selectedLayerRef.current;
+    if (!mapInstanceRef.current || !markersLayer || !selectedLayer) return;
 
     const cache = markerCacheRef.current;
     const byId = new Map();
@@ -299,6 +311,15 @@ export default function TravelMap({
         cached.marker.setTooltipContent(tooltipHtml);
         cached.marker.setZIndexOffset(isSelected ? 1000 : 0);
         cached.sig = sig;
+        if (isSelected && !cached.solo) {
+          markersLayer.removeLayer(cached.marker);
+          selectedLayer.addLayer(cached.marker);
+          cached.solo = true;
+        } else if (!isSelected && cached.solo) {
+          selectedLayer.removeLayer(cached.marker);
+          toAdd.push(cached.marker);
+          cached.solo = false;
+        }
         return;
       }
 
@@ -308,13 +329,15 @@ export default function TravelMap({
         if (latest) onSelectRef.current(latest);
       });
       marker.bindTooltip(tooltipHtml, { direction: 'top', offset: [0, -36], opacity: 0.96 });
-      cache.set(place.id, { marker, sig });
-      toAdd.push(marker);
+      cache.set(place.id, { marker, sig, solo: isSelected });
+      if (isSelected) selectedLayer.addLayer(marker);
+      else toAdd.push(marker);
     });
 
     cache.forEach((entry, id) => {
       if (!byId.has(id)) {
-        toRemove.push(entry.marker);
+        if (entry.solo) selectedLayer.removeLayer(entry.marker);
+        else toRemove.push(entry.marker);
         cache.delete(id);
       }
     });

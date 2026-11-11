@@ -58,6 +58,21 @@
   background: #f59e0b;
 }
 
+/* iPhone notch and home indicator (the viewport uses viewport-fit=cover). All of these are 0 on
+   other devices. */
+body {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+.safe-bottom-bar {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+@media (max-width: 1023px) {
+  .main-above-bottom-bar {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+  }
+}
+
 /* Horizontally scrolling chip rows: still scrollable by touch, without a visible bar */
 .no-scrollbar {
   scrollbar-width: none;

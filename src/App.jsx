@@ -290,6 +290,7 @@ export default function App() {
   // Its top moves when the header content changes or wraps, so it is measured after every render
   // and on viewport changes.
   const splitRef = useRef(null);
+  const bottomBarRef = useRef(null);
   const [splitHeight, setSplitHeight] = useState(null);
   useEffect(() => {
     const update = () => {
@@ -299,8 +300,10 @@ export default function App() {
       // innerHeight (the layout viewport) is what the fixed bottom bar is placed against; the visual
       // viewport shrinks with pinch zoom or the on-screen keyboard, which should not resize the map.
       const top = el.getBoundingClientRect().top + window.scrollY;
-      // Bottom padding of the main area: 64 px on phones keeps content clear of the bottom bar
-      const bottomGap = desktop ? 20 : 64;
+      // Phones: stop 12 px above the bottom bar (taller on iPhones with a home indicator)
+      const bar = bottomBarRef.current;
+      const barHeight = bar ? bar.getBoundingClientRect().height : 52;
+      const bottomGap = desktop ? 20 : barHeight + 12;
       setSplitHeight(Math.max(desktop ? 560 : 380, Math.round(window.innerHeight - top - bottomGap)));
     };
     update();
@@ -1417,7 +1420,7 @@ export default function App() {
       </section>
 
       {/* ================= MAIN WORKSPACE AREA ================= */}
-      <main className="flex-1 max-w-[1800px] w-full mx-auto p-2 sm:p-4 lg:p-5 overflow-hidden pb-16 lg:pb-4">
+      <main className="main-above-bottom-bar flex-1 max-w-[1800px] w-full mx-auto p-2 sm:p-4 lg:p-5 overflow-hidden lg:pb-4">
         {/* On phones the bottom bar switches between map and list, so there is no switcher here */}
 
         {/* MODE 1: SPLIT VIEW (Places List + Active Detail + Interactive Map) */}
@@ -1745,7 +1748,7 @@ export default function App() {
         )}
 
         {/* Mobile Bottom Quick Navigation Bar (Fixed bottom for phone screens) */}
-        <nav aria-label="Alt menü" className="lg:hidden fixed bottom-0 left-0 right-0 z-[450] bg-white/95 border-t border-slate-200 backdrop-blur-xl px-1 flex items-stretch shadow-2xl">
+        <nav ref={bottomBarRef} aria-label="Alt menü" className="safe-bottom-bar lg:hidden fixed bottom-0 left-0 right-0 z-[450] bg-white/95 border-t border-slate-200 backdrop-blur-xl px-1 flex items-stretch shadow-2xl">
           <button
             onClick={() => setMobileTab('map')}
             aria-current={mobileTab === 'map' ? 'page' : undefined}
