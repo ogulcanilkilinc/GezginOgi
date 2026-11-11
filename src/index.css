@@ -58,6 +58,14 @@
   background: #f59e0b;
 }
 
+/* Horizontally scrolling chip rows: still scrollable by touch, without a visible bar */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Pin clusters (zoomed-out view) */
 .place-cluster-wrapper {
   background: transparent !important;

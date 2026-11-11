@@ -286,22 +286,22 @@ export default function App() {
   // Mobile & Compact Filter States
   const [mobileTab, setMobileTab] = useState('map'); // 'map' or 'list'
 
-  // On phones the map/list area fills the screen down to the bottom bar. Its top moves when the
-  // header content changes, so it is measured after every render and on viewport changes.
+  // The map/list area fills the screen down to its bottom edge (on phones, down to the bottom bar).
+  // Its top moves when the header content changes or wraps, so it is measured after every render
+  // and on viewport changes.
   const splitRef = useRef(null);
-  const [mobileSplitHeight, setMobileSplitHeight] = useState(null);
+  const [splitHeight, setSplitHeight] = useState(null);
   useEffect(() => {
     const update = () => {
       const el = splitRef.current;
-      if (!el || window.innerWidth >= 1024) {
-        setMobileSplitHeight(null);
-        return;
-      }
+      if (!el) return;
+      const desktop = window.innerWidth >= 1024;
       // innerHeight (the layout viewport) is what the fixed bottom bar is placed against; the visual
       // viewport shrinks with pinch zoom or the on-screen keyboard, which should not resize the map.
       const top = el.getBoundingClientRect().top + window.scrollY;
-      // 64 px = the main area's bottom padding that keeps content clear of the bottom bar
-      setMobileSplitHeight(Math.max(380, Math.round(window.innerHeight - top - 64)));
+      // Bottom padding of the main area: 64 px on phones keeps content clear of the bottom bar
+      const bottomGap = desktop ? 20 : 64;
+      setSplitHeight(Math.max(desktop ? 560 : 380, Math.round(window.innerHeight - top - bottomGap)));
     };
     update();
     window.addEventListener('resize', update);
@@ -761,12 +761,13 @@ export default function App() {
         </div>
       )}
       {/* ================= TOP NAVIGATION HEADER (LIGHT THEME) ================= */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/90 px-4 lg:px-6 py-2.5 shadow-xs">
-        <div className="max-w-[1800px] mx-auto flex flex-wrap items-center justify-between gap-3">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/90 px-4 lg:px-6 py-2 lg:py-2.5 shadow-xs">
+        {/* Phones: logo and the lock button share the first row, the region switcher fills the second */}
+        <div className="max-w-[1800px] mx-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-2 lg:gap-3">
           {/* Brand Logo & Title */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 shadow-md shadow-amber-500/15">
-              <Compass className="w-6 h-6 stroke-[2.2]" />
+            <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-xl lg:rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 shadow-md shadow-amber-500/15">
+              <Compass className="w-5 h-5 lg:w-6 lg:h-6 stroke-[2.2]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -784,7 +785,7 @@ export default function App() {
           </div>
 
           {/* Region Scope Switcher (Ankara / Türkiye / Balkanlar / Dünya) */}
-          <div className="flex items-center bg-slate-100 border border-slate-200/90 rounded-2xl p-1 gap-1 overflow-x-auto shadow-xs">
+          <div className="order-last lg:order-none w-full lg:w-auto flex items-center bg-slate-100 border border-slate-200/90 rounded-2xl p-1 gap-1 overflow-x-auto no-scrollbar shadow-xs">
             {REGIONS.map((reg) => {
               const count = places.filter((p) => matchesRegionScope(p, reg.id)).length;
               const isActive = activeRegion === reg.id;
@@ -813,7 +814,7 @@ export default function App() {
           </div>
 
           {/* Right Actions: View Mode, Surprise Me, Backup & Add Place */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden lg:flex flex-wrap justify-end items-center gap-2 min-w-0">
             {/* View Mode Switcher */}
             <div className="bg-slate-100 border border-slate-200 rounded-xl p-1 flex items-center gap-1 shadow-xs">
               <button
@@ -1014,11 +1015,12 @@ export default function App() {
             </button>
           </div>
 
-          {/* Mobile Single-Row Header Right Actions */}
+          {/* Phone header actions ("Ekle" lives in the bottom bar) */}
           <div className="lg:hidden flex items-center gap-1.5 shrink-0">
             <button
               onClick={() => setIsCloudSyncOpen(true)}
-              className={`relative p-1.5 rounded-xl border transition ${
+              aria-label={isAdmin ? 'Yönetici açık, bulut eşleme' : 'Giriş yap ve bulut eşleme'}
+              className={`relative p-2 rounded-xl border transition ${
                 isAdmin
                   ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
                   : 'text-slate-500 border-slate-200'
@@ -1027,16 +1029,6 @@ export default function App() {
             >
               {isAdmin ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
               <span className="absolute -top-0.5 -right-0.5"><SyncDot status={autoSync.status} message={autoSync.message} /></span>
-            </button>
-            <button
-              onClick={() => {
-                setEditingPlace(null);
-                setIsFormOpen(true);
-              }}
-              className="bg-amber-500 text-slate-950 font-bold text-xs px-2.5 py-1.5 rounded-xl flex items-center gap-1 shadow-xs"
-            >
-              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-              <span>Ekle</span>
             </button>
           </div>
         </div>
@@ -1124,9 +1116,9 @@ export default function App() {
         </div>
 
         {/* Ultra-Clean Single-Row Primary Toolbar (Desktop) */}
-        <div className="hidden lg:flex max-w-[1800px] mx-auto flex-col md:flex-row md:items-center justify-between gap-2">
+        <div className="hidden lg:flex max-w-[1800px] mx-auto flex-wrap items-center justify-between gap-2">
           {/* Category Chips (Smooth Horizontal Scroll) */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+          <div className="min-w-0 flex-1 basis-[320px] flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat.id;
               return (
@@ -1147,7 +1139,7 @@ export default function App() {
           </div>
 
           {/* Right Action Tools: Search + Country Modal + Status Switcher + Expand Filters */}
-          <div className="flex items-center gap-2 flex-wrap md:flex-nowrap">
+          <div className="flex items-center gap-2 flex-wrap justify-end ml-auto">
             {/* Search Input */}
             <div className="relative flex-1 sm:w-48 md:w-56">
               <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -1432,8 +1424,8 @@ export default function App() {
         {viewMode === 'split' && (
           <div
             ref={splitRef}
-            style={mobileSplitHeight ? { height: mobileSplitHeight } : undefined}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:h-[calc(100vh-140px)] lg:min-h-[560px]"
+            style={splitHeight ? { height: splitHeight } : undefined}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-4"
           >
             {/* Left Column: Places List (Visible on desktop OR when mobileTab === 'list') */}
             <div
