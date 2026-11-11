@@ -36,6 +36,7 @@ export default function TravelMap({
   selectedPlace,
   onSelectPlace,
   mapFocus,
+  fitKey,
   isPickingLocation,
   onPickLocation,
   pickedCoords,
@@ -50,6 +51,10 @@ export default function TravelMap({
   const markersLayerRef = useRef(null);
   const routeLayerRef = useRef(null);
   const tempMarkerRef = useRef(null);
+  // Latest places for fits started from effects; a fit asked for while the map is hidden waits here
+  const placesRef = useRef(places);
+  placesRef.current = places;
+  const pendingFitRef = useRef(null);
 
   const [mapStyle, setMapStyle] = useState('osm');
   const [geoQuery, setGeoQuery] = useState('');
@@ -120,6 +125,7 @@ export default function TravelMap({
     const resizeObserver = new ResizeObserver(() => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.invalidateSize({ animate: false });
+        if (pendingFitRef.current) fitToPlaces(false, pendingFitRef.current);
       }
     });
     resizeObserver.observe(container);
@@ -205,21 +211,34 @@ export default function TravelMap({
     });
   }, [mapFocus]);
 
-  // Fit all currently visible places on screen
-  const handleFitAllBounds = () => {
+  // Fit all currently visible places on screen. A hidden map (phone "Liste" tab) has no size to
+  // fit into, so the fit is remembered and done when the map is shown again.
+  function fitToPlaces(animate = true, list = placesRef.current) {
     const map = mapInstanceRef.current;
-    if (!map || places.length === 0) return;
-    const validCoords = places
+    if (!map) return;
+    const validCoords = list
       .filter((p) => Array.isArray(p.coords) && p.coords.length === 2)
       .map((p) => p.coords);
     if (validCoords.length === 0) return;
-    if (validCoords.length === 1) {
-      map.flyTo(validCoords[0], 14, { duration: 1 });
+    const size = map.getSize();
+    if (size.x === 0 || size.y === 0) {
+      pendingFitRef.current = list;
       return;
     }
-    const bounds = L.latLngBounds(validCoords);
-    map.fitBounds(bounds, { padding: [45, 45], maxZoom: 14 });
-  };
+    pendingFitRef.current = null;
+    if (validCoords.length === 1) {
+      if (animate) map.flyTo(validCoords[0], 14, { duration: 1 });
+      else map.setView(validCoords[0], 14, { animate: false });
+      return;
+    }
+    map.fitBounds(L.latLngBounds(validCoords), { padding: [45, 45], maxZoom: 14, animate });
+  }
+  const handleFitAllBounds = () => fitToPlaces(true);
+
+  // A new search (after typing pauses) shows its matches, wherever they are
+  useEffect(() => {
+    if (fitKey) fitToPlaces(true, fitKey.places);
+  }, [fitKey]);
 
   // Render Place Markers. Markers are kept between renders and only rebuilt when what
   // they show changes, so selecting a place or ticking "visited" touches one or two pins

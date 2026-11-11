@@ -2,7 +2,7 @@
 // Service Worker for GezginOgi - Robust Offline PWA Support
 // Automatically precaches all compiled JS chunks, CSS, fonts, and data for seamless offline usage.
 
-const CACHE_NAME = 'gezginogi-build-mwbqg5b4';
+const CACHE_NAME = 'gezginogi-build-mwbqtdr5';
 
 // Precache list - dynamically populated with all build chunks by inject-sw-assets.mjs
 const PRECACHE_URLS = [
@@ -11,25 +11,25 @@ const PRECACHE_URLS = [
   "./favicon.svg",
   "./manifest.json",
   "./data/places.json",
-  "./assets/BorderCrossingsModal-D17dLZfR.js",
-  "./assets/CloudSyncModal-w0fdTdIO.js",
-  "./assets/CountryIntelModal-BJ1CWXVu.js",
-  "./assets/CurrencyBudgetModal-B6lW3cBO.js",
-  "./assets/EmergencyConsulateModal-CHY5EHMz.js",
+  "./assets/BorderCrossingsModal-Ca_G_RZ9.js",
+  "./assets/CloudSyncModal-DQ9flo_z.js",
+  "./assets/CountryIntelModal-BslxVSgl.js",
+  "./assets/CurrencyBudgetModal-Bgb1i1ig.js",
+  "./assets/EmergencyConsulateModal-C2euyMPm.js",
   "./assets/icons-vendor-DrESObBc.js",
-  "./assets/index-UazYCioX.js",
-  "./assets/index-w1OatFEJ.css",
-  "./assets/ItineraryModal-BaPhVtMW.js",
+  "./assets/index-BgBYNOj9.js",
+  "./assets/index-zRQJ8cQB.css",
+  "./assets/ItineraryModal-Df80DLyT.js",
   "./assets/leaflet-vendor-Dy36dnF4.js",
-  "./assets/NearbyRadarModal-BceyMuQo.js",
-  "./assets/PackingChecklistModal-CCMBNi27.js",
-  "./assets/PassportModal-CUckXrW_.js",
-  "./assets/PlaceFormModal-DmRDragV.js",
-  "./assets/RouteSimulatorModal-DxfTKvVO.js",
-  "./assets/ScratchMapModal-JRvMIC3E.js",
-  "./assets/SearchableLocationModal-CJpaf-P-.js",
-  "./assets/SeasonalCalendarModal-knA178Fj.js",
-  "./assets/TravelSoundtrackModal-c4i186m6.js"
+  "./assets/NearbyRadarModal-Mt_nlPAu.js",
+  "./assets/PackingChecklistModal-G8qcQZry.js",
+  "./assets/PassportModal-BEEFJWJj.js",
+  "./assets/PlaceFormModal-CF76lJeQ.js",
+  "./assets/RouteSimulatorModal-ze76zLQn.js",
+  "./assets/ScratchMapModal-DHDOZ9_i.js",
+  "./assets/SearchableLocationModal-BqX52IRB.js",
+  "./assets/SeasonalCalendarModal-x1OPElva.js",
+  "./assets/TravelSoundtrackModal-gt4jFgkC.js"
 ];
 
 self.addEventListener('install', (event) => {

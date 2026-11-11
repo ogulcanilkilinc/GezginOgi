@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useDeferredValue, lazy, Suspense } from 'react';
 import confetti from 'canvas-confetti';
 import { CATEGORIES, REGIONS, SEASONS, DURATIONS } from './data/metadata';
 import { getOptimizedImageUrl } from './data/curatedPhotoResolver';
 import { useAutoSync } from './services/useAutoSync';
 import { useDocSync } from './services/useDocSync';
-import { getSearchIndex, matchesSearch } from './services/searchUtils';
+import { getSearchIndex, matchesSearch, matchesSearchKey } from './services/searchUtils';
 import { createShareLink, readShareFromHash, leaveShareView } from './services/shareLink';
 import { routeKm, formatKm, ROAD_FACTOR } from './services/geo';
 import TravelMap from './components/TravelMap';
@@ -259,6 +259,16 @@ export default function App() {
   const [selectedCountryIntel, setSelectedCountryIntel] = useState(null); // Country Intel modal state
   const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
   const [searchQuery, setSearchQuery] = useState('');
+  // The list and map follow the query with a short lag so typing stays smooth on phones
+  const deferredSearchQuery = useDeferredValue(searchQuery);
+  // Once typing pauses, the map is fitted to the matches (they are often outside the current view)
+  const [searchFitKey, setSearchFitKey] = useState(null);
+  useEffect(() => {
+    const q = searchQuery.trim();
+    if (!q) return undefined;
+    const t = setTimeout(() => setSearchFitKey({ q }), 450);
+    return () => clearTimeout(t);
+  }, [searchQuery]);
   const [visibleLimit, setVisibleLimit] = useState(80);
 
   // Online / Offline Network Status Listener
@@ -467,7 +477,7 @@ export default function App() {
 
   // Filtered Places
   const filteredPlaces = useMemo(() => {
-    return places.filter((p) => {
+    const matches = places.filter((p) => {
       if (!matchesRegionScope(p, activeRegion)) return false;
       if (activeSubRegion !== 'all' && p.subRegion !== activeSubRegion) return false;
       if (activeCountry !== 'all' && p.country !== activeCountry) return false;
@@ -481,11 +491,17 @@ export default function App() {
       if (weekendEscapeFilter && !p.ankaraDistance?.isWeekendEscape) return false;
       if (visaFreeFilter && !p.visaStatus?.isVisaFree) return false;
 
-      if (searchQuery.trim()) {
-        return matchesSearch(getSearchIndex(p), searchQuery);
+      if (deferredSearchQuery.trim()) {
+        return matchesSearch(getSearchIndex(p), deferredSearchQuery);
       }
       return true;
     });
+    if (!deferredSearchQuery.trim()) return matches;
+    // Places whose name, city or country holds the query come before places that only mention it
+    const named = [];
+    const mentioned = [];
+    for (const p of matches) (matchesSearchKey(getSearchIndex(p), deferredSearchQuery) ? named : mentioned).push(p);
+    return named.length ? named.concat(mentioned) : matches;
   }, [
     places,
     activeRegion,
@@ -498,8 +514,20 @@ export default function App() {
     durationFilter,
     weekendEscapeFilter,
     visaFreeFilter,
-    searchQuery
+    deferredSearchQuery
   ]);
+
+  // What the map shows after a search: the places named after the query, or all matches if none is.
+  // It waits until the (deferred) list has caught up with the query, and fits once per search.
+  const [searchFitTarget, setSearchFitTarget] = useState(null);
+  const fittedSearchRef = useRef(null);
+  useEffect(() => {
+    if (!searchFitKey || fittedSearchRef.current === searchFitKey) return;
+    if (deferredSearchQuery.trim() !== searchFitKey.q) return;
+    fittedSearchRef.current = searchFitKey;
+    const named = filteredPlaces.filter((p) => matchesSearchKey(getSearchIndex(p), searchFitKey.q));
+    setSearchFitTarget({ places: named.length ? named : filteredPlaces });
+  }, [searchFitKey, deferredSearchQuery, filteredPlaces]);
 
   const selectedPlace = useMemo(
     () => places.find((p) => p.id === selectedPlaceId) || null,
@@ -1636,6 +1664,7 @@ export default function App() {
                   selectedPlace={selectedPlace}
                   onSelectPlace={handleSelectPlace}
                   mapFocus={mapFocus}
+                  fitKey={searchFitTarget}
                   isPickingLocation={isPickingLocation}
                   onPickLocation={(coords) => {
                     setPickedCoords(coords);
@@ -1724,10 +1753,11 @@ export default function App() {
         )}
 
         {/* Mobile Bottom Quick Navigation Bar (Fixed bottom for phone screens) */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[450] bg-white/95 border-t border-slate-200 backdrop-blur-xl px-4 py-2 flex items-center justify-around shadow-2xl">
+        <nav aria-label="Alt menü" className="lg:hidden fixed bottom-0 left-0 right-0 z-[450] bg-white/95 border-t border-slate-200 backdrop-blur-xl px-1 flex items-stretch shadow-2xl">
           <button
             onClick={() => setMobileTab('map')}
-            className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${
+            aria-current={mobileTab === 'map' ? 'page' : undefined}
+            className={`flex-1 min-h-[52px] flex flex-col items-center justify-center gap-1 text-[10px] font-bold transition ${
               mobileTab === 'map' ? 'text-amber-600' : 'text-slate-500 hover:text-slate-800'
             }`}
           >
@@ -1736,7 +1766,8 @@ export default function App() {
           </button>
           <button
             onClick={() => setMobileTab('list')}
-            className={`flex flex-col items-center gap-1 text-[10px] font-bold transition ${
+            aria-current={mobileTab === 'list' ? 'page' : undefined}
+            className={`flex-1 min-h-[52px] flex flex-col items-center justify-center gap-1 text-[10px] font-bold transition ${
               mobileTab === 'list' ? 'text-amber-600' : 'text-slate-500 hover:text-slate-800'
             }`}
           >
@@ -1748,14 +1779,14 @@ export default function App() {
               setToolsAnchor(null);
               setIsToolsDropdownOpen(true);
             }}
-            className="flex flex-col items-center gap-1 text-[10px] font-bold text-slate-500 hover:text-amber-600 transition"
+            className="flex-1 min-h-[52px] flex flex-col items-center justify-center gap-1 text-[10px] font-bold text-slate-500 hover:text-amber-600 transition"
           >
             <Sparkles className="w-4 h-4" />
             <span>Araçlar</span>
           </button>
           <button
             onClick={() => setIsPassportOpen(true)}
-            className="flex flex-col items-center gap-1 text-[10px] font-bold text-slate-500 hover:text-amber-600 transition"
+            className="flex-1 min-h-[52px] flex flex-col items-center justify-center gap-1 text-[10px] font-bold text-slate-500 hover:text-amber-600 transition"
           >
             <Award className="w-4 h-4" />
             <span>Pasaport</span>
@@ -1765,12 +1796,12 @@ export default function App() {
               setEditingPlace(null);
               setIsFormOpen(true);
             }}
-            className="flex flex-col items-center gap-1 text-[10px] font-bold text-amber-600 active:scale-90 transition"
+            className="flex-1 min-h-[52px] flex flex-col items-center justify-center gap-1 text-[10px] font-bold text-amber-600 active:scale-90 transition"
           >
             <Plus className="w-4 h-4" />
             <span>Ekle</span>
           </button>
-        </div>
+        </nav>
 
         {/* MODE 2: BLOG & TRAVEL MAGAZINE VIEW */}
         {viewMode === 'blog' && (
@@ -2012,6 +2043,7 @@ export default function App() {
                 handleSelectPlace(pl);
               }}
               mapFocus={mapFocus}
+              fitKey={searchFitTarget}
               isPickingLocation={isPickingLocation}
               onPickLocation={(coords) => {
                 setPickedCoords(coords);

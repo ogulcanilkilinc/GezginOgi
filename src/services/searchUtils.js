@@ -38,15 +38,18 @@ const allowedTypos = (len) => (len >= 8 ? 2 : len >= 4 ? 1 : 0);
 export function buildSearchIndex(place) {
   const key = normalizeText([place.name, place.city, place.country, place.subRegion].join(' '));
   const body = normalizeText([place.whatAwaits, place.localSpecialties, place.blogArticle].join(' '));
-  return { key, body, words: [...new Set(key.split(' ').filter((w) => w.length >= 3))] };
+  // Leading spaces let a query word be matched at the start of a word with a plain includes()
+  return { key, body: ' ' + body, words: [...new Set(key.split(' ').filter((w) => w.length >= 4))] };
 }
 
-// Every query word must match: exactly anywhere in the text, or with a small typo in the name/city/country words
+// Every query word must match: anywhere in the name/city/country, at the start of a word in the
+// descriptions ("efes" should not find "nefes"), or with a small typo in a name/city/country word of
+// four or more letters (so "efes" does not drift to "Fes")
 export function matchesSearch(index, query) {
   const terms = normalizeText(query).split(' ').filter(Boolean);
   if (terms.length === 0) return true;
   return terms.every((t) => {
-    if (index.key.includes(t) || index.body.includes(t)) return true;
+    if (index.key.includes(t) || index.body.includes(' ' + t)) return true;
     const max = allowedTypos(t.length);
     if (max === 0) return false;
     return index.words.some((w) => withinDistance(t, w.slice(0, t.length + max), max) || withinDistance(t, w, max));
@@ -62,4 +65,10 @@ export function getSearchIndex(place) {
     indexCache.set(place, idx);
   }
   return idx;
+}
+
+// True when every query word appears in the place's name, city, country or area (not only in its texts)
+export function matchesSearchKey(index, query) {
+  const terms = normalizeText(query).split(' ').filter(Boolean);
+  return terms.length > 0 && terms.every((t) => index.key.includes(t));
 }
