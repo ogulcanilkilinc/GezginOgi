@@ -15,3 +15,8 @@ export function getOptimizedImageUrl(url, width = 960) {
   }
   return url;
 }
+
+// The photo shown for a place: the user's own first photo when there is one, otherwise the guide photo
+export function coverOf(place) {
+  return (place && Array.isArray(place.userPhotos) && place.userPhotos[0]) || (place && place.coverImage) || '';
+}

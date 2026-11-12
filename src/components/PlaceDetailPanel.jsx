@@ -128,6 +128,11 @@ export default function PlaceDetailPanel({
   const [isChecklistExpanded, setIsChecklistExpanded] = useState(false);
   const [isPhrasebookExpanded, setIsPhrasebookExpanded] = useState(false);
 
+  // A new cover (own photo added or removed) gets a fresh chance to load
+  useEffect(() => {
+    setImgError(false);
+  }, [userPhotos[0], place?.coverImage]);
+
   useEffect(() => {
     if (!place) return;
     setImgError(false);
@@ -292,16 +297,20 @@ export default function PlaceDetailPanel({
       ? `&latitude=${place.coords[0]}&longitude=${place.coords[1]}`
       : ''
   }`;
+  // The first photo the user added becomes the cover; the guide photo is the fallback
+  const ownHero = userPhotos[0] || '';
+  const heroSrc = ownHero || place.coverImage;
+
   const thyUrl = `https://www.turkishairlines.com/tr-tr/ucak-bileti/`;
   const flightsUrl = `https://www.google.com/travel/flights?q=${destinationQuery}`;
 
   return (
     <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-full text-slate-800">
-      {/* Hero Image Header */}
+      {/* Hero Image Header: the user's own first photo, otherwise the guide photo */}
       <div className="relative h-56 sm:h-64 w-full shrink-0 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950/60 flex items-center justify-center">
-        {place.coverImage && !imgError ? (
+        {heroSrc && !imgError ? (
           <img
-            src={getOptimizedImageUrl(place.coverImage, 960)}
+            src={getOptimizedImageUrl(heroSrc, 960)}
             alt={place.name}
             className={`w-full h-full object-cover transition duration-700 ${
               place.visited ? 'saturate-90' : ''
@@ -426,8 +435,14 @@ export default function PlaceDetailPanel({
         </div>
       </div>
 
+      {ownHero && !imgError && (
+        <div className="px-4 py-1.5 bg-slate-100 border-b border-slate-200 text-[10px] text-slate-500 truncate">
+          📷 Kendi fotoğrafın
+        </div>
+      )}
+
       {/* Photo attribution (Wikimedia Commons license requirement) */}
-      {place.coverImage && !imgError && place.photoCredit && (
+      {!ownHero && place.coverImage && !imgError && place.photoCredit && (
         <div className="px-4 py-1.5 bg-slate-100 border-b border-slate-200 text-[10px] text-slate-500 truncate">
           📷{' '}
           <a

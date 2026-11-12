@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef, useDeferredValue, lazy, Suspense } from 'react';
 import confetti from 'canvas-confetti';
 import { CATEGORIES, REGIONS, SEASONS, DURATIONS } from './data/metadata';
-import { getOptimizedImageUrl } from './data/curatedPhotoResolver';
+import { getOptimizedImageUrl, coverOf } from './data/curatedPhotoResolver';
 import { useAutoSync } from './services/useAutoSync';
 import { useDocSync } from './services/useDocSync';
 import { getSearchIndex, matchesSearch, matchesSearchKey } from './services/searchUtils';
@@ -1503,9 +1503,9 @@ export default function App() {
                         >
                           {/* Thumbnail */}
                           <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-gradient-to-br from-slate-100 to-amber-50 border border-slate-200/90 flex items-center justify-center">
-                            {place.coverImage ? (
+                            {coverOf(place) ? (
                               <img
-                                src={getOptimizedImageUrl(place.coverImage, 500)} loading="lazy" decoding="async"
+                                src={getOptimizedImageUrl(coverOf(place), 500)} loading="lazy" decoding="async"
                                 alt={place.name}
                                 className={`w-full h-full object-cover ${
                                   place.visited ? 'opacity-65 saturate-50' : ''
@@ -1518,11 +1518,11 @@ export default function App() {
                             ) : null}
                             <span
                               className="text-xl"
-                              style={{ display: place.coverImage ? 'none' : 'block' }}
+                              style={{ display: coverOf(place) ? 'none' : 'block' }}
                             >
                               {catObj.icon}
                             </span>
-                            {place.coverImage && (
+                            {coverOf(place) && (
                               <span className="absolute bottom-1 right-1 text-xs bg-white/90 text-slate-800 border border-slate-200 rounded px-1 shadow-2xs">
                                 {catObj.icon}
                               </span>
@@ -1840,9 +1840,9 @@ export default function App() {
                   >
                     {/* Card Image */}
                     <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950/60 flex items-center justify-center">
-                      {place.coverImage ? (
+                      {coverOf(place) ? (
                         <img
-                          src={getOptimizedImageUrl(place.coverImage, 960)} loading="lazy" decoding="async"
+                          src={getOptimizedImageUrl(coverOf(place), 960)} loading="lazy" decoding="async"
                           alt={place.name}
                           className="w-full h-full object-cover"
                           onError={(e) => {
@@ -1853,7 +1853,7 @@ export default function App() {
                       ) : null}
                       <div
                         className="text-center p-4"
-                        style={{ display: place.coverImage ? 'none' : 'block' }}
+                        style={{ display: coverOf(place) ? 'none' : 'block' }}
                       >
                         <span className="text-5xl block">{catObj.icon}</span>
                       </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CATEGORIES, REGIONS } from '../data/metadata';
 import { getProvinceVisitStats, TURKEY_REGIONS } from '../data/turkeyProvinces';
-import { getOptimizedImageUrl } from '../data/curatedPhotoResolver';
+import { getOptimizedImageUrl, coverOf } from '../data/curatedPhotoResolver';
 import ChoroplethMap from './ChoroplethMap';
 import {
   X,
@@ -841,9 +841,9 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
 
                                 {/* Thumbnail */}
                                 <div className="relative w-full sm:w-32 h-28 rounded-xl overflow-hidden shrink-0 bg-slate-100 border border-slate-200 flex items-center justify-center">
-                                  {pl.coverImage ? (
+                                  {coverOf(pl) ? (
                                     <img
-                                      src={getOptimizedImageUrl(pl.coverImage, 500)}
+                                      src={getOptimizedImageUrl(coverOf(pl), 500)}
                                       loading="lazy"
                                       alt={pl.name}
                                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
@@ -855,7 +855,7 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
                                   ) : null}
                                   <span
                                     className="text-3xl"
-                                    style={{ display: pl.coverImage ? 'none' : 'block' }}
+                                    style={{ display: coverOf(pl) ? 'none' : 'block' }}
                                   >
                                     {catObj.icon}
                                   </span>
