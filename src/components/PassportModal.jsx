@@ -24,6 +24,17 @@ import {
   Filter
 } from 'lucide-react';
 
+// Turkish possessive suffix after a number as it is read aloud: %5'i, %6'sı, %10'u, %40'ı, %100'ü
+function trPossessive(num) {
+  const ones = ['', 'i', 'si', 'ü', 'ü', 'i', 'sı', 'si', 'i', 'u'];
+  const tens = ['ı', 'u', 'si', 'u', 'ı', 'si', 'ı', 'i', 'i', 'ı'];
+  const digits = String(num).replace(/\D/g, '');
+  if (digits === '100') return 'ü';
+  const last = Number(digits.slice(-1));
+  if (last) return ones[last];
+  return tens[Number(digits.slice(-2, -1) || 0)];
+}
+
 export default function PassportModal({ isOpen, onClose, places, onSelectPlace }) {
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | '81_provinces' | 'countries' | 'log'
   const [selectedRegionFilter, setSelectedRegionFilter] = useState('all');
@@ -61,6 +72,10 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
 
   const visitedCountries = [...new Set(visitedPlaces.map((p) => p.country).filter(Boolean))];
   const allCountries = [...new Set(places.map((p) => p.country).filter(Boolean))];
+  // Share of the world's 195 countries (193 UN members + 2 observer states) visited so far
+  const worldShare = (visitedCountries.length / 195) * 100;
+  const worldShareLabel = worldShare > 0 && worldShare < 10 ? worldShare.toFixed(1).replace(/.0$/, '').replace('.', ',') : String(Math.round(worldShare));
+  const worldShareSuffix = trPossessive(worldShareLabel);
 
   const provinceStats = getProvinceVisitStats(places);
 
@@ -302,7 +317,7 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
                     {visitedCountries.length}
                   </div>
                   <div className="text-xs font-semibold text-slate-700 mt-1">Keşfedilen Ülke</div>
-                  <div className="text-[11px] text-slate-600 mt-0.5">Atlasında {allCountries.length} ülke</div>
+                  <div className="text-[11px] text-sky-600 font-bold mt-0.5">Dünyanın %{worldShareLabel}'{worldShareSuffix}</div>
                 </div>
 
                 <div className="bg-white border border-purple-200 rounded-2xl p-4 text-center shadow-xs">
@@ -637,6 +652,14 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
                   <p className="text-xs text-slate-600 mt-0.5">
                     Atlasında yer alan {allCountries.length} ülkeden {visitedCountries.length} tanesini ziyaret ettin.
                   </p>
+                  <div className="mt-2 max-w-xs">
+                    <div className="h-2 rounded-full bg-amber-100 overflow-hidden">
+                      <div className="h-full bg-amber-500 rounded-full" style={{ width: `${Math.min(100, worldShare)}%` }} />
+                    </div>
+                    <p className="text-[11px] text-amber-700 font-bold mt-1">
+                      Dünyanın %{worldShareLabel}'{worldShareSuffix}n{worldShareSuffix.slice(-1)} gördün ({visitedCountries.length} / 195 ülke)
+                    </p>
+                  </div>
                 </div>
                 <div className="text-right">
                   <div className="text-2xl font-bold font-serif text-amber-600">

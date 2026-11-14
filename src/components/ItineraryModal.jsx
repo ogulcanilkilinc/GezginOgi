@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { routeKm, formatKm, ROAD_FACTOR } from '../services/geo';
+import { routeKm, formatKm, ROAD_FACTOR, optimizeOrder, splitIntoDays } from '../services/geo';
 import {
   X,
   Calendar,
@@ -102,6 +102,8 @@ export default function ItineraryModal({
   const dayAssignments = tripMeta.days || {};
   const setDayAssignments = (days) => onSetTripMeta({ ...tripMeta, days });
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
+  const [planDays, setPlanDays] = useState('');
+  const [planResult, setPlanResult] = useState('');
 
   // "3. Gün" -> "3. Gün · 14 Mar Cmt" when a start date is set
   const dayDateLabel = (dayNum) => {
@@ -155,6 +157,26 @@ export default function ItineraryModal({
       onSetTripPlanIds(matchedIds);
       setDayAssignments(newAssignments);
     }
+  };
+
+  // Puts the stops in the shortest order and spreads them over the chosen number of days
+  const handleAutoPlan = () => {
+    const dayCount = Math.max(1, Math.min(10, parseInt(planDays, 10) || Math.ceil(tripPlaces.length / 3)));
+    const before = routeKm(tripPlaces);
+    const ordered = optimizeOrder(tripPlaces);
+    const dayOf = splitIntoDays(ordered, dayCount);
+    const days = {};
+    ordered.forEach((p, i) => {
+      days[p.id] = dayOf[i];
+    });
+    onSetTripPlanIds(ordered.map((p) => p.id));
+    onSetTripMeta({ ...tripMeta, days });
+    const saved = (before - routeKm(ordered)) * ROAD_FACTOR;
+    setPlanResult(
+      saved >= 1
+        ? `Rota ~${formatKm(saved)} kısaldı ve ${Math.max(...dayOf)} güne bölündü.`
+        : `Sıralama zaten en kısa haldeydi; ${Math.max(...dayOf)} güne bölündü.`
+    );
   };
 
   const handlePrint = () => {
@@ -297,6 +319,30 @@ export default function ItineraryModal({
               🚗 Toplam yol ~<strong className="text-amber-300">{formatKm(routeKm(tripPlaces) * ROAD_FACTOR)}</strong>
               <span className="text-slate-500"> ({dayNumbers.length} gün)</span>
             </div>
+            <div className="flex items-end gap-1.5">
+              <label className="flex flex-col gap-1 text-[11px] text-slate-400">
+                Gün sayısı
+                <input
+                  type="number"
+                  min="1"
+                  max="10"
+                  inputMode="numeric"
+                  value={planDays}
+                  onChange={(e) => setPlanDays(e.target.value)}
+                  placeholder={String(Math.min(10, Math.ceil(tripPlaces.length / 3)))}
+                  className="w-16 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500"
+                />
+              </label>
+              <button
+                onClick={handleAutoPlan}
+                disabled={tripPlaces.length < 2}
+                className="bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-slate-950 px-3 py-1.5 rounded-lg text-xs font-bold"
+                title="Durakları birbirine yakınlığa göre sıralar ve seçtiğin gün sayısına böler"
+              >
+                ✨ Yakınlığa göre sırala ve günlere böl
+              </button>
+            </div>
+            {planResult && <p className="basis-full text-[11px] text-emerald-300">✓ {planResult}</p>}
             {onOpenBudget && (
               <button
                 onClick={() => { onClose(); onOpenBudget(); }}
@@ -407,12 +453,12 @@ export default function ItineraryModal({
                                 <span className="text-[10px] text-slate-400 font-normal">({place.city})</span>
                               </h4>
                               <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5 print:text-slate-700">
-                                {place.whatAwaits || place.description}
+                                {(place.whatAwaits || place.description || '').replace(/\*\*/g, '')}
                               </p>
                               {place.localSpecialties && (
                                 <p className="text-[11px] text-amber-300/90 mt-0.5 flex items-center gap-1 print:text-slate-800">
                                   <span>🍽️</span>
-                                  <span>Tavsiye: {place.localSpecialties}</span>
+                                  <span>Tavsiye: {place.localSpecialties.replace(/\*\*/g, '')}</span>
                                 </p>
                               )}
                             </div>

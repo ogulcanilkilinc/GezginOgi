@@ -40,7 +40,8 @@ import {
   Loader2
 } from 'lucide-react';
 
-// Client-side image downscaler to prevent localStorage quota exhaustion (converts 10MB raw photos to ~100-150KB JPEG)
+import { dishesOf } from '../data/placeInsights';
+// Client-side image downscaler: converts 10 MB camera photos to ~100-150 KB JPEGs
 function resizeImageToMax(file, maxDimension = 1200, quality = 0.82) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -102,7 +103,8 @@ export default function PlaceDetailPanel({
   onDeletePlace,
   inTripPlan = false,
   onToggleTripPlan,
-  onOpenCountryIntel
+  onOpenCountryIntel,
+  cityDishes = []
 }) {
   const [noteText, setNoteText] = useState('');
   const [rating, setRating] = useState(5);
@@ -238,7 +240,7 @@ export default function PlaceDetailPanel({
     try {
       setPhotoCompressing(true);
       setPhotoError('');
-      // 1. Downscale to max 1200px and JPEG quality 0.82 to prevent storage overflow
+      // 1. Downscale to max 1200px and JPEG quality 0.82
       const compressedDataUrl = await resizeImageToMax(file, 1200, 0.82);
 
       let finalPhotoUrl = compressedDataUrl;
@@ -251,26 +253,12 @@ export default function PlaceDetailPanel({
         }
       }
 
-      // 3. A photo kept in the browser must fit in local storage: check before adding it,
-      // so it is not shown now and lost after a reload
-      if (finalPhotoUrl.startsWith('data:')) {
-        localStorage.setItem('__kesif_photo_probe', finalPhotoUrl);
-        localStorage.removeItem('__kesif_photo_probe');
-      }
-
       const updated = [...userPhotos, finalPhotoUrl];
       setUserPhotos(updated);
       onUpdateNotes(place.id, { userPhotos: updated });
     } catch (err) {
       console.error('Fotoğraf küçültme/kaydetme hatası:', err);
-      const isQuota = err?.name === 'QuotaExceededError' || err?.code === 22;
-      try {
-        localStorage.removeItem('__kesif_photo_probe');
-      } catch (_) {}
-      const msg = isQuota
-        ? 'Yer kalmadı, fotoğraf kaydedilmedi! Tarayıcı hafızası (~5 MB) dolu. Bazı fotoğrafları sil ya da Bulut Eşleme kur; o zaman fotoğraflar buluta yüklenir.'
-        : 'Fotoğraf işlenemedi. Farklı bir fotoğraf dene.';
-      setPhotoError(msg);
+      setPhotoError('Fotoğraf işlenemedi. Farklı bir fotoğraf dene.');
     } finally {
       setPhotoCompressing(false);
       if (photoInputRef.current) photoInputRef.current.value = '';
@@ -726,8 +714,22 @@ export default function PlaceDetailPanel({
           title="Yöresel Ne Yenir & Yakın Çevrede Neler Var?"
         >
           <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            {place.localSpecialties}
+            {(place.localSpecialties || '').split('**').map((part, i) =>
+              i % 2 ? <strong key={i} className="text-orange-900">{part}</strong> : part
+            )}
           </p>
+          {cityDishes.length > dishesOf(place).length && (
+            <div className="mt-3">
+              <div className="text-[11px] font-bold text-orange-800 mb-1.5">🍽️ Bu şehrin meşhur lezzetleri</div>
+              <div className="flex flex-wrap gap-1.5">
+                {cityDishes.map((d) => (
+                  <span key={d} className="px-2 py-0.5 rounded-full bg-white border border-orange-200 text-[11px] text-orange-900">
+                    {d}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </MobileSection>
 
         {/* 3.1 Fotoğraf Rehberi (Yalnızca özgün/özel ipucu varsa gösterilir) */}

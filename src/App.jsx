@@ -3,6 +3,8 @@ import confetti from 'canvas-confetti';
 import { CATEGORIES, REGIONS, SEASONS, DURATIONS } from './data/metadata';
 import { getOptimizedImageUrl, coverOf } from './data/curatedPhotoResolver';
 import { useAutoSync } from './services/useAutoSync';
+import { loadPhotos, savePhotos, cachedPhotos } from './services/photoStore';
+import { isMuseum, dishesByCity } from './data/placeInsights';
 import { useDocSync } from './services/useDocSync';
 import { getSearchIndex, matchesSearch, matchesSearchKey } from './services/searchUtils';
 import { createShareLink, readShareFromHash, leaveShareView } from './services/shareLink';
@@ -58,8 +60,7 @@ import {
 } from 'lucide-react';
 
 const USER_OVERRIDES_KEY = 'kesif_atlasim_user_overrides_v1';
-// User photos are kept under their own key so a full photo store never blocks saving visits and notes
-const USER_PHOTOS_KEY = 'kesif_atlasim_user_photos_v1';
+// User photos are kept apart from the overrides, in IndexedDB (see photoStore.js)
 
 const TRIP_KEY = 'kesif_atlasim_trip_v1';
 // Content version of the guide data this device has loaded (see places-version.json)
@@ -95,14 +96,6 @@ function SyncDot({ status, message }) {
   return <span className={`inline-block w-2 h-2 rounded-full ${cls}`} title={label} aria-label={label} />;
 }
 
-function readStoredPhotos() {
-  try {
-    return JSON.parse(localStorage.getItem(USER_PHOTOS_KEY) || '{}');
-  } catch (e) {
-    return {};
-  }
-}
-
 export default function App() {
   const [places, setPlaces] = useState([]);
   const [isLoadingPlaces, setIsLoadingPlaces] = useState(true);
@@ -119,7 +112,7 @@ export default function App() {
       const rawOverrides = localStorage.getItem(USER_OVERRIDES_KEY);
       if (rawOverrides) {
         const overrides = JSON.parse(rawOverrides);
-        const storedPhotos = readStoredPhotos();
+        const storedPhotos = cachedPhotos();
         merged = freshRaw.map((p) => {
           const ov = overrides[p.id];
           if (!ov) return p;
@@ -181,11 +174,11 @@ export default function App() {
         }
 
         let merged = rawPlaces;
+        const storedPhotos = await loadPhotos();
         try {
           const rawOverrides = localStorage.getItem(USER_OVERRIDES_KEY);
           if (rawOverrides) {
             const overrides = JSON.parse(rawOverrides);
-            const storedPhotos = readStoredPhotos();
             merged = rawPlaces.map((p) => {
               const ov = overrides[p.id];
               if (!ov) return p;
@@ -256,6 +249,7 @@ export default function App() {
   const [durationFilter, setDurationFilter] = useState('all');
   const [weekendEscapeFilter, setWeekendEscapeFilter] = useState(false); // Ankara'dan 4.5 saatten yakın
   const [visaFreeFilter, setVisaFreeFilter] = useState(false); // Sadece Türk pasaportuyla vizesiz/kimlikle
+  const [museumFilter, setMuseumFilter] = useState(false); // Sadece müze ve galeriler
   const [selectedCountryIntel, setSelectedCountryIntel] = useState(null); // Country Intel modal state
   const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -379,6 +373,7 @@ export default function App() {
 
   const fileInputRef = useRef(null);
   const storageWarnedRef = useRef(false);
+  const savedPhotosRef = useRef(null);
 
   // Save user overrides to LocalStorage with quota overflow detection
   useEffect(() => {
@@ -405,20 +400,28 @@ export default function App() {
       places.forEach((p) => {
         if (p.userPhotos && p.userPhotos.length > 0) photos[p.id] = p.userPhotos;
       });
-      // Visits and notes are small: save them first, before the photos, so they are never lost when photos fill the storage
       localStorage.setItem(USER_OVERRIDES_KEY, JSON.stringify(overrides));
-      localStorage.setItem(USER_PHOTOS_KEY, JSON.stringify(photos));
-      storageWarnedRef.current = false;
-    } catch (e) {
-      if (e.name === 'QuotaExceededError' || e.code === 22) {
-        console.error('Tarayıcı depolama alanı doldu:', e);
-        if (!storageWarnedRef.current) {
-          storageWarnedRef.current = true;
-          alert('⚠️ Tarayıcı hafızası (~5 MB) doldu! Gittiğin yerler ve notların kaydedildi, ama son eklediğin fotoğraf kaydedilmedi; sayfa yenilenince kaybolur. Bazı fotoğrafları sil ya da Bulut Eşleme (Supabase) kullan.');
-        }
-      } else {
-        console.error('Overrides save error:', e);
+      // Photos are rewritten only when a photo list actually changed (the lists keep their identity otherwise)
+      const last = savedPhotosRef.current;
+      const ids = Object.keys(photos);
+      const changed = !last || ids.length !== Object.keys(last).length || ids.some((id) => photos[id] !== last[id]);
+      if (changed) {
+        savedPhotosRef.current = photos;
+        savePhotos(photos)
+          .then(() => {
+            storageWarnedRef.current = false;
+          })
+          .catch((e) => {
+            console.error('Fotoğraflar kaydedilemedi:', e);
+            savedPhotosRef.current = null;
+            if (!storageWarnedRef.current) {
+              storageWarnedRef.current = true;
+              alert('⚠️ Cihazda yer kalmadı! Gittiğin yerler ve notların kaydedildi, ama son eklediğin fotoğraf kaydedilmedi; sayfa yenilenince kaybolur. Bazı fotoğrafları sil ya da Bulut Eşleme (Supabase) kullan.');
+            }
+          });
       }
+    } catch (e) {
+      console.error('Overrides save error:', e);
     }
   }, [places, isLoadingPlaces, shareView]);
 
@@ -493,6 +496,7 @@ export default function App() {
       if (durationFilter !== 'all' && p.durationCategory !== durationFilter) return false;
       if (weekendEscapeFilter && !p.ankaraDistance?.isWeekendEscape) return false;
       if (visaFreeFilter && !p.visaStatus?.isVisaFree) return false;
+      if (museumFilter && !isMuseum(p)) return false;
 
       if (deferredSearchQuery.trim()) {
         return matchesSearch(getSearchIndex(p), deferredSearchQuery);
@@ -517,6 +521,7 @@ export default function App() {
     durationFilter,
     weekendEscapeFilter,
     visaFreeFilter,
+    museumFilter,
     deferredSearchQuery
   ]);
 
@@ -546,9 +551,13 @@ export default function App() {
     const favoriteCount = scopeList.filter((p) => p.favorite).length;
     const weekendCount = scopeList.filter((p) => p.ankaraDistance?.isWeekendEscape).length;
     const visaFreeCount = scopeList.filter((p) => p.visaStatus?.isVisaFree).length;
+    const museumCount = scopeList.filter(isMuseum).length;
     const percent = total > 0 ? Math.round((visitedCount / total) * 100) : 0;
-    return { total, visitedCount, todoCount, favoriteCount, weekendCount, visaFreeCount, percent };
+    return { total, visitedCount, todoCount, favoriteCount, weekendCount, visaFreeCount, museumCount, percent };
   }, [places, activeRegion]);
+
+  // Dishes the guide highlights per city, shown in the detail panel's food section
+  const cityDishes = useMemo(() => dishesByCity(places), [places]);
 
   // Handlers
   const handleRegionChange = (regionId) => {
@@ -1265,6 +1274,21 @@ export default function App() {
               <span>({stats.visaFreeCount})</span>
             </button>
 
+            {/* Quick Toggle: Müzeler & Galeriler */}
+            <button
+              onClick={() => setMuseumFilter(!museumFilter)}
+              className={`px-2.5 py-1 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition shrink-0 ${
+                museumFilter
+                  ? 'bg-violet-600 text-white border-violet-500 shadow-xs font-bold'
+                  : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+              }`}
+              title="Sadece müzeler ve sanat galerileri (Louvre, Prado, Anadolu Medeniyetleri…)"
+            >
+              <span>🖼️</span>
+              <span className="hidden sm:inline">Müzeler</span>
+              <span>({stats.museumCount})</span>
+            </button>
+
             {/* Offline PWA Status Badge */}
             {!isOnline && (
               <div
@@ -1357,7 +1381,7 @@ export default function App() {
               </button>
 
               {/* Clear All Filters */}
-              {(activeSubRegion !== 'all' || seasonFilter !== 'all' || durationFilter !== 'all' || weekendEscapeFilter || visaFreeFilter || statusFilter !== 'todo' || searchQuery) && (
+              {(activeSubRegion !== 'all' || seasonFilter !== 'all' || durationFilter !== 'all' || weekendEscapeFilter || visaFreeFilter || museumFilter || statusFilter !== 'todo' || searchQuery) && (
                 <button
                   onClick={() => {
                     setActiveSubRegion('all');
@@ -1369,6 +1393,7 @@ export default function App() {
                     setDurationFilter('all');
                     setWeekendEscapeFilter(false);
                     setVisaFreeFilter(false);
+                    setMuseumFilter(false);
                     setSearchQuery('');
                   }}
                   className="text-[11px] text-amber-600 hover:text-amber-800 font-medium hover:underline px-1 py-0.5"
@@ -1702,6 +1727,7 @@ export default function App() {
                 <div className="hidden xl:block xl:col-span-6 h-full overflow-hidden">
                   <PlaceDetailPanel
                     place={selectedPlace}
+                    cityDishes={cityDishes[selectedPlace.city] || []}
                     onClose={() => setSelectedPlaceId(null)}
                     onToggleVisited={handleToggleVisited}
                     onToggleFavorite={handleToggleFavorite}
@@ -1727,6 +1753,7 @@ export default function App() {
             <div className="w-full max-w-2xl h-[92vh] sm:h-[86vh] bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 overflow-hidden shadow-2xl flex flex-col animate-slideUp">
               <PlaceDetailPanel
                 place={selectedPlace}
+                cityDishes={cityDishes[selectedPlace.city] || []}
                 onClose={() => {
                   setIsMobileDetailOpen(false);
                   setSelectedPlaceId(null);
@@ -2071,6 +2098,7 @@ export default function App() {
               <div className="absolute bottom-5 right-5 z-[450] w-full max-w-md max-h-[80vh] overflow-hidden shadow-2xl">
                 <PlaceDetailPanel
                   place={selectedPlace}
+                  cityDishes={cityDishes[selectedPlace.city] || []}
                   onClose={() => setSelectedPlaceId(null)}
                   onToggleVisited={handleToggleVisited}
                   onToggleFavorite={handleToggleFavorite}
@@ -2411,6 +2439,16 @@ export default function App() {
                   }`}
                 >
                   <span>🛂</span> Vizesiz ({stats.visaFreeCount})
+                </button>
+                <button
+                  onClick={() => setMuseumFilter(!museumFilter)}
+                  className={`col-span-2 py-2 rounded-xl border flex items-center justify-center gap-1.5 transition ${
+                    museumFilter
+                      ? 'bg-violet-600 text-white border-violet-500 shadow-xs'
+                      : 'bg-slate-50 text-slate-700 border-slate-200'
+                  }`}
+                >
+                  <span>🖼️</span> Müzeler & Galeriler ({stats.museumCount})
                 </button>
                 {(() => {
                   const season = currentSeasonId();
