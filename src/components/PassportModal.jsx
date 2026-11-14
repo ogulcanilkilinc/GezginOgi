@@ -74,7 +74,7 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
   const allCountries = [...new Set(places.map((p) => p.country).filter(Boolean))];
   // Share of the world's 195 countries (193 UN members + 2 observer states) visited so far
   const worldShare = (visitedCountries.length / 195) * 100;
-  const worldShareLabel = worldShare > 0 && worldShare < 10 ? worldShare.toFixed(1).replace(/.0$/, '').replace('.', ',') : String(Math.round(worldShare));
+  const worldShareLabel = worldShare > 0 && worldShare < 10 ? worldShare.toFixed(1).replace(/\.0$/, '').replace('.', ',') : String(Math.round(worldShare));
   const worldShareSuffix = trPossessive(worldShareLabel);
 
   const provinceStats = getProvinceVisitStats(places);

@@ -2,7 +2,7 @@
 // Service Worker for GezginOgi - Robust Offline PWA Support
 // Automatically precaches all compiled JS chunks, CSS, fonts, and data for seamless offline usage.
 
-const CACHE_NAME = 'gezginogi-build-mwgkw66v';
+const CACHE_NAME = 'gezginogi-build-mwgkx989';
 
 // Map tiles the user has looked at are kept in their own cache, which survives new builds,
 // so recently viewed areas still show a map offline
@@ -16,25 +16,25 @@ const PRECACHE_URLS = [
   "./favicon.svg",
   "./manifest.json",
   "./data/places.json",
-  "./assets/BorderCrossingsModal-xvaSgPcp.js",
-  "./assets/CloudSyncModal-BnqcTJmN.js",
-  "./assets/CountryIntelModal-CxEwnWJg.js",
-  "./assets/CurrencyBudgetModal-Dj9JdobK.js",
-  "./assets/EmergencyConsulateModal-BWiDCHbf.js",
+  "./assets/BorderCrossingsModal-BkTR0weC.js",
+  "./assets/CloudSyncModal-ChYTnhXD.js",
+  "./assets/CountryIntelModal-CUsVPBz2.js",
+  "./assets/CurrencyBudgetModal-BVYVheJU.js",
+  "./assets/EmergencyConsulateModal-DgIRbcUT.js",
   "./assets/icons-vendor-DrESObBc.js",
-  "./assets/index-BzsAqome.js",
   "./assets/index-C9_r8Ova.css",
-  "./assets/ItineraryModal-cH0ebwk9.js",
+  "./assets/index-DZtVUUDs.js",
+  "./assets/ItineraryModal-B7EPfINo.js",
   "./assets/leaflet-vendor-Dy36dnF4.js",
-  "./assets/NearbyRadarModal-D45jUdhU.js",
-  "./assets/PackingChecklistModal-D4qkIZdx.js",
-  "./assets/PassportModal-Dw4oJqIM.js",
-  "./assets/PlaceFormModal-C7ibQK2T.js",
-  "./assets/RouteSimulatorModal-Cohzq1Xm.js",
-  "./assets/ScratchMapModal-ChfqqTUx.js",
-  "./assets/SearchableLocationModal-BzbtLWhG.js",
-  "./assets/SeasonalCalendarModal-By3xGO7p.js",
-  "./assets/TravelSoundtrackModal-jCMCvUMU.js"
+  "./assets/NearbyRadarModal-DmSgtoas.js",
+  "./assets/PackingChecklistModal-CUFGPchm.js",
+  "./assets/PassportModal-CXpqSNgO.js",
+  "./assets/PlaceFormModal-0SXRNzZu.js",
+  "./assets/RouteSimulatorModal-TJ0tso1g.js",
+  "./assets/ScratchMapModal-DNMtrYjn.js",
+  "./assets/SearchableLocationModal-X6D-z0kH.js",
+  "./assets/SeasonalCalendarModal-nrs8Yh2r.js",
+  "./assets/TravelSoundtrackModal-DF2mYiB6.js"
 ];
 
 self.addEventListener('install', (event) => {
