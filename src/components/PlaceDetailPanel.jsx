@@ -41,6 +41,9 @@ import {
 } from 'lucide-react';
 
 import { dishesOf } from '../data/placeInsights';
+import PhotoImg from './PhotoImg';
+import SuggestModal from './SuggestModal';
+import { getAccount, uploadPrivatePhoto, deletePrivatePhoto, isPrivatePhoto } from '../services/account';
 // Client-side image downscaler: converts 10 MB camera photos to ~100-150 KB JPEGs
 function resizeImageToMax(file, maxDimension = 1200, quality = 0.82) {
   return new Promise((resolve, reject) => {
@@ -74,6 +77,9 @@ function resizeImageToMax(file, maxDimension = 1200, quality = 0.82) {
   });
 }
 
+// The user's own places (added with the form) are offered to the guide as new places
+const isCustomPlaceLike = (p) => !!(p.isCustom || /^(custom|user)[_-]/.test(p.id));
+
 const DEFAULT_CHECKLIST_BY_CATEGORY = {
   muze: ['Müzekart / Online Bilet kontrolü', 'Rahat yürüyüş ayakkabısı', 'Powerbank & Kamera', 'Kulaklık (Sesli rehber için)'],
   doga: ['Termos kahve & Su matarası', 'Kaymaz tabanlı yürüyüş ayakkabısı', 'Katmanlı kıyafet / Rüzgarlık', 'Kamp sandalyesi / Piknik örtüsü'],
@@ -104,8 +110,10 @@ export default function PlaceDetailPanel({
   inTripPlan = false,
   onToggleTripPlan,
   onOpenCountryIntel,
+  onOpenAccount,
   cityDishes = []
 }) {
+  const [suggestOpen, setSuggestOpen] = useState(false);
   const [noteText, setNoteText] = useState('');
   const [rating, setRating] = useState(5);
   const [visitedDate, setVisitedDate] = useState('');
@@ -244,12 +252,22 @@ export default function PlaceDetailPanel({
       const compressedDataUrl = await resizeImageToMax(file, 1200, 0.82);
 
       let finalPhotoUrl = compressedDataUrl;
-      // 2. If Supabase is connected, upload to Supabase Storage bucket
-      const cloudConfig = getCloudConfig();
-      if (cloudConfig && cloudConfig.supabaseUrl && cloudConfig.supabaseKey) {
-        const cloudUrl = await uploadPhotoToSupabase(compressedDataUrl, place.id, cloudConfig);
-        if (cloudUrl) {
-          finalPhotoUrl = cloudUrl;
+      // 2. Signed in: the photo goes to the user's private cloud folder (a quota applies).
+      // Old shared-passphrase sync: the old public bucket, as before.
+      if (getAccount()) {
+        try {
+          finalPhotoUrl = await uploadPrivatePhoto(compressedDataUrl, place.id);
+        } catch (err) {
+          setPhotoError(err.message || 'Fotoğraf buluta yüklenemedi.');
+          return;
+        }
+      } else {
+        const cloudConfig = getCloudConfig();
+        if (cloudConfig && cloudConfig.supabaseUrl && cloudConfig.supabaseKey) {
+          const cloudUrl = await uploadPhotoToSupabase(compressedDataUrl, place.id, cloudConfig);
+          if (cloudUrl) {
+            finalPhotoUrl = cloudUrl;
+          }
         }
       }
 
@@ -266,7 +284,8 @@ export default function PlaceDetailPanel({
   };
 
   const handleRemoveUserPhoto = (idx) => {
-    deletePhotoFromSupabase(userPhotos[idx], getCloudConfig());
+    if (isPrivatePhoto(userPhotos[idx])) deletePrivatePhoto(userPhotos[idx]);
+    else deletePhotoFromSupabase(userPhotos[idx], getCloudConfig());
     const updated = userPhotos.filter((_, i) => i !== idx);
     setUserPhotos(updated);
     onUpdateNotes(place.id, { userPhotos: updated });
@@ -297,8 +316,8 @@ export default function PlaceDetailPanel({
       {/* Hero Image Header: the user's own first photo, otherwise the guide photo */}
       <div className="relative h-56 sm:h-64 w-full shrink-0 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950/60 flex items-center justify-center">
         {heroSrc && !imgError ? (
-          <img
-            src={getOptimizedImageUrl(heroSrc, 960)}
+          <PhotoImg
+            src={heroSrc} width={960}
             alt={place.name}
             className={`w-full h-full object-cover transition duration-700 ${
               place.visited ? 'saturate-90' : ''
@@ -1006,7 +1025,7 @@ export default function PlaceDetailPanel({
                     key={idx}
                     className="relative group h-24 rounded-xl overflow-hidden border border-slate-200 shadow-xs"
                   >
-                    <img src={src} alt="Anı" className="w-full h-full object-cover" />
+                    <PhotoImg src={src} alt="Anı" className="w-full h-full object-cover" />
                     <button
                       type="button"
                       onClick={() => handleRemoveUserPhoto(idx)}
@@ -1050,10 +1069,20 @@ export default function PlaceDetailPanel({
         </form>
 
         {/* Footer Delete / Edit */}
-        <div className="flex items-center justify-between pt-2 border-t border-slate-200 text-xs text-slate-400">
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200 text-xs text-slate-400">
           <span>
             Koordinatlar: {place.coords[0]}, {place.coords[1]}
           </span>
+          {!place.isCommunity && (
+            <button
+              type="button"
+              onClick={() => setSuggestOpen(true)}
+              className="text-amber-700 hover:text-amber-900 flex items-center gap-1 transition"
+              title="Bu yerle ilgili bir düzeltmeyi rehbere öner"
+            >
+              <span>{isCustomPlaceLike(place) ? '📤 Rehbere öner' : '✏️ Düzeltme öner'}</span>
+            </button>
+          )}
           <button
             type="button"
             onClick={() => onDeletePlace(place.id)}
@@ -1064,6 +1093,13 @@ export default function PlaceDetailPanel({
           </button>
         </div>
       </div>
+      <SuggestModal
+        isOpen={suggestOpen}
+        onClose={() => setSuggestOpen(false)}
+        place={place}
+        mode={isCustomPlaceLike(place) ? 'new' : 'edit'}
+        onOpenAccount={onOpenAccount}
+      />
     </div>
   );
 }

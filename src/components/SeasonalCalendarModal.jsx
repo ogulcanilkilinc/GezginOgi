@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { coverOf } from '../data/curatedPhotoResolver';
+import PhotoImg from './PhotoImg';
 import {
   X,
   Calendar,
@@ -359,7 +360,7 @@ export default function SeasonalCalendarModal({
                     <div className="flex items-start gap-3">
                       <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-slate-800 relative flex items-center justify-center">
                         {coverOf(pl) ? (
-                          <img
+                          <PhotoImg
                             src={coverOf(pl)}
                             loading="lazy"
                             alt={pl.name}

@@ -3,6 +3,7 @@ import { CATEGORIES, REGIONS } from '../data/metadata';
 import { getProvinceVisitStats, TURKEY_REGIONS } from '../data/turkeyProvinces';
 import { getOptimizedImageUrl, coverOf } from '../data/curatedPhotoResolver';
 import ChoroplethMap from './ChoroplethMap';
+import PhotoImg from './PhotoImg';
 import {
   X,
   Award,
@@ -865,8 +866,8 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
                                 {/* Thumbnail */}
                                 <div className="relative w-full sm:w-32 h-28 rounded-xl overflow-hidden shrink-0 bg-slate-100 border border-slate-200 flex items-center justify-center">
                                   {coverOf(pl) ? (
-                                    <img
-                                      src={getOptimizedImageUrl(coverOf(pl), 500)}
+                                    <PhotoImg
+                                      src={coverOf(pl)} width={500}
                                       loading="lazy"
                                       alt={pl.name}
                                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
@@ -950,7 +951,7 @@ export default function PassportModal({ isOpen, onClose, places, onSelectPlace }
                                       </span>
                                       <div className="flex items-center gap-1">
                                         {pl.userPhotos.slice(0, 4).map((imgUrl, idx) => (
-                                          <img
+                                          <PhotoImg
                                             key={idx}
                                             src={imgUrl}
                                             alt="Anı"

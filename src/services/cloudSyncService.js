@@ -3,16 +3,67 @@
 // Supports both Supabase Native Auth (Session-based, zero secret leaks)
 // and User-defined Private Passphrase.
 
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabaseConfig';
+import { dataUrlToBlob } from './photoStore';
+
 const SYNC_CONFIG_KEY = 'kesif_atlasim_cloud_config';
 const AUTH_SESSION_KEY = 'kesif_atlasim_auth_session';
 
+// Signed-in account (e-mail link or Google): the guide's own Supabase project, per-user tables
+export function getAccountSession() {
+  const s = getAuthSession();
+  return s && s.access_token && s.user && s.user.id ? s : null;
+}
+
 export function getCloudConfig() {
+  if (getAccountSession()) return { supabaseUrl: SUPABASE_URL, supabaseKey: SUPABASE_ANON_KEY, mode: 'account', autoSync: true };
   try {
     const raw = localStorage.getItem(SYNC_CONFIG_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch (e) {
     return null;
   }
+}
+
+const isAccount = (config) => !!config && config.mode === 'account';
+// Photos still held only on this device (taken before signing in) are never sent as table data;
+// they are uploaded to the private photo folder first (see AccountModal)
+const isDeviceOnlyPhoto = (src) => typeof src === 'string' && src.startsWith('data:');
+const tables = (config) =>
+  isAccount(config)
+    ? { state: 'gz_place_state', custom: 'gz_custom_places', doc: 'gz_documents' }
+    : { state: 'user_place_state', custom: 'user_custom_places', doc: 'user_documents' };
+const owner = (config) => (isAccount(config) ? { user_id: getAccountSession().user.id } : {});
+
+let refreshing = null;
+// A valid access token: renewed shortly before it expires. Offline keeps the old session for later.
+export async function ensureSession() {
+  const s = getAccountSession();
+  if (!s) return null;
+  if (s.expires_at && s.expires_at - Math.floor(Date.now() / 1000) > 60) return s;
+  if (!s.refresh_token) return s;
+  if (!refreshing) {
+    refreshing = fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token: s.refresh_token })
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        if (res.ok && data.access_token) {
+          const next = { ...s, ...data, expires_at: data.expires_at || Math.floor(Date.now() / 1000) + (data.expires_in || 3600) };
+          saveAuthSession(next);
+          return next;
+        }
+        if (res.status === 400 || res.status === 401) localStorage.removeItem(AUTH_SESSION_KEY);
+        return null;
+      })
+      .catch(() => s)
+      .finally(() => {
+        refreshing = null;
+      });
+  }
+  return refreshing;
 }
 
 export function saveCloudConfig(config) {
@@ -111,8 +162,8 @@ function buildHeaders(config) {
     'Prefer': 'resolution=merge-duplicates'
   };
 
-  // If user configured a private passphrase, send it as custom header
-  if (config.privatePassphrase) {
+  // Old shared-passphrase mode: the passphrase travels as a custom header
+  if (!isAccount(config) && config.privatePassphrase) {
     headers['x-sync-pass'] = syncPassHeader(config.privatePassphrase);
   }
 
@@ -160,8 +211,11 @@ const quoteIds = (ids) => `(${ids.map((id) => `"${String(id).replace(/"/g, '')}"
  * "not visited anymore" or "all photos removed") and deletes removed custom places.
  */
 export async function pushChanges(changedPlaces, deletedIds, config) {
+  await ensureSession();
   const baseUrl = config.supabaseUrl.replace(/\/$/, '');
   const headers = buildHeaders(config);
+  const T = tables(config);
+  const own = owner(config);
 
   const send = async (url, method, body) => {
     const res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
@@ -169,21 +223,25 @@ export async function pushChanges(changedPlaces, deletedIds, config) {
   };
 
   if (changedPlaces.length > 0) {
-    await send(`${baseUrl}/rest/v1/user_place_state`, 'POST', changedPlaces.map(toStateRow));
+    await send(`${baseUrl}/rest/v1/${T.state}`, 'POST', changedPlaces.map((p) => {
+      const row = { ...own, ...toStateRow(p) };
+      if (isAccount(config)) row.user_photos = row.user_photos.filter((x) => !isDeviceOnlyPhoto(x));
+      return row;
+    }));
     const custom = changedPlaces.filter(isCustomPlace);
     if (custom.length > 0) {
       const now = new Date().toISOString();
       await send(
-        `${baseUrl}/rest/v1/user_custom_places`,
+        `${baseUrl}/rest/v1/${T.custom}`,
         'POST',
-        custom.map((p) => ({ id: p.id, data: p, updated_at: now }))
+        custom.map((p) => ({ ...own, id: p.id, data: p, updated_at: now }))
       );
     }
   }
 
   if (deletedIds.length > 0) {
-    await send(`${baseUrl}/rest/v1/user_place_state?place_id=in.${encodeURIComponent(quoteIds(deletedIds))}`, 'DELETE');
-    await send(`${baseUrl}/rest/v1/user_custom_places?id=in.${encodeURIComponent(quoteIds(deletedIds))}`, 'DELETE');
+    await send(`${baseUrl}/rest/v1/${T.state}?place_id=in.${encodeURIComponent(quoteIds(deletedIds))}`, 'DELETE');
+    await send(`${baseUrl}/rest/v1/${T.custom}?id=in.${encodeURIComponent(quoteIds(deletedIds))}`, 'DELETE');
   }
 }
 
@@ -192,8 +250,9 @@ export async function pushChanges(changedPlaces, deletedIds, config) {
  * Returns { data, updatedAt } or null when the cloud has no such document.
  */
 export async function fetchCloudDocument(id, config) {
+  await ensureSession();
   const baseUrl = config.supabaseUrl.replace(/\/$/, '');
-  const res = await fetch(`${baseUrl}/rest/v1/user_documents?id=eq.${encodeURIComponent(id)}&select=data,updated_at`, {
+  const res = await fetch(`${baseUrl}/rest/v1/${tables(config).doc}?id=eq.${encodeURIComponent(id)}&select=data,updated_at`, {
     headers: buildHeaders(config)
   });
   if (!res.ok) throw new Error(`Bulut belge hatası (${res.status}): ${await res.text()}`);
@@ -202,11 +261,12 @@ export async function fetchCloudDocument(id, config) {
 }
 
 export async function pushCloudDocument(id, data, updatedAt, config) {
+  await ensureSession();
   const baseUrl = config.supabaseUrl.replace(/\/$/, '');
-  const res = await fetch(`${baseUrl}/rest/v1/user_documents`, {
+  const res = await fetch(`${baseUrl}/rest/v1/${tables(config).doc}`, {
     method: 'POST',
     headers: buildHeaders(config),
-    body: JSON.stringify([{ id, data, updated_at: new Date(updatedAt).toISOString() }])
+    body: JSON.stringify([{ ...owner(config), id, data, updated_at: new Date(updatedAt).toISOString() }])
   });
   if (!res.ok) throw new Error(`Bulut belge hatası (${res.status}): ${await res.text()}`);
 }
@@ -285,10 +345,12 @@ export async function pullPlacesFromCloud(localPlaces, config, keepLocalIds = ne
     throw new Error('Supabase URL ve Anon Key tanımlı değil.');
   }
 
+  await ensureSession();
   const baseUrl = config.supabaseUrl.replace(/\/$/, '');
   const headers = buildHeaders(config);
+  const T = tables(config);
 
-  const resState = await fetch(`${baseUrl}/rest/v1/user_place_state?select=*`, {
+  const resState = await fetch(`${baseUrl}/rest/v1/${T.state}?select=*`, {
     method: 'GET',
     headers
   });
@@ -302,7 +364,7 @@ export async function pullPlacesFromCloud(localPlaces, config, keepLocalIds = ne
 
   let cloudCustom = [];
   try {
-    const resCustom = await fetch(`${baseUrl}/rest/v1/user_custom_places?select=*`, {
+    const resCustom = await fetch(`${baseUrl}/rest/v1/${T.custom}?select=*`, {
       method: 'GET',
       headers
     });
@@ -337,7 +399,10 @@ export async function pullPlacesFromCloud(localPlaces, config, keepLocalIds = ne
       favorite: !!cState.favorite,
       userRating: cState.user_rating || 0,
       userNotes: cState.user_notes || '',
-      userPhotos: Array.isArray(cState.user_photos) ? cState.user_photos : [],
+      userPhotos: [
+        ...(Array.isArray(cState.user_photos) ? cState.user_photos : []),
+        ...(isAccount(config) ? (pl.userPhotos || []).filter(isDeviceOnlyPhoto) : [])
+      ],
       checklist: Array.isArray(cState.checklist) ? cState.checklist : []
     };
   });
@@ -375,8 +440,7 @@ export async function uploadPhotoToSupabase(dataUrl, placeId, config) {
     const baseUrl = config.supabaseUrl.replace(/\/$/, '');
     const headers = buildHeaders(config);
 
-    const blobRes = await fetch(dataUrl);
-    const blob = await blobRes.blob();
+    const blob = dataUrlToBlob(dataUrl);
 
     // Random UUID: the bucket is public, so file names must be impossible to guess
     const fileName = `${placeId}_${crypto.randomUUID()}.jpg`;
@@ -418,5 +482,5 @@ export async function deletePhotoFromSupabase(photoUrl, config) {
 }
 
 export function isCloudConfigured(config = getCloudConfig()) {
-  return !!(config && config.supabaseUrl && config.supabaseKey && config.privatePassphrase);
+  return !!(config && config.supabaseUrl && config.supabaseKey && (isAccount(config) || config.privatePassphrase));
 }

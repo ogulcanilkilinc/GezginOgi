@@ -2,9 +2,12 @@ import React, { useState, useEffect, useMemo, useRef, useDeferredValue, lazy, Su
 import confetti from 'canvas-confetti';
 import { CATEGORIES, REGIONS, SEASONS, DURATIONS } from './data/metadata';
 import { getOptimizedImageUrl, coverOf } from './data/curatedPhotoResolver';
+import PhotoImg from './components/PhotoImg';
 import { useAutoSync } from './services/useAutoSync';
 import { loadPhotos, savePhotos, cachedPhotos } from './services/photoStore';
 import { isMuseum, dishesByCity } from './data/placeInsights';
+import { consumeAuthRedirect } from './services/account';
+import { fetchCommunity, applyCommunity } from './services/suggestions';
 import { buildBackup, downloadBackup, parseBackup, summarizeBackup, applyBackup } from './services/backup';
 import { useDocSync } from './services/useDocSync';
 import { getSearchIndex, matchesSearch, matchesSearchKey } from './services/searchUtils';
@@ -28,6 +31,7 @@ const ScratchMapModal = lazy(() => import('./components/ScratchMapModal'));
 const EmergencyConsulateModal = lazy(() => import('./components/EmergencyConsulateModal'));
 const SeasonalCalendarModal = lazy(() => import('./components/SeasonalCalendarModal'));
 const CloudSyncModal = lazy(() => import('./components/CloudSyncModal'));
+const AccountModal = lazy(() => import('./components/AccountModal'));
 const CountryIntelModal = lazy(() => import('./components/CountryIntelModal'));
 
 import {
@@ -134,7 +138,7 @@ export default function App() {
         });
       }
     } catch (e) {}
-    setPlaces(merged);
+    setPlaces(applyCommunity(merged, communityRef.current));
     setUpdateNotification(null);
   };
 
@@ -162,6 +166,9 @@ export default function App() {
         return res.json();
       })
       .then(async (rawPlaces) => {
+        // Coming back from an e-mail link or Google sign-in: store the session before sync starts
+        const auth = await consumeAuthRedirect().catch(() => ({ signedIn: false }));
+        if (auth.signedIn || auth.error) setIsCloudSyncOpen(true);
         const share = await readShareFromHash();
         if (share) {
           setShareView(share);
@@ -207,6 +214,12 @@ export default function App() {
 
         setPlaces(merged);
         setIsLoadingPlaces(false);
+        fetchCommunity()
+          .then((rows) => {
+            communityRef.current = rows;
+            if (rows.length) setPlaces((prev) => applyCommunity(prev, rows));
+          })
+          .catch(() => {});
 
         // Background freshness check. The build publishes a tiny places-version.json; the full file is
         // downloaded again only when that version differs from the one this device last loaded.
@@ -346,7 +359,9 @@ export default function App() {
   const [isScratchMapOpen, setIsScratchMapOpen] = useState(false);
   const [isEmergencyOpen, setIsEmergencyOpen] = useState(false);
   const [isSeasonalCalendarOpen, setIsSeasonalCalendarOpen] = useState(false);
-  const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false);
+  const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false); // opens the account window
+  const [isLegacySyncOpen, setIsLegacySyncOpen] = useState(false); // old shared-passphrase sync window
+  const communityRef = useRef([]); // approved suggestions, merged into the guide on every data load
 
   // Admin & Editing State: Starts as read-only visitor mode by default
   const [isAdmin, setIsAdmin] = useState(false);
@@ -1567,8 +1582,8 @@ Geri yüklenince bu yerlerdeki notların, fotoğrafların ve işaretlerin yedekt
                           {/* Thumbnail */}
                           <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-gradient-to-br from-slate-100 to-amber-50 border border-slate-200/90 flex items-center justify-center">
                             {coverOf(place) ? (
-                              <img
-                                src={getOptimizedImageUrl(coverOf(place), 500)} loading="lazy" decoding="async"
+                              <PhotoImg
+                                src={coverOf(place)} width={500} loading="lazy" decoding="async"
                                 alt={place.name}
                                 className={`w-full h-full object-cover ${
                                   place.visited ? 'opacity-65 saturate-50' : ''
@@ -1778,6 +1793,7 @@ Geri yüklenince bu yerlerdeki notların, fotoğrafların ve işaretlerin yedekt
                     inTripPlan={tripPlanIds.includes(selectedPlace.id)}
                     onToggleTripPlan={handleToggleTripPlan}
                     onOpenCountryIntel={(c) => setSelectedCountryIntel(c)}
+                    onOpenAccount={() => setIsCloudSyncOpen(true)}
                   />
                 </div>
               )}
@@ -1807,6 +1823,7 @@ Geri yüklenince bu yerlerdeki notların, fotoğrafların ve işaretlerin yedekt
                 inTripPlan={tripPlanIds.includes(selectedPlace.id)}
                 onToggleTripPlan={handleToggleTripPlan}
                 onOpenCountryIntel={(c) => setSelectedCountryIntel(c)}
+                    onOpenAccount={() => setIsCloudSyncOpen(true)}
               />
             </div>
           </div>
@@ -1906,8 +1923,8 @@ Geri yüklenince bu yerlerdeki notların, fotoğrafların ve işaretlerin yedekt
                     {/* Card Image */}
                     <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950/60 flex items-center justify-center">
                       {coverOf(place) ? (
-                        <img
-                          src={getOptimizedImageUrl(coverOf(place), 960)} loading="lazy" decoding="async"
+                        <PhotoImg
+                          src={coverOf(place)} width={960} loading="lazy" decoding="async"
                           alt={place.name}
                           className="w-full h-full object-cover"
                           onError={(e) => {
@@ -2149,6 +2166,7 @@ Geri yüklenince bu yerlerdeki notların, fotoğrafların ve işaretlerin yedekt
                   inTripPlan={tripPlanIds.includes(selectedPlace.id)}
                   onToggleTripPlan={handleToggleTripPlan}
                   onOpenCountryIntel={(c) => setSelectedCountryIntel(c)}
+                    onOpenAccount={() => setIsCloudSyncOpen(true)}
                 />
               </div>
             )}
@@ -2411,11 +2429,31 @@ Geri yüklenince bu yerlerdeki notların, fotoğrafların ve işaretlerin yedekt
         }}
       />
 
-      {/* ================= CLOUD SYNC & PIN SECURITY MODAL ================= */}
-      <CloudSyncModal
+      {/* ================= ACCOUNT / SIGN-IN MODAL ================= */}
+      <AccountModal
         isOpen={isCloudSyncOpen}
         onClose={() => {
           setIsCloudSyncOpen(false);
+          if (!shareView) {
+            autoSync.syncNow();
+            tripSync.syncNow();
+          }
+        }}
+        places={places}
+        onUpdatePlaces={(updatedPlaces) => setPlaces(updatedPlaces)}
+        syncStatus={autoSync.status}
+        syncMessage={autoSync.message}
+        onOpenLegacy={() => {
+          setIsCloudSyncOpen(false);
+          setIsLegacySyncOpen(true);
+        }}
+      />
+
+      {/* ================= OLD SHARED-PASSPHRASE SYNC & PIN MODAL ================= */}
+      <CloudSyncModal
+        isOpen={isLegacySyncOpen}
+        onClose={() => {
+          setIsLegacySyncOpen(false);
           if (!shareView) {
             autoSync.syncNow();
             tripSync.syncNow();
