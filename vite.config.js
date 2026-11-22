@@ -37,9 +37,9 @@ export default defineConfig({
     chunkSizeWarningLimit: 1200,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'leaflet-vendor': ['leaflet'],
-          'icons-vendor': ['lucide-react']
+        manualChunks(id) {
+          if (/node_modules[\/]leaflet[\/]/.test(id)) return 'leaflet-vendor';
+          if (/node_modules[\/]lucide-react[\/]/.test(id)) return 'icons-vendor';
         }
       }
     }
