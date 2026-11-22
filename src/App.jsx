@@ -5,6 +5,7 @@ import { getOptimizedImageUrl, coverOf } from './data/curatedPhotoResolver';
 import { useAutoSync } from './services/useAutoSync';
 import { loadPhotos, savePhotos, cachedPhotos } from './services/photoStore';
 import { isMuseum, dishesByCity } from './data/placeInsights';
+import { buildBackup, downloadBackup, parseBackup, summarizeBackup, applyBackup } from './services/backup';
 import { useDocSync } from './services/useDocSync';
 import { getSearchIndex, matchesSearch, matchesSearchKey } from './services/searchUtils';
 import { createShareLink, readShareFromHash, leaveShareView } from './services/shareLink';
@@ -372,6 +373,7 @@ export default function App() {
   const [pickedCoords, setPickedCoords] = useState(null);
 
   const fileInputRef = useRef(null);
+  const backupInputRef = useRef(null);
   const storageWarnedRef = useRef(false);
   const savedPhotosRef = useRef(null);
 
@@ -720,6 +722,39 @@ export default function App() {
         }
       } catch (err) {
         alert('Geçersiz yedek dosyası formatı.');
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  // Full backup of what the user added (visits, notes, own photos, own places, trip plan)
+  const handleBackupDownload = () => {
+    downloadBackup(buildBackup(places, tripDoc));
+  };
+
+  const handleBackupRestore = (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const b = parseBackup(ev.target.result);
+        const n = summarizeBackup(b);
+        const ok = window.confirm(
+          `Yedekte ${n.places} yer, ${n.photos} fotoğraf${n.custom ? `, ${n.custom} kendi eklediğin yer` : ''}${b.trip && b.trip.ids && b.trip.ids.length ? ' ve gezi rotan' : ''} var.
+
+Geri yüklenince bu yerlerdeki notların, fotoğrafların ve işaretlerin yedektekilerle değişir; yedekte olmayanlara dokunulmaz. Devam edilsin mi?`
+        );
+        if (!ok) return;
+        setPlaces((prev) => applyBackup(prev, b));
+        if (b.trip && Array.isArray(b.trip.ids) && b.trip.ids.length) {
+          setTripPlanIds(b.trip.ids);
+          setTripMeta({ days: b.trip.days || {}, name: b.trip.name || '', startDate: b.trip.startDate || '' });
+        }
+        alert('Yedek geri yüklendi.');
+      } catch (err) {
+        alert(err && err.message ? err.message : 'Yedek dosyası okunamadı.');
       }
     };
     reader.readAsText(file);
@@ -2169,6 +2204,7 @@ export default function App() {
       />
 
       {/* Traveler tools menu: rendered at the root so the phone bottom bar can open it too */}
+      <input ref={backupInputRef} type="file" accept=".json,application/json" onChange={handleBackupRestore} className="hidden" />
         {isToolsDropdownOpen && (
           <>
             <div
@@ -2199,6 +2235,28 @@ export default function App() {
               <div>
                 <strong className="block text-slate-900">Bulut Senkronizasyon & PIN</strong>
                 <span className="text-[10px] text-slate-500">Telefon ve bilgisayarı canlı eşitle</span>
+              </div>
+            </button>
+
+            <button
+              onClick={handleBackupDownload}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+            >
+              <span className="text-base">💾</span>
+              <div>
+                <strong className="block text-slate-900">Yedekle (dosya olarak indir)</strong>
+                <span className="text-[10px] text-slate-500">Notların, fotoğrafların, işaretlerin ve rotan tek dosyada</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => backupInputRef.current?.click()}
+              className="w-full text-left p-2 rounded-xl text-xs hover:bg-slate-100 text-slate-800 flex items-center gap-2.5 transition"
+            >
+              <span className="text-base">📂</span>
+              <div>
+                <strong className="block text-slate-900">Yedekten geri yükle</strong>
+                <span className="text-[10px] text-slate-500">Daha önce indirdiğin yedek dosyasını seç</span>
               </div>
             </button>
 
