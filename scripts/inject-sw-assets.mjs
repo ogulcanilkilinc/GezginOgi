@@ -41,7 +41,7 @@ const assetUrls = assetFiles
 const basePrecache = [
   './',
   './index.html',
-  './favicon.svg',
+  './logo-mark.png',
   './manifest.json',
   './data/places.json'
 ];

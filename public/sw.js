@@ -2,7 +2,7 @@
 // Service Worker for GezginOgi - Robust Offline PWA Support
 // Automatically precaches all compiled JS chunks, CSS, fonts, and data for seamless offline usage.
 
-const CACHE_NAME = 'gezginogi-build-mwrz8zeg';
+const CACHE_NAME = 'gezginogi-build-mwrzg5g1';
 
 // Map tiles the user has looked at are kept in their own cache, which survives new builds,
 // so recently viewed areas still show a map offline
@@ -13,30 +13,30 @@ const TILE_LIMIT = 600;
 const PRECACHE_URLS = [
   "./",
   "./index.html",
-  "./favicon.svg",
+  "./logo-mark.png",
   "./manifest.json",
   "./data/places.json",
-  "./assets/BorderCrossingsModal-C_bSYKNW.js",
-  "./assets/CloudSyncModal-CkQNQ9HM.js",
-  "./assets/CountryIntelModal-k-NPd9Tv.js",
-  "./assets/CurrencyBudgetModal-CbVozAQA.js",
-  "./assets/EmergencyConsulateModal-CA1FPZca.js",
+  "./assets/BorderCrossingsModal--3uHJ8H6.js",
+  "./assets/CloudSyncModal-C1Zz3G-2.js",
+  "./assets/CountryIntelModal-RcFb-1WC.js",
+  "./assets/CurrencyBudgetModal-BIMFyz77.js",
+  "./assets/EmergencyConsulateModal-DiJZrgCF.js",
   "./assets/icons-vendor-DPlWRszx.js",
-  "./assets/index-C8R7lSm1.js",
-  "./assets/index-DesWE8v9.css",
-  "./assets/ItineraryModal-DOyl3kZE.js",
+  "./assets/index-BFg2T6Ki.js",
+  "./assets/index-BtWYF6tQ.css",
+  "./assets/ItineraryModal-CtK6ptvR.js",
   "./assets/leaflet-vendor-CcoIVhU3.js",
   "./assets/leaflet-vendor-CcXJxNtP.css",
-  "./assets/NearbyRadarModal-Ck4n_eKP.js",
-  "./assets/PackingChecklistModal-Dm6XzxxS.js",
-  "./assets/PassportModal-Ca5QBq_G.js",
-  "./assets/PlaceFormModal-CUGDCxEt.js",
+  "./assets/NearbyRadarModal-DQMNKAJF.js",
+  "./assets/PackingChecklistModal-Cl4CB36p.js",
+  "./assets/PassportModal-Cmis-raw.js",
+  "./assets/PlaceFormModal-CrGyImYL.js",
   "./assets/rolldown-runtime-WkwZ5CU-.js",
-  "./assets/RouteSimulatorModal-49LVnMsM.js",
-  "./assets/ScratchMapModal-Bk3Vc2Xd.js",
-  "./assets/SearchableLocationModal-C6mwMNnN.js",
-  "./assets/SeasonalCalendarModal-DhJl2cbn.js",
-  "./assets/TravelSoundtrackModal-D9uCsUta.js"
+  "./assets/RouteSimulatorModal-DUl_sMDQ.js",
+  "./assets/ScratchMapModal-CwOMXC-B.js",
+  "./assets/SearchableLocationModal-CIRFfqdv.js",
+  "./assets/SeasonalCalendarModal-C0R7vrd2.js",
+  "./assets/TravelSoundtrackModal-DDT3jySI.js"
 ];
 
 self.addEventListener('install', (event) => {

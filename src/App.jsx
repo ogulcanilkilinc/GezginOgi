@@ -31,7 +31,6 @@ const CloudSyncModal = lazy(() => import('./components/CloudSyncModal'));
 const CountryIntelModal = lazy(() => import('./components/CountryIntelModal'));
 
 import {
-  Compass,
   Plus,
   Search,
   CheckCircle2,
@@ -813,9 +812,13 @@ Geri yüklenince bu yerlerdeki notların, fotoğrafların ve işaretlerin yedekt
         <div className="max-w-[1800px] mx-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-2 lg:gap-3">
           {/* Brand Logo & Title */}
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-xl lg:rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 shadow-md shadow-amber-500/15">
-              <Compass className="w-5 h-5 lg:w-6 lg:h-6 stroke-[2.2]" />
-            </div>
+            <img
+              src={`${import.meta.env.BASE_URL}logo-mark.png`}
+              alt=""
+              width="40"
+              height="40"
+              className="w-8 h-8 lg:w-10 lg:h-10 rounded-xl lg:rounded-2xl shadow-md shadow-slate-900/20"
+            />
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-lg sm:text-xl font-bold font-serif tracking-tight text-slate-900">
